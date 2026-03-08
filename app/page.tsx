@@ -1,377 +1,428 @@
 'use client'
 
-export default function Home() {
-  const cats = [
-    { name: 'Momo', jp: 'もも', breed: 'Scottish Fold', age: '2y', status: 'Available', note: '穏やかで甘えん坊な女の子' },
-    { name: 'Sora', jp: 'そら', breed: 'American Shorthair', age: '3y', status: 'Reserved', note: '好奇心旺盛でやんちゃな男の子' },
-    { name: 'Kinako', jp: 'きなこ', breed: 'Maine Coon', age: '1y', status: 'Available', note: 'ふわふわの毛並みが自慢の子' },
-    { name: 'Yuki', jp: 'ゆき', breed: 'Ragdoll', age: '4y', status: 'Available', note: '静かで落ち着いた癒し系' },
-  ]
+import { useEffect, useRef } from 'react'
 
-  const features = [
-    {
-      index: '01',
-      title: 'Adoption',
-      jp: 'お迎え',
-      desc: 'すべての猫は健康診断・ワクチン接種済み。お迎え後もサポートチームが継続してフォロー。',
-    },
-    {
-      index: '02',
-      title: 'Café & Visit',
-      jp: 'カフェ・見学',
-      desc: '予約なしでご来店いただけます。猫たちと過ごす静かな時間を、日常のなかに。',
-    },
-    {
-      index: '03',
-      title: 'Community',
-      jp: 'コミュニティ',
-      desc: 'お迎えいただいたご家族のネットワーク。近況報告や相談ができる場があります。',
-    },
+export default function Home() {
+  const cursorRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const cursor = cursorRef.current
+    const ring = ringRef.current
+    let mouseX = 0, mouseY = 0
+    let ringX = 0, ringY = 0
+
+    const onMove = (e: MouseEvent) => {
+      mouseX = e.clientX; mouseY = e.clientY
+      if (cursor) {
+        cursor.style.left = mouseX + 'px'
+        cursor.style.top = mouseY + 'px'
+      }
+    }
+
+    const animateRing = () => {
+      ringX += (mouseX - ringX) * 0.12
+      ringY += (mouseY - ringY) * 0.12
+      if (ring) {
+        ring.style.left = ringX + 'px'
+        ring.style.top = ringY + 'px'
+      }
+      requestAnimationFrame(animateRing)
+    }
+
+    window.addEventListener('mousemove', onMove)
+    animateRing()
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible')
+      })
+    }, { threshold: 0.1 })
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      observer.disconnect()
+    }
+  }, [])
+
+  const cats = [
+    { name: 'もも', en: 'MOMO', breed: 'Scottish Fold', age: '02', status: 'AVAILABLE', color: '#3D2B1A' },
+    { name: 'そら', en: 'SORA', breed: 'Amer. Shorthair', age: '03', status: 'RESERVED', color: '#1A2A2E' },
+    { name: 'きなこ', en: 'KINAKO', breed: 'Maine Coon', age: '01', status: 'AVAILABLE', color: '#2A2218' },
+    { name: 'ゆき', en: 'YUKI', breed: 'Ragdoll', age: '04', status: 'AVAILABLE', color: '#1E1E2A' },
+    { name: 'くろ', en: 'KURO', breed: 'Bombay', age: '05', status: 'AVAILABLE', color: '#1A1A1A' },
   ]
 
   return (
-    <div style={{ backgroundColor: 'var(--bg)', minHeight: '100vh' }}>
+    <>
+      <div className="cursor" ref={cursorRef} />
+      <div className="cursor-ring" ref={ringRef} />
 
-      {/* ─── NAV ─── */}
-      <header style={{
+      {/* ── NAV ── */}
+      <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        backgroundColor: 'rgba(247,245,242,0.92)',
-        backdropFilter: 'blur(12px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 40px', height: '64px',
         borderBottom: '1px solid var(--border)',
+        backgroundColor: 'rgba(10,9,8,0.85)',
+        backdropFilter: 'blur(20px)',
       }}>
-        <div style={{
-          maxWidth: '1120px', margin: '0 auto',
-          padding: '0 40px',
-          height: '60px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{
-              width: '28px', height: '28px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2C7 2 3 6.5 3 11c0 3 1.5 5.5 4 7l1 4h8l1-4c2.5-1.5 4-4 4-7 0-4.5-4-9-9-9z" fill="white"/>
-              </svg>
-            </div>
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 400, letterSpacing: '0.04em', color: 'var(--text-primary)' }}>
-              ねこ堂
-            </span>
-          </div>
-
-          <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-            {['お迎え', 'カフェ', '猫たち', 'について'].map(item => (
-              <a key={item} href="#" style={{
-                fontSize: '13px', color: 'var(--text-secondary)',
-                textDecoration: 'none', letterSpacing: '0.04em',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
-              >
-                {item}
-              </a>
-            ))}
-            <a href="#" style={{
-              fontSize: '13px', fontWeight: 500,
-              color: 'var(--accent)',
-              textDecoration: 'none',
-              letterSpacing: '0.04em',
-              padding: '7px 18px',
-              border: '1px solid var(--accent)',
-              borderRadius: '4px',
-            }}>
-              見学予約
-            </a>
-          </nav>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontFamily: "'Noto Serif JP'", fontSize: '18px', fontWeight: 200, letterSpacing: '0.1em', color: 'var(--white)' }}>
+            ねこ堂
+          </span>
+          <span style={{ fontSize: '10px', color: 'var(--gold)', letterSpacing: '0.1em', opacity: 0.8 }}>™</span>
         </div>
-      </header>
 
-      {/* ─── HERO ─── */}
+        <div style={{ display: 'flex', gap: '36px' }}>
+          {['Cats', 'Café', 'About', 'Visit'].map(item => (
+            <a key={item} href="#" className="link-underline" style={{
+              fontSize: '12px', fontWeight: 400, letterSpacing: '0.08em',
+              color: 'var(--white-dim)', textDecoration: 'none', textTransform: 'uppercase',
+            }}>
+              {item}
+            </a>
+          ))}
+        </div>
+
+        <a href="#" style={{
+          fontSize: '11px', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+          color: 'var(--black)',
+          backgroundColor: 'var(--gold)',
+          padding: '8px 20px',
+          textDecoration: 'none',
+        }}>
+          Reserve
+        </a>
+      </nav>
+
+      {/* ── HERO ── */}
       <section style={{
-        paddingTop: '120px',
-        paddingBottom: '100px',
-        maxWidth: '1120px',
-        margin: '0 auto',
-        padding: '140px 40px 100px',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: '0 40px 60px',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+        {/* Giant background kanji */}
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%, -50%)',
+          fontFamily: "'Noto Serif JP'",
+          fontSize: 'clamp(320px, 40vw, 560px)',
+          fontWeight: 900,
+          color: 'rgba(242,239,233,0.025)',
+          lineHeight: 1,
+          userSelect: 'none',
+          pointerEvents: 'none',
+          letterSpacing: '-0.05em',
+        }}>猫</div>
 
-          {/* Text */}
-          <div>
-            <p style={{
-              fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em',
-              color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '24px',
-            }}>
-              Tokyo · Since 2018
-            </p>
-            <h1 style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: '52px', lineHeight: '1.2', fontWeight: 300,
-              color: 'var(--text-primary)', marginBottom: '28px',
-              letterSpacing: '-0.01em',
-            }}>
-              猫と人が<br />
-              <em style={{ fontStyle: 'normal', fontWeight: 600 }}>出会う場所</em>
-            </h1>
-            <p style={{
-              fontSize: '15px', lineHeight: '1.8', color: 'var(--text-secondary)',
-              maxWidth: '420px', marginBottom: '40px',
-            }}>
-              ねこ堂は、保護猫のお迎えと日常ケアを中心に、猫と人の暮らしをていねいにつなぐ場所です。東京・代官山にて運営中。
-            </p>
+        {/* Top-right label */}
+        <div style={{
+          position: 'absolute', top: '96px', right: '40px',
+          display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px',
+        }}>
+          <span style={{ fontSize: '10px', color: 'var(--white-faint)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Tokyo · Daikanyama</span>
+          <span style={{ fontSize: '10px', color: 'var(--white-faint)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Est. 2018</span>
+        </div>
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <a href="#" style={{
-                display: 'inline-block',
-                padding: '13px 28px',
-                backgroundColor: 'var(--text-primary)',
-                color: '#fff',
-                fontSize: '13px', fontWeight: 500,
-                textDecoration: 'none',
-                borderRadius: '4px',
-                letterSpacing: '0.04em',
-              }}>
-                猫たちを見る
-              </a>
-              <a href="#" style={{
-                display: 'inline-block',
-                padding: '13px 24px',
-                color: 'var(--text-secondary)',
-                fontSize: '13px',
-                textDecoration: 'none',
-                letterSpacing: '0.04em',
-              }}>
-                カフェについて →
-              </a>
+        {/* Index number */}
+        <div style={{ position: 'absolute', top: '50%', left: '40px', transform: 'translateY(-50%)' }}>
+          <div style={{ writingMode: 'vertical-rl', fontSize: '10px', color: 'var(--white-faint)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+            01 / Home
+          </div>
+        </div>
+
+        {/* Hero copy */}
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '1100px' }}>
+          <p className="reveal" style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.2em', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '28px' }}>
+            Cat Adoption & Lifestyle Studio
+          </p>
+
+          <h1 style={{
+            fontFamily: "'Noto Serif JP'",
+            fontSize: 'clamp(60px, 9vw, 128px)',
+            fontWeight: 200,
+            lineHeight: 1.0,
+            letterSpacing: '-0.02em',
+            marginBottom: '48px',
+          }}>
+            <div className="reveal reveal-delay-1" style={{ overflow: 'hidden' }}>
+              <span>猫と共に、</span>
             </div>
+            <div className="reveal reveal-delay-2" style={{ overflow: 'hidden', display: 'flex', alignItems: 'baseline', gap: '24px' }}>
+              <span style={{ fontWeight: 900 }}>生きる。</span>
+              <span style={{ fontFamily: 'Inter', fontSize: 'clamp(24px, 3vw, 42px)', fontWeight: 300, color: 'var(--white-dim)', letterSpacing: '0.02em' }}>
+                Live with cats.
+              </span>
+            </div>
+          </h1>
 
-            {/* Stats */}
-            <div style={{
-              display: 'flex', gap: '40px', marginTop: '60px',
-              paddingTop: '40px', borderTop: '1px solid var(--border)',
-            }}>
-              {[['248', '巣立った猫'],['4.9', '平均評価'],['6y+', '運営実績']].map(([n, l]) => (
-                <div key={l}>
-                  <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>{n}</div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '2px', letterSpacing: '0.04em' }}>{l}</div>
-                </div>
-              ))}
+          <div className="reveal reveal-delay-3" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: 'var(--white-dim)', maxWidth: '440px', fontWeight: 300 }}>
+              保護猫との出会いから、日々のケアまで。<br />
+              猫と人の暮らしをていねいにつなぐ場所。
+            </p>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <a href="#cats" style={{
+                display: 'flex', alignItems: 'center', gap: '12px',
+                fontSize: '12px', fontWeight: 500, letterSpacing: '0.1em',
+                color: 'var(--white)', textDecoration: 'none', textTransform: 'uppercase',
+              }}>
+                <span>Discover Cats</span>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: '40px', height: '40px',
+                  border: '1px solid var(--border)',
+                  borderRadius: '50%',
+                  fontSize: '16px',
+                }}>↓</span>
+              </a>
             </div>
           </div>
+        </div>
 
-          {/* Image area */}
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              aspectRatio: '4/5',
-              backgroundColor: 'var(--accent-light)',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <span style={{ fontSize: '120px', opacity: 0.5 }}>🐈</span>
+        {/* Stats bar */}
+        <div className="reveal reveal-delay-4" style={{
+          position: 'absolute', top: '50%', right: '40px',
+          transform: 'translateY(-50%)',
+          display: 'flex', flexDirection: 'column', gap: '32px',
+        }}>
+          {[['248', 'Adopted'], ['12', 'Now Here'], ['4.9', 'Rating']].map(([n, l]) => (
+            <div key={l} style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--white)', letterSpacing: '-0.03em', lineHeight: 1 }}>{n}</div>
+              <div style={{ fontSize: '10px', color: 'var(--white-faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '4px' }}>{l}</div>
             </div>
-            {/* Tag */}
-            <div style={{
-              position: 'absolute', bottom: '24px', left: '-20px',
-              backgroundColor: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '6px',
-              padding: '14px 20px',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-            }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginBottom: '4px', letterSpacing: '0.06em' }}>NOW AVAILABLE</div>
-              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>12 cats · 代官山</div>
+          ))}
+        </div>
+
+        {/* Scroll hint */}
+        <div style={{
+          position: 'absolute', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+        }}>
+          <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom, var(--gold), transparent)' }} />
+          <span style={{ fontSize: '9px', color: 'var(--white-faint)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Scroll</span>
+        </div>
+      </section>
+
+      {/* ── MARQUEE ── */}
+      <div style={{
+        borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
+        padding: '18px 0', overflow: 'hidden', backgroundColor: 'var(--surface)',
+      }}>
+        <div className="marquee-track" style={{ display: 'flex', gap: '64px', width: 'max-content' }}>
+          {Array(8).fill(['猫のいる暮らし', '·', 'Cat Adoption', '·', 'Daikanyama', '·', 'Slow Life', '·', 'Since 2018', '·']).flat().map((t, i) => (
+            <span key={i} style={{
+              fontSize: '11px', fontWeight: 400, letterSpacing: '0.12em',
+              color: t === '·' ? 'var(--gold)' : 'var(--white-dim)',
+              textTransform: 'uppercase', whiteSpace: 'nowrap',
+            }}>{t}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── CATS ── */}
+      <section id="cats" style={{ padding: '120px 40px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '64px' }}>
+            <div>
+              <span style={{ fontSize: '10px', color: 'var(--gold)', letterSpacing: '0.2em', textTransform: 'uppercase', display: 'block', marginBottom: '12px' }}>02 / Our Cats</span>
+              <h2 style={{ fontFamily: "'Noto Serif JP'", fontSize: '48px', fontWeight: 200, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                今月のねこたち
+              </h2>
             </div>
+            <a href="#" style={{ fontSize: '12px', color: 'var(--white-dim)', textDecoration: 'none', letterSpacing: '0.1em', textTransform: 'uppercase' }} className="link-underline">
+              All Cats →
+            </a>
+          </div>
+
+          {/* Horizontal scroll cards */}
+          <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', paddingBottom: '20px' }}>
+            {cats.map((cat, i) => (
+              <div key={cat.en} className="reveal" style={{
+                minWidth: '220px', flex: '0 0 220px',
+                backgroundColor: cat.color,
+                aspectRatio: '3/4',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'none',
+                transitionDelay: `${i * 0.07}s`,
+              }}>
+                {/* Big emoji placeholder */}
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '80px', opacity: 0.3,
+                }}>🐱</div>
+
+                {/* Status */}
+                <div style={{
+                  position: 'absolute', top: '16px', left: '16px',
+                  fontSize: '9px', fontWeight: 600, letterSpacing: '0.12em',
+                  color: cat.status === 'AVAILABLE' ? '#7EC87E' : 'var(--gold)',
+                  textTransform: 'uppercase',
+                }}>
+                  ● {cat.status}
+                </div>
+
+                {/* Index */}
+                <div style={{
+                  position: 'absolute', top: '16px', right: '16px',
+                  fontSize: '10px', color: 'rgba(255,255,255,0.2)', fontWeight: 700,
+                }}>{String(i+1).padStart(2,'0')}</div>
+
+                {/* Info */}
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '20px 16px',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                }}>
+                  <div style={{ fontFamily: "'Noto Serif JP'", fontSize: '22px', fontWeight: 900, letterSpacing: '0.04em', lineHeight: 1, marginBottom: '4px' }}>
+                    {cat.name}
+                  </div>
+                  <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                    {cat.breed} · {cat.age}y
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── FEATURES ─── */}
+      {/* ── PHILOSOPHY ── */}
       <section style={{
+        backgroundColor: 'var(--surface)',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
-        backgroundColor: 'var(--surface)',
+        padding: '120px 40px',
       }}>
-        <div style={{ maxWidth: '1120px', margin: '0 auto', padding: '80px 40px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0' }}>
-            {features.map((f, i) => (
-              <div key={f.index} style={{
-                padding: '40px',
-                borderRight: i < 2 ? '1px solid var(--border)' : 'none',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', letterSpacing: '0.08em' }}>{f.index}</span>
-                  <span style={{ fontFamily: 'var(--font-serif)', fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.06em' }}>{f.jp}</span>
-                </div>
-                <h3 style={{ fontSize: '18px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '16px', letterSpacing: '-0.01em' }}>
-                  {f.title}
-                </h3>
-                <p style={{ fontSize: '13px', lineHeight: '1.9', color: 'var(--text-secondary)' }}>
-                  {f.desc}
-                </p>
-              </div>
-            ))}
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '80px', alignItems: 'start' }}>
+          <div className="reveal">
+            <span style={{ fontSize: '10px', color: 'var(--gold)', letterSpacing: '0.2em', textTransform: 'uppercase', display: 'block', marginBottom: '24px' }}>03 / Philosophy</span>
+            <div style={{ width: '1px', height: '80px', backgroundColor: 'var(--border)' }} />
+          </div>
+          <div>
+            <h2 className="reveal" style={{
+              fontFamily: "'Noto Serif JP'",
+              fontSize: 'clamp(32px, 4vw, 60px)',
+              fontWeight: 200, lineHeight: 1.3,
+              marginBottom: '48px', letterSpacing: '-0.01em',
+            }}>
+              ただそこにいるだけで、<br />
+              <em style={{ fontStyle: 'normal', fontWeight: 900 }}>十分な存在。</em>
+            </h2>
+            <div className="reveal reveal-delay-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+              <p style={{ fontSize: '14px', lineHeight: '2', color: 'var(--white-dim)', fontWeight: 300 }}>
+                猫は何かを「してくれる」から価値があるのではない。そこにいるだけで、空間の温度が変わる。
+              </p>
+              <p style={{ fontSize: '14px', lineHeight: '2', color: 'var(--white-dim)', fontWeight: 300 }}>
+                ねこ堂は、その関係をていねいに育てるための場所。保護という行為を、日常に自然に溶け込ませたい。
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ─── CATS ─── */}
-      <section style={{ maxWidth: '1120px', margin: '0 auto', padding: '100px 40px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
-          <div>
-            <p style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '10px' }}>
-              Available Now
-            </p>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '32px', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
-              今月のねこたち
-            </h2>
-          </div>
-          <a href="#" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none', letterSpacing: '0.04em' }}>
-            すべて見る →
-          </a>
-        </div>
+      {/* ── SERVICES ── */}
+      <section style={{ padding: '120px 40px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <span className="reveal" style={{ fontSize: '10px', color: 'var(--gold)', letterSpacing: '0.2em', textTransform: 'uppercase', display: 'block', marginBottom: '64px' }}>04 / Services</span>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-          {cats.map((cat) => (
-            <div key={cat.name} style={{
-              backgroundColor: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              cursor: 'pointer',
-              transition: 'border-color 0.2s',
+          {[
+            { num: '01', title: 'Cat Adoption', jp: 'お迎え', desc: '全頭健康診断・ワクチン接種済み。お迎え後も専任スタッフがフォローします。' },
+            { num: '02', title: 'Café & Lounge', jp: 'カフェ', desc: '予約不要。静かな空間で、猫たちと過ごすゆっくりとした時間を。' },
+            { num: '03', title: 'Community', jp: 'コミュニティ', desc: 'お迎えいただいたご家族のネットワーク。育て方の相談や近況報告の場。' },
+          ].map((s, i) => (
+            <div key={s.num} className="reveal" style={{
+              display: 'grid', gridTemplateColumns: '80px 1fr 1fr auto',
+              alignItems: 'center', gap: '40px',
+              padding: '32px 0',
+              borderBottom: '1px solid var(--border)',
+              transitionDelay: `${i * 0.1}s`,
             }}>
-              {/* Photo area */}
-              <div style={{
-                aspectRatio: '1',
-                backgroundColor: 'var(--accent-light)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ fontSize: '56px', opacity: 0.55 }}>🐱</span>
+              <span style={{ fontSize: '11px', color: 'var(--white-faint)', fontWeight: 700, letterSpacing: '0.1em' }}>{s.num}</span>
+              <div>
+                <div style={{ fontSize: '22px', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</div>
+                <div style={{ fontFamily: "'Noto Serif JP'", fontSize: '13px', color: 'var(--gold)', fontWeight: 300 }}>{s.jp}</div>
               </div>
-              {/* Info */}
-              <div style={{ padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <div>
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 400, color: 'var(--text-primary)' }}>{cat.jp}</span>
-                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginLeft: '6px', letterSpacing: '0.04em' }}>{cat.name}</span>
-                  </div>
-                  <span style={{
-                    fontSize: '10px', fontWeight: 500,
-                    padding: '3px 8px', borderRadius: '3px',
-                    letterSpacing: '0.06em',
-                    backgroundColor: cat.status === 'Available' ? '#EDF5E9' : '#F5F0E9',
-                    color: cat.status === 'Available' ? '#4A7C3F' : '#7C6A3F',
-                  }}>
-                    {cat.status}
-                  </span>
-                </div>
-                <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginBottom: '4px', letterSpacing: '0.02em' }}>
-                  {cat.breed} · {cat.age}
-                </p>
-                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6', marginTop: '10px' }}>
-                  {cat.note}
-                </p>
-              </div>
+              <p style={{ fontSize: '13px', color: 'var(--white-dim)', lineHeight: '1.7', fontWeight: 300 }}>{s.desc}</p>
+              <a href="#" style={{
+                fontSize: '12px', color: 'var(--white-dim)', textDecoration: 'none',
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                padding: '10px 24px',
+                border: '1px solid var(--border)',
+                whiteSpace: 'nowrap',
+              }} className="link-underline">
+                Learn more
+              </a>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── EDITORIAL ─── */}
+      {/* ── CTA FULL ── */}
       <section style={{
-        backgroundColor: 'var(--text-primary)',
-        padding: '100px 40px',
+        margin: '0 40px 80px',
+        backgroundColor: 'var(--gold)',
+        padding: '80px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
       }}>
-        <div style={{ maxWidth: '1120px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
-          <div>
-            <p style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginBottom: '24px' }}>
-              Our Philosophy
-            </p>
-            <h2 style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: '38px', lineHeight: '1.4', fontWeight: 300,
-              color: '#FFFFFF', marginBottom: '28px',
-            }}>
-              ただそこにいるだけで、<br />
-              <em style={{ fontStyle: 'normal', fontWeight: 600 }}>十分な存在。</em>
-            </h2>
-            <p style={{ fontSize: '14px', lineHeight: '1.9', color: 'rgba(255,255,255,0.55)', maxWidth: '400px' }}>
-              猫は何かを"してくれる"から価値があるのではない。そこにいるだけで、空間が変わる。時間が変わる。ねこ堂はそういう関係を、ていねいに育てていきたいと思っています。
-            </p>
-          </div>
-          <div style={{
-            aspectRatio: '4/3',
-            backgroundColor: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: '8px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+        <div>
+          <h2 className="reveal" style={{
+            fontFamily: "'Noto Serif JP'",
+            fontSize: 'clamp(32px, 4vw, 56px)',
+            fontWeight: 200, lineHeight: 1.2,
+            color: 'var(--black)',
+            letterSpacing: '-0.02em', marginBottom: '16px',
           }}>
-            <span style={{ fontSize: '80px', opacity: 0.3 }}>🐈‍⬛</span>
-          </div>
+            代官山で、<br /><strong style={{ fontWeight: 900 }}>会いにきてください。</strong>
+          </h2>
+          <p style={{ fontSize: '13px', color: 'rgba(10,9,8,0.6)', letterSpacing: '0.04em' }}>
+            東京都渋谷区猿楽町 · 11:00–19:00 · 火曜定休
+          </p>
         </div>
-      </section>
-
-      {/* ─── CTA ─── */}
-      <section style={{ padding: '100px 40px', textAlign: 'center' }}>
-        <p style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '20px' }}>
-          Visit Us
-        </p>
-        <h2 style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: '36px', fontWeight: 300, lineHeight: '1.4',
-          color: 'var(--text-primary)', marginBottom: '16px',
-        }}>
-          代官山で、会いに来てください。
-        </h2>
-        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '40px', letterSpacing: '0.02em' }}>
-          東京都渋谷区猿楽町 · 11:00–19:00 · 火曜定休
-        </p>
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+        <div className="reveal reveal-delay-2" style={{ display: 'flex', gap: '12px', flexShrink: 0 }}>
           <a href="#" style={{
-            padding: '14px 32px',
-            backgroundColor: 'var(--text-primary)',
-            color: '#fff',
-            fontSize: '13px', fontWeight: 500,
+            padding: '16px 36px', backgroundColor: 'var(--black)', color: 'var(--white)',
+            fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
             textDecoration: 'none',
-            borderRadius: '4px',
-            letterSpacing: '0.04em',
           }}>
-            見学を予約する
+            Visit Us
           </a>
           <a href="#" style={{
-            padding: '14px 28px',
-            color: 'var(--text-secondary)',
-            fontSize: '13px',
+            padding: '16px 32px',
+            border: '1px solid rgba(10,9,8,0.3)',
+            color: 'var(--black)',
+            fontSize: '12px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
             textDecoration: 'none',
-            border: '1px solid var(--border)',
-            borderRadius: '4px',
-            letterSpacing: '0.04em',
           }}>
-            アクセスを確認
+            Map →
           </a>
         </div>
       </section>
 
-      {/* ─── FOOTER ─── */}
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px', }}>
-        <div style={{ maxWidth: '1120px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: 'var(--text-tertiary)', letterSpacing: '0.04em' }}>
+      {/* ── FOOTER ── */}
+      <footer style={{ padding: '40px', borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontFamily: "'Noto Serif JP'", fontSize: '14px', fontWeight: 200, color: 'var(--white-faint)', letterSpacing: '0.06em' }}>
             ねこ堂 © 2026
           </span>
-          <div style={{ display: 'flex', gap: '28px' }}>
-            {['プライバシー', '利用規約', 'Instagram', 'お問い合わせ'].map(l => (
-              <a key={l} href="#" style={{ fontSize: '12px', color: 'var(--text-tertiary)', textDecoration: 'none', letterSpacing: '0.04em' }}>{l}</a>
+          <div style={{ display: 'flex', gap: '32px' }}>
+            {['Privacy', 'Terms', 'Instagram', 'Contact'].map(l => (
+              <a key={l} href="#" className="link-underline" style={{ fontSize: '11px', color: 'var(--white-faint)', textDecoration: 'none', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{l}</a>
             ))}
           </div>
         </div>
       </footer>
-
-    </div>
+    </>
   )
 }
