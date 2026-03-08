@@ -49,11 +49,16 @@ export default function Home() {
   }, [])
 
   const cats = [
-    { name: 'もも', en: 'MOMO', breed: 'Scottish Fold', age: '02', status: 'AVAILABLE', color: '#3D2B1A' },
-    { name: 'そら', en: 'SORA', breed: 'Amer. Shorthair', age: '03', status: 'RESERVED', color: '#1A2A2E' },
-    { name: 'きなこ', en: 'KINAKO', breed: 'Maine Coon', age: '01', status: 'AVAILABLE', color: '#2A2218' },
-    { name: 'ゆき', en: 'YUKI', breed: 'Ragdoll', age: '04', status: 'AVAILABLE', color: '#1E1E2A' },
-    { name: 'くろ', en: 'KURO', breed: 'Bombay', age: '05', status: 'AVAILABLE', color: '#1A1A1A' },
+    { name: 'もも', en: 'MOMO', breed: 'Scottish Fold', age: '02', status: 'AVAILABLE',
+      img: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&w=600&q=85' },
+    { name: 'そら', en: 'SORA', breed: 'Amer. Shorthair', age: '03', status: 'RESERVED',
+      img: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=85' },
+    { name: 'きなこ', en: 'KINAKO', breed: 'Maine Coon', age: '01', status: 'AVAILABLE',
+      img: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=85' },
+    { name: 'ゆき', en: 'YUKI', breed: 'Ragdoll', age: '04', status: 'AVAILABLE',
+      img: 'https://images.unsplash.com/photo-1518791841217-8f162f1912da?auto=format&fit=crop&w=600&q=85' },
+    { name: 'くろ', en: 'KURO', breed: 'Bombay', age: '05', status: 'AVAILABLE',
+      img: 'https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=600&q=85' },
   ]
 
   return (
@@ -110,14 +115,23 @@ export default function Home() {
         position: 'relative',
         overflow: 'hidden',
       }}>
-        {/* Giant background kanji */}
+        {/* Hero full-bleed background image */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'url(https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=1800&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 30%',
+          filter: 'brightness(0.25) saturate(0.6)',
+        }} />
+
+        {/* Giant background kanji overlay */}
         <div style={{
           position: 'absolute', top: '50%', left: '50%',
           transform: 'translate(-50%, -50%)',
           fontFamily: "'Noto Serif JP'",
           fontSize: 'clamp(320px, 40vw, 560px)',
           fontWeight: 900,
-          color: 'rgba(242,239,233,0.025)',
+          color: 'rgba(242,239,233,0.03)',
           lineHeight: 1,
           userSelect: 'none',
           pointerEvents: 'none',
@@ -249,19 +263,24 @@ export default function Home() {
             {cats.map((cat, i) => (
               <div key={cat.en} className="reveal" style={{
                 minWidth: '220px', flex: '0 0 220px',
-                backgroundColor: cat.color,
                 aspectRatio: '3/4',
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: 'none',
                 transitionDelay: `${i * 0.07}s`,
               }}>
-                {/* Big emoji placeholder */}
-                <div style={{
-                  position: 'absolute', inset: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '80px', opacity: 0.3,
-                }}>🐱</div>
+                {/* Real photo */}
+                <img
+                  src={cat.img}
+                  alt={cat.name}
+                  style={{
+                    position: 'absolute', inset: 0,
+                    width: '100%', height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center top',
+                    transition: 'transform 0.6s ease',
+                  }}
+                />
 
                 {/* Status */}
                 <div style={{
