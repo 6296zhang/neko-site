@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenArt Story — Shot Editor</title>
+<style>
+:root {
+  --accent: #7c5cfc;
+  --accent2: #a78bfa;
+  --pink: #e879a0;
+  --green: #34d399;
+  --yellow: #fbbf24;
+  --bg: #0d0d10;
+  --surface: #141418;
+  --surface2: #1c1c22;
+  --surface3: #242430;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f0f5;
+  --text2: #8888a0;
+  --text3: #55556a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+/* ── TOP NAV ── */
+.nav {
+  height: 48px; min-height: 48px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 12px;
+}
+.nav-left { display: flex; align-items: center; gap: 16px; }
+.nav-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
+.nav-logo-icon { width: 24px; height: 24px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.story-name { font-size: 13px; color: var(--text2); cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.story-name:hover { color: var(--text); }
+.divider { width: 1px; height: 20px; background: var(--border2); }
+.nav-tabs { display: flex; gap: 2px; }
+.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all .15s; }
+.nav-tab:hover { color: var(--text); background: var(--surface2); }
+.nav-tab.active { color: var(--text); background: var(--surface3); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.credits { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); }
+.credits-icon { color: var(--yellow); font-size: 11px; }
+.btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: none; font-weight: 500; transition: all .15s; }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { color: var(--text); border-color: var(--border2); background: var(--surface2); }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #6d4ff0; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+
+/* ── MAIN LAYOUT ── */
+.main { flex: 1; display: flex; overflow: hidden; }
+
+/* ── LEFT: SHOT LIST ── */
+.shot-list {
+  width: 220px; min-width: 220px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.shot-list-header {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.shot-list-title { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; }
+.shot-list-scroll { flex: 1; overflow-y: auto; padding: 8px; }
+.shot-list-scroll::-webkit-scrollbar { width: 4px; }
+.shot-list-scroll::-webkit-scrollbar-track { background: transparent; }
+.shot-list-scroll::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+.scene-group { margin-bottom: 6px; }
+.scene-label {
+  padding: 4px 6px 6px;
+  font-size: 10px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .08em;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.scene-beat {
+  font-size: 10px; color: var(--accent2); font-weight: 500;
+  padding: 1px 5px; background: rgba(124,92,252,.15); border-radius: 3px;
+}
+
+.shot-card {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: 8px; cursor: pointer;
+  transition: all .15s; margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+.shot-card:hover { background: var(--surface2); }
+.shot-card.active { background: var(--surface3); border-color: rgba(124,92,252,.3); }
+
+.shot-thumb {
+  width: 44px; height: 30px; border-radius: 5px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; overflow: hidden; position: relative;
+}
+.shot-thumb-img { width: 100%; height: 100%; object-fit: cover; }
+
+.shot-info { flex: 1; min-width: 0; }
+.shot-num-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+.shot-num { font-size: 10px; font-weight: 600; color: var(--text2); }
+.shot-type-badge {
+  font-size: 9px; padding: 1px 5px; border-radius: 3px; font-weight: 500;
+}
+.shot-type-badge.dialogue { background: rgba(124,92,252,.2); color: var(--accent2); }
+.shot-type-badge.scene { background: rgba(52,211,153,.15); color: var(--green); }
+.shot-type-badge.action { background: rgba(251,191,36,.15); color: var(--yellow); }
+.shot-type-badge.multi { background: rgba(232,121,160,.15); color: var(--pink); }
+.shot-type-badge.special { background: rgba(255,255,255,.1); color: var(--text2); }
+.shot-desc { font-size: 11px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+
+.shot-status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.shot-status-dot.done { background: var(--green); }
+.shot-status-dot.empty { background: var(--text3); }
+.shot-status-dot.generating { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+.add-shot-btn {
+  margin: 8px; padding: 8px; border-radius: 8px;
+  border: 1px dashed var(--border2); color: var(--text2);
+  text-align: center; cursor: pointer; font-size: 12px;
+  transition: all .15s;
+}
+.add-shot-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(124,92,252,.05); }
+
+/* ── CENTER: PREVIEW ── */
+.preview-panel {
+  flex: 1; display: flex; flex-direction: column;
+  background: var(--bg); overflow: hidden; min-width: 0;
+}
+
+.preview-main {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+.preview-stage {
+  width: 100%; max-width: 560px; aspect-ratio: 16/9;
+  border-radius: 12px; overflow: hidden; position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,.6);
+}
+
+/* Background gradients per scene type */
+.bg-night { background: linear-gradient(160deg, #0a0a1a 0%, #1a1040 40%, #0d1a2a 100%); }
+.bg-forest { background: linear-gradient(160deg, #0a1f0a 0%, #0d2d0d 40%, #1a3a15 100%); }
+.bg-castle { background: linear-gradient(160deg, #1a0a20 0%, #2d1540 40%, #1a0a30 100%); }
+.bg-ocean { background: linear-gradient(160deg, #051525 0%, #0a2540 40%, #0d3050 100%); }
+.bg-golden { background: linear-gradient(160deg, #2a1800 0%, #3d2800 40%, #1a1000 100%); }
+.bg-cafe { background: linear-gradient(160deg, #1a1008 0%, #2a1a08 40%, #1a0f05 100%); }
+
+.preview-content {
+  position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 20px;
+}
+.preview-character {
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  position: relative;
+}
+.character-bubble {
+  background: rgba(255,255,255,.92); color: #1a1a2e;
+  padding: 8px 14px; border-radius: 12px 12px 12px 4px;
+  font-size: 12px; max-width: 280px; text-align: center; line-height: 1.5;
+  margin-bottom: 8px; box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  position: relative;
+}
+.character-visual {
+  width: 80px; height: 100px;
+  background: linear-gradient(180deg, rgba(124,92,252,.4) 0%, rgba(232,121,160,.3) 100%);
+  border-radius: 40px 40px 30px 30px;
+  display: flex; align-items: center; justify-content: center; font-size: 32px;
+  border: 2px solid rgba(255,255,255,.15);
+  box-shadow: 0 0 40px rgba(124,92,252,.4), 0 0 80px rgba(232,121,160,.2);
+}
+.scene-visual-text {
+  text-align: center; max-width: 340px; padding: 20px;
+  color: rgba(255,255,255,.6); font-size: 13px; line-height: 1.7;
+}
+
+.preview-overlay-info {
+  position: absolute; top: 12px; left: 12px; right: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.preview-shot-label {
+  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 11px; color: rgba(255,255,255,.7); font-weight: 500;
+}
+.preview-duration {
+  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
+  padding: 4px 8px; border-radius: 6px;
+  font-size: 11px; color: rgba(255,255,255,.5);
+}
+
+.preview-actions {
+  padding: 10px 16px; display: flex; gap: 8px; justify-content: center;
+  border-top: 1px solid var(--border);
+}
+.action-btn {
+  padding: 6px 16px; border-radius: 7px; font-size: 12px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border2); background: var(--surface2);
+  color: var(--text2); transition: all .15s; display: flex; align-items: center; gap: 6px;
+}
+.action-btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+.action-btn.primary { background: rgba(232,121,160,.15); border-color: rgba(232,121,160,.3); color: var(--pink); }
+.action-btn.primary:hover { background: rgba(232,121,160,.25); }
+
+/* ── HISTORY STRIP ── */
+.history-section {
+  border-top: 1px solid var(--border);
+  padding: 10px 16px 12px;
+  background: var(--surface);
+}
+.history-label {
+  font-size: 10px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.history-scroll { display: flex; gap: 6px; overflow-x: auto; }
+.history-scroll::-webkit-scrollbar { height: 3px; }
+.history-scroll::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+.history-thumb {
+  width: 64px; height: 42px; border-radius: 6px; flex-shrink: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+  border: 2px solid transparent; transition: all .15s; position: relative; overflow: hidden;
+}
+.history-thumb:hover { border-color: var(--accent2); }
+.history-thumb.current { border-color: var(--accent); }
+.history-thumb.upload-slot { border: 1.5px dashed var(--border2); color: var(--text3); font-size: 14px; }
+.history-thumb.upload-slot:hover { border-color: var(--accent); color: var(--accent); }
+.history-thumb-badge {
+  position: absolute; top: 2px; right: 2px; background: var(--accent);
+  width: 14px; height: 14px; border-radius: 3px; font-size: 8px;
+  display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;
+}
+
+/* ── RIGHT: CREATION PANEL ── */
+.creation-panel {
+  width: 300px; min-width: 300px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+.creation-header {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.shot-context-row {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+}
+.shot-context-label { font-size: 11px; color: var(--text2); }
+.shot-context-beat { font-size: 11px; color: var(--accent2); font-weight: 500; }
+
+.shot-type-selector { display: flex; gap: 4px; flex-wrap: wrap; }
+.type-chip {
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border2); color: var(--text2);
+  transition: all .15s; display: flex; align-items: center; gap: 4px;
+}
+.type-chip:hover { border-color: var(--accent2); color: var(--text); }
+.type-chip.active { background: rgba(124,92,252,.2); border-color: var(--accent); color: var(--accent2); }
+
+.creation-body { flex: 1; overflow-y: auto; padding: 12px 14px; }
+.creation-body::-webkit-scrollbar { width: 4px; }
+.creation-body::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+.field-group { margin-bottom: 14px; }
+.field-label {
+  font-size: 11px; font-weight: 600; color: var(--text2);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 5px;
+}
+.field-label-badge {
+  font-size: 9px; padding: 1px 5px; background: rgba(255,255,255,.07); border-radius: 3px; color: var(--text3);
+}
+
+.field-select {
+  width: 100%; padding: 7px 10px; background: var(--surface2);
+  border: 1px solid var(--border2); border-radius: 8px; color: var(--text);
+  font-size: 12px; cursor: pointer; outline: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2355556a'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+}
+.field-select:focus { border-color: var(--accent); }
+
+.field-textarea {
+  width: 100%; padding: 8px 10px; background: var(--surface2);
+  border: 1px solid var(--border2); border-radius: 8px; color: var(--text);
+  font-size: 12px; resize: none; outline: none; font-family: inherit; line-height: 1.5;
+}
+.field-textarea:focus { border-color: var(--accent); }
+
+.char-avatar-row {
+  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px;
+  cursor: pointer; transition: border-color .15s;
+}
+.char-avatar-row:hover { border-color: var(--accent2); }
+.char-avatar-img { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.char-avatar-info { flex: 1; }
+.char-avatar-name { font-size: 12px; font-weight: 600; }
+.char-avatar-sub { font-size: 10px; color: var(--text2); }
+.char-avatar-change { font-size: 10px; color: var(--text3); }
+
+.expression-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.expr-chip {
+  padding: 5px 4px; border-radius: 7px; text-align: center; cursor: pointer;
+  border: 1px solid var(--border2); background: var(--surface2);
+  transition: all .15s; display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.expr-chip:hover { border-color: var(--accent2); }
+.expr-chip.active { background: rgba(124,92,252,.2); border-color: var(--accent); }
+.expr-emoji { font-size: 16px; line-height: 1; }
+.expr-label { font-size: 9px; color: var(--text2); }
+
+.scene-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.scene-chip {
+  padding: 6px 4px; border-radius: 7px; text-align: center; cursor: pointer;
+  border: 1px solid var(--border2); background: var(--surface2);
+  transition: all .15s; display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.scene-chip:hover { border-color: var(--accent2); }
+.scene-chip.active { background: rgba(124,92,252,.2); border-color: var(--accent); }
+.scene-chip-icon { font-size: 14px; }
+.scene-chip-label { font-size: 9px; color: var(--text2); }
+
+.mood-row { display: flex; gap: 4px; flex-wrap: wrap; }
+.mood-tag {
+  padding: 3px 8px; border-radius: 12px; font-size: 11px; cursor: pointer;
+  border: 1px solid var(--border2); color: var(--text2); transition: all .15s;
+}
+.mood-tag:hover { border-color: var(--accent2); color: var(--text); }
+.mood-tag.active { background: rgba(124,92,252,.2); border-color: var(--accent); color: var(--accent2); }
+
+.voice-row {
+  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px;
+  cursor: pointer;
+}
+.voice-icon { font-size: 15px; }
+.voice-name { flex: 1; font-size: 12px; }
+.voice-play { width: 22px; height: 22px; border-radius: 50%; background: rgba(124,92,252,.2); border: 1px solid rgba(124,92,252,.3); display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; }
+
+.multi-char-block { display: flex; flex-direction: column; gap: 8px; }
+.char-dialogue-row { display: flex; flex-direction: column; gap: 4px; }
+.char-dialogue-who {
+  display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500;
+}
+.char-dot { width: 8px; height: 8px; border-radius: 50%; }
+.char-dot.a { background: var(--accent2); }
+.char-dot.b { background: var(--pink); }
+
+/* advanced collapse */
+.advanced-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0; cursor: pointer; color: var(--text3); font-size: 11px;
+  border-top: 1px solid var(--border);
+}
+.advanced-toggle:hover { color: var(--text2); }
+.advanced-content { padding: 8px 0; display: none; }
+.advanced-content.open { display: block; }
+
+.ref-row {
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px;
+}
+.ref-thumb { width: 32px; height: 32px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.ref-info { flex: 1; }
+.ref-name { font-size: 11px; font-weight: 600; }
+.ref-sub { font-size: 10px; color: var(--text2); }
+.ref-auto-badge { font-size: 9px; padding: 2px 5px; background: rgba(52,211,153,.15); color: var(--green); border-radius: 3px; font-weight: 500; }
+
+.output-row {
+  display: flex; gap: 6px; margin-top: 8px;
+}
+.output-chip {
+  padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
+  border: 1px solid var(--border2); color: var(--text2); cursor: pointer;
+  transition: all .15s;
+}
+.output-chip.active { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.1); }
+
+/* ── GENERATE BUTTON ── */
+.creation-footer {
+  padding: 12px 14px; border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.generate-btn {
+  width: 100%; padding: 11px 16px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent) 0%, #9d6fff 100%);
+  color: white; font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.generate-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,92,252,.4); }
+.generate-btn:active { transform: translateY(0); }
+.generate-btn .pipeline { font-size: 11px; opacity: .8; font-weight: 400; }
+.generate-btn .cost { font-size: 11px; opacity: .75; display: flex; align-items: center; gap: 3px; }
+.generate-btn.loading { pointer-events: none; }
+.generate-btn.loading::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+.pipeline-label { font-size: 10px; color: var(--text3); text-align: center; margin-top: 6px; }
+
+/* empty shot state */
+.empty-shot-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; gap: 12px; text-align: center; padding: 24px;
+}
+.empty-shot-icon { font-size: 32px; opacity: .4; }
+.empty-shot-title { font-size: 14px; font-weight: 600; color: var(--text2); }
+.empty-shot-sub { font-size: 12px; color: var(--text3); line-height: 1.6; }
+.empty-shot-actions { display: flex; gap: 8px; margin-top: 4px; }
+.empty-action-btn {
+  padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
+  border: 1px solid var(--border2); background: var(--surface2); color: var(--text2);
+  transition: all .15s;
+}
+.empty-action-btn:hover { background: var(--surface3); color: var(--text); border-color: var(--accent2); }
+.empty-action-btn.accent { background: rgba(124,92,252,.15); border-color: rgba(124,92,252,.4); color: var(--accent2); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px;
+  padding: 10px 18px; font-size: 13px; color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s ease; z-index: 100;
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">✦</div>
+      OpenArt
+    </div>
+    <div class="divider"></div>
+    <div class="story-name">Lumina's Night City Story ✏️</div>
+    <div class="divider"></div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="switchTab(this)">Scenes</div>
+      <div class="nav-tab active" onclick="switchTab(this)">Shots</div>
+      <div class="nav-tab" onclick="switchTab(this)">Timeline</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="credits"><span class="credits-icon">✦</span> 143,400</div>
+    <button class="btn btn-ghost">Upgrade</button>
+    <div class="avatar">🧝</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT: SHOT LIST -->
+  <div class="shot-list">
+    <div class="shot-list-header">
+      <span class="shot-list-title">Shots</span>
+      <span style="color:var(--text3);font-size:11px">7 shots</span>
+    </div>
+    <div class="shot-list-scroll">
+
+      <!-- Scene 1 -->
+      <div class="scene-group">
+        <div class="scene-label">
+          Scene 1
+          <span class="scene-beat">Hook</span>
+        </div>
+        <div class="shot-card" onclick="selectShot(0)" id="shot-card-0">
+          <div class="shot-thumb bg-night" style="font-size:18px">🌃</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">01</span>
+              <span class="shot-type-badge scene">Scene</span>
+            </div>
+            <div class="shot-desc">夜晚独行的背影</div>
+          </div>
+          <div class="shot-status-dot done"></div>
+        </div>
+        <div class="shot-card active" onclick="selectShot(1)" id="shot-card-1">
+          <div class="shot-thumb bg-night" style="font-size:18px">💬</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">02</span>
+              <span class="shot-type-badge dialogue">Dialogue</span>
+            </div>
+            <div class="shot-desc">"你知道吗？每个夜晚..."</div>
+          </div>
+          <div class="shot-status-dot done"></div>
+        </div>
+      </div>
+
+      <!-- Scene 2 -->
+      <div class="scene-group">
+        <div class="scene-label">
+          Scene 2
+          <span class="scene-beat">Build-up</span>
+        </div>
+        <div class="shot-card" onclick="selectShot(2)" id="shot-card-2">
+          <div class="shot-thumb bg-castle" style="font-size:18px">📖</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">03</span>
+              <span class="shot-type-badge action">Action</span>
+            </div>
+            <div class="shot-desc">翻开古老魔法书</div>
+          </div>
+          <div class="shot-status-dot done"></div>
+        </div>
+        <div class="shot-card" onclick="selectShot(3)" id="shot-card-3">
+          <div class="shot-thumb bg-castle" style="font-size:18px">💬</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">04</span>
+              <span class="shot-type-badge dialogue">Dialogue</span>
+            </div>
+            <div class="shot-desc">"这里记载着一个..."</div>
+          </div>
+          <div class="shot-status-dot done"></div>
+        </div>
+        <div class="shot-card" onclick="selectShot(4)" id="shot-card-4">
+          <div class="shot-thumb bg-castle" style="font-size:18px">🎭</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">05</span>
+              <span class="shot-type-badge multi">Multi</span>
+            </div>
+            <div class="shot-desc">Lumina 与 Nova 对话</div>
+          </div>
+          <div class="shot-status-dot done"></div>
+        </div>
+      </div>
+
+      <!-- Scene 3 -->
+      <div class="scene-group">
+        <div class="scene-label">
+          Scene 3
+          <span class="scene-beat" style="color:var(--pink);background:rgba(232,121,160,.15)">Climax</span>
+        </div>
+        <div class="shot-card" onclick="selectShot(5)" id="shot-card-5">
+          <div class="shot-thumb bg-golden" style="font-size:18px">⚡</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">06</span>
+              <span class="shot-type-badge dialogue">Dialogue</span>
+            </div>
+            <div class="shot-desc">"这个世界需要改变..."</div>
+          </div>
+          <div class="shot-status-dot done"></div>
+        </div>
+        <div class="shot-card" onclick="selectShot(6)" id="shot-card-6">
+          <div class="shot-thumb" style="background:var(--surface2);font-size:14px;color:var(--text3)">+</div>
+          <div class="shot-info">
+            <div class="shot-num-row">
+              <span class="shot-num">07</span>
+              <span class="shot-type-badge special">CTA</span>
+            </div>
+            <div class="shot-desc">空镜头</div>
+          </div>
+          <div class="shot-status-dot empty"></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="add-shot-btn" onclick="toast('Shot added')">+ Add Shot</div>
+  </div>
+
+  <!-- CENTER: PREVIEW -->
+  <div class="preview-panel">
+    <div class="preview-main">
+      <div class="preview-stage" id="preview-stage">
+        <!-- dynamic content -->
+      </div>
+    </div>
+    <div class="preview-actions">
+      <div class="action-btn" onclick="toast('Image editing...')">✏️ Edit Image</div>
+      <div class="action-btn primary" onclick="toast('Converting to video...')">▶ Image to Video</div>
+      <div class="action-btn" onclick="toast('Downloading...')">⬇ Export</div>
+    </div>
+    <div class="history-section">
+      <div class="history-label">
+        <span>History Versions</span>
+        <span style="color:var(--accent2);cursor:pointer;font-size:10px">See all</span>
+      </div>
+      <div class="history-scroll" id="history-strip">
+        <!-- dynamic -->
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: CREATION PANEL -->
+  <div class="creation-panel">
+    <div class="creation-header">
+      <div class="shot-context-row">
+        <span class="shot-context-label" id="ctx-scene">Scene 1</span>
+        <span class="shot-context-beat" id="ctx-beat">Hook</span>
+      </div>
+      <div class="shot-type-selector" id="type-selector">
+        <!-- dynamic chips -->
+      </div>
+    </div>
+    <div class="creation-body" id="creation-body">
+      <!-- dynamic fields -->
+    </div>
+    <div class="creation-footer">
+      <button class="generate-btn" id="gen-btn" onclick="doGenerate()">
+        <span>✦</span>
+        <span id="gen-label">Generate</span>
+        <span class="cost">· 150</span>
+      </button>
+      <div class="pipeline-label" id="pipeline-label">Motion Sync · 9:16 · 2K</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+const shots = [
+  {
+    id: 0, scene: 'Scene 1', beat: 'Hook',
+    type: 'scene',
+    bg: 'bg-night',
+    status: 'done',
+    scene_name: '🌌 Night City',
+    description: 'Lumina独自走过霓虹街道，城市的喧嚣在她身后消散。镜头从背后跟拍，慢慢拉远。',
+    mood: '孤独',
+    pipeline: 'Text to Video',
+    cost: 200,
+    versions: [
+      { bg: 'bg-night', icon: '🌃' },
+      { bg: 'bg-night', icon: '🌆' },
+      { bg: 'bg-ocean', icon: '🌊' },
+    ]
+  },
+  {
+    id: 1, scene: 'Scene 1', beat: 'Hook',
+    type: 'dialogue',
+    bg: 'bg-night',
+    status: 'done',
+    character: 'Lumina',
+    dialogue: '你知道吗？每个夜晚，我都在等待一个不可能出现的奇迹。',
+    expression: 'thoughtful',
+    voice: 'Lumina · Warm EN',
+    scene_name: '🌌 Night City',
+    pipeline: 'Motion Sync',
+    cost: 150,
+    versions: [
+      { bg: 'bg-night', icon: '💬' },
+      { bg: 'bg-night', icon: '🧝' },
+      { bg: 'bg-night', icon: '✨' },
+      { bg: 'bg-forest', icon: '💬' },
+      { bg: 'bg-night', icon: '🌟' },
+    ]
+  },
+  {
+    id: 2, scene: 'Scene 2', beat: 'Build-up',
+    type: 'action',
+    bg: 'bg-castle',
+    status: 'done',
+    character: 'Lumina',
+    action: '她小心翼翼地翻开那本落满灰尘的魔法书，金色文字开始在页面上浮现。',
+    scene_name: '🏰 Ancient Library',
+    pipeline: 'Text to Video',
+    cost: 200,
+    versions: [
+      { bg: 'bg-castle', icon: '📖' },
+      { bg: 'bg-castle', icon: '✨' },
+    ]
+  },
+  {
+    id: 3, scene: 'Scene 2', beat: 'Build-up',
+    type: 'dialogue',
+    bg: 'bg-castle',
+    status: 'done',
+    character: 'Lumina',
+    dialogue: '这里记载着一个从未被实现的预言……我就是那个被选中的人。',
+    expression: 'confident',
+    voice: 'Lumina · Warm EN',
+    scene_name: '🏰 Ancient Library',
+    pipeline: 'Motion Sync',
+    cost: 150,
+    versions: [
+      { bg: 'bg-castle', icon: '💬' },
+      { bg: 'bg-castle', icon: '🧝' },
+      { bg: 'bg-golden', icon: '💬' },
+    ]
+  },
+  {
+    id: 4, scene: 'Scene 2', beat: 'Build-up',
+    type: 'multi',
+    bg: 'bg-castle',
+    status: 'done',
+    charA: 'Lumina',
+    charB: 'Nova',
+    dialogueA: '你相信预言这种东西吗？',
+    dialogueB: '我只相信眼前发生的一切。而你，正在改变它。',
+    scene_name: '🏰 Ancient Library',
+    pipeline: 'Motion Sync',
+    cost: 200,
+    versions: [
+      { bg: 'bg-castle', icon: '🎭' },
+      { bg: 'bg-castle', icon: '💬' },
+    ]
+  },
+  {
+    id: 5, scene: 'Scene 3', beat: 'Climax',
+    type: 'dialogue',
+    bg: 'bg-golden',
+    status: 'done',
+    character: 'Lumina',
+    dialogue: '这个世界需要改变，而我已经等待太久了。现在，是时候了。',
+    expression: 'fierce',
+    voice: 'Lumina · Warm EN',
+    scene_name: '☀️ Golden Sky',
+    pipeline: 'Motion Sync',
+    cost: 150,
+    versions: [
+      { bg: 'bg-golden', icon: '⚡' },
+      { bg: 'bg-golden', icon: '💬' },
+      { bg: 'bg-golden', icon: '✨' },
+      { bg: 'bg-forest', icon: '🌟' },
+    ]
+  },
+  {
+    id: 6, scene: 'Scene 3', beat: 'CTA',
+    type: 'empty',
+    bg: '',
+    status: 'empty',
+    pipeline: '',
+    cost: 0,
+    versions: []
+  }
+];
+
+const expressions = [
+  { key: 'natural', emoji: '😌', label: '自然' },
+  { key: 'excited', emoji: '😊', label: '兴奋' },
+  { key: 'thoughtful', emoji: '🤔', label: '沉思' },
+  { key: 'confident', emoji: '😤', label: '自信' },
+  { key: 'sad', emoji: '😢', label: '伤感' },
+  { key: 'playful', emoji: '😏', label: '俏皮' },
+  { key: 'fierce', emoji: '😤', label: '坚定' },
+  { key: 'surprised', emoji: '😲', label: '惊讶' },
+];
+
+const scenes = [
+  { key: 'night', icon: '🌌', label: 'Night City', cls: 'bg-night' },
+  { key: 'forest', icon: '🌲', label: 'Forest', cls: 'bg-forest' },
+  { key: 'castle', icon: '🏰', label: 'Castle', cls: 'bg-castle' },
+  { key: 'ocean', icon: '🌊', label: 'Ocean', cls: 'bg-ocean' },
+  { key: 'golden', icon: '☀️', label: 'Golden', cls: 'bg-golden' },
+  { key: 'cafe', icon: '☕', label: 'Café', cls: 'bg-cafe' },
+];
+
+const moods = ['孤独', '神秘', '温暖', '史诗', '浪漫', '紧张'];
+
+const typeLabels = {
+  scene: { icon: '🌍', name: 'Scene', badge: 'scene' },
+  dialogue: { icon: '💬', name: 'Dialogue', badge: 'dialogue' },
+  action: { icon: '🎬', name: 'Action', badge: 'action' },
+  multi: { icon: '🎭', name: 'Multi', badge: 'multi' },
+  special: { icon: '✨', name: 'Special', badge: 'special' },
+};
+
+const pipelineMap = {
+  dialogue: 'Motion Sync',
+  multi: 'Motion Sync',
+  scene: 'Text to Video',
+  action: 'Text to Video',
+  special: 'Text to Image',
+  empty: '',
+};
+
+let currentShot = 1;
+let currentType = shots[1].type;
+let advancedOpen = false;
+
+function selectShot(idx) {
+  currentShot = idx;
+  currentType = shots[idx].type;
+
+  // update active card
+  document.querySelectorAll('.shot-card').forEach((c, i) => {
+    c.classList.toggle('active', i === idx);
+  });
+
+  render();
+}
+
+function render() {
+  const s = shots[currentShot];
+  currentType = s.type;
+
+  // context
+  document.getElementById('ctx-scene').textContent = s.scene;
+  document.getElementById('ctx-beat').textContent = s.beat;
+
+  // type selector
+  const ts = document.getElementById('type-selector');
+  if (s.type === 'empty') {
+    ts.innerHTML = '';
+  } else {
+    ts.innerHTML = Object.entries(typeLabels).filter(([k]) => k !== 'empty').map(([key, val]) => `
+      <div class="type-chip ${currentType === key ? 'active' : ''}" onclick="switchType('${key}')">
+        ${val.icon} ${val.name}
+      </div>
+    `).join('');
+  }
+
+  // preview stage
+  const stage = document.getElementById('preview-stage');
+  if (s.type === 'empty') {
+    stage.className = 'preview-stage';
+    stage.style.background = 'var(--surface2)';
+    stage.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;color:var(--text3)">
+        <div style="font-size:40px;opacity:.3">+</div>
+        <div style="font-size:13px">Empty Shot</div>
+        <div style="font-size:11px;color:var(--text3)">Add content from the right panel</div>
+      </div>`;
+  } else {
+    stage.className = `preview-stage ${s.bg}`;
+    stage.style.background = '';
+
+    let inner = `
+      <div class="preview-overlay-info">
+        <div class="preview-shot-label">Shot ${String(currentShot + 1).padStart(2,'0')} · ${s.scene}</div>
+        <div class="preview-duration">4.5s</div>
+      </div>
+      <div class="preview-content">`;
+
+    if (s.type === 'dialogue' || s.type === 'multi') {
+      const exprData = expressions.find(e => e.key === (s.expression || 'natural')) || expressions[0];
+      inner += `<div class="preview-character">`;
+      if (s.type === 'dialogue') {
+        inner += `<div class="character-bubble">${s.dialogue}</div>`;
+      } else {
+        inner += `<div class="character-bubble" style="border-radius:12px 12px 4px 12px">${s.dialogueA}</div>`;
+        inner += `<div style="height:4px"></div>`;
+        inner += `<div class="character-bubble" style="background:rgba(232,121,160,.9);border-radius:4px 12px 12px 12px">${s.dialogueB}</div>`;
+      }
+      inner += `<div class="character-visual">${exprData.emoji}</div></div>`;
+    } else if (s.type === 'scene' || s.type === 'action') {
+      inner += `<div class="scene-visual-text">${s.description || s.action}</div>`;
+    }
+
+    inner += `</div>`;
+    stage.innerHTML = inner;
+  }
+
+  // history
+  const strip = document.getElementById('history-strip');
+  let histHTML = `<div class="history-thumb upload-slot" onclick="toast('Upload media...')">⬆</div>`;
+  if (s.versions && s.versions.length) {
+    s.versions.forEach((v, i) => {
+      histHTML += `<div class="history-thumb ${v.cls} ${i === 0 ? 'current' : ''}" onclick="selectVersion(this)" title="Version ${i+1}">
+        <span style="font-size:18px">${v.icon}</span>
+        ${i === 0 ? '<div class="history-thumb-badge">✓</div>' : ''}
+      </div>`;
+    });
+  }
+  strip.innerHTML = histHTML;
+
+  // creation body
+  renderCreationBody(s);
+
+  // generate button
+  const genBtn = document.getElementById('gen-btn');
+  const genLabel = document.getElementById('gen-label');
+  const pipelineLbl = document.getElementById('pipeline-label');
+
+  if (s.type === 'empty') {
+    genBtn.style.display = 'none';
+    pipelineLbl.style.display = 'none';
+  } else {
+    genBtn.style.display = 'flex';
+    pipelineLbl.style.display = 'block';
+    const pipeline = pipelineMap[currentType] || 'Generate';
+    genLabel.textContent = pipeline;
+    pipelineLbl.textContent = `${pipeline} · 9:16 · 2K`;
+  }
+}
+
+function renderCreationBody(s) {
+  const body = document.getElementById('creation-body');
+
+  if (s.type === 'empty') {
+    body.innerHTML = `
+      <div class="empty-shot-state">
+        <div class="empty-shot-icon">✦</div>
+        <div class="empty-shot-title">How to create this shot?</div>
+        <div class="empty-shot-sub">Choose a creation method to get started</div>
+        <div class="empty-shot-actions">
+          <div class="empty-action-btn accent" onclick="setType('dialogue')">✨ AI Generate</div>
+          <div class="empty-action-btn" onclick="toast('Upload media...')">⬆ Upload</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  let html = '';
+
+  // ── DIALOGUE ──
+  if (currentType === 'dialogue') {
+    html += `
+    <div class="field-group">
+      <div class="field-label">Character</div>
+      <div class="char-avatar-row" onclick="toast('Switch character...')">
+        <div class="char-avatar-img">🧝</div>
+        <div class="char-avatar-info">
+          <div class="char-avatar-name">Lumina</div>
+          <div class="char-avatar-sub">Anime Fantasy · Female · EN</div>
+        </div>
+        <div class="char-avatar-change">Change ›</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Dialogue</div>
+      <textarea class="field-textarea" rows="3" placeholder="What does Lumina say...">${s.dialogue || ''}</textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Expression</div>
+      <div class="expression-grid">
+        ${expressions.map(e => `
+          <div class="expr-chip ${(s.expression || 'natural') === e.key ? 'active' : ''}" onclick="selectExpr(this,'${e.key}')">
+            <div class="expr-emoji">${e.emoji}</div>
+            <div class="expr-label">${e.label}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Voice</div>
+      <div class="voice-row" onclick="toast('Voice settings...')">
+        <div class="voice-icon">🎤</div>
+        <div class="voice-name">${s.voice || 'Lumina · Warm EN'}</div>
+        <div class="voice-play">▶</div>
+      </div>
+    </div>`;
+  }
+
+  // ── SCENE ──
+  else if (currentType === 'scene') {
+    html += `
+    <div class="field-group">
+      <div class="field-label">Scene / Environment</div>
+      <div class="scene-grid">
+        ${scenes.map(sc => `
+          <div class="scene-chip ${(s.bg || '') === sc.cls ? 'active' : ''}" onclick="selectScene(this,'${sc.cls}')">
+            <div class="scene-chip-icon">${sc.icon}</div>
+            <div class="scene-chip-label">${sc.label}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">What's happening <span class="field-label-badge">Visual</span></div>
+      <textarea class="field-textarea" rows="3" placeholder="Describe what's happening in this shot...">${s.description || ''}</textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Atmosphere</div>
+      <div class="mood-row">
+        ${moods.map(m => `
+          <div class="mood-tag ${(s.mood || '') === m ? 'active' : ''}" onclick="selectMood(this,'${m}')">${m}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // ── ACTION ──
+  else if (currentType === 'action') {
+    html += `
+    <div class="field-group">
+      <div class="field-label">Character</div>
+      <div class="char-avatar-row" onclick="toast('Switch character...')">
+        <div class="char-avatar-img">🧝</div>
+        <div class="char-avatar-info">
+          <div class="char-avatar-name">${s.character || 'Lumina'}</div>
+          <div class="char-avatar-sub">Anime Fantasy · Female · EN</div>
+        </div>
+        <div class="char-avatar-change">Change ›</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Action <span class="field-label-badge">What's she doing?</span></div>
+      <textarea class="field-textarea" rows="3" placeholder="Describe what the character is doing...">${s.action || ''}</textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Scene / Environment</div>
+      <div class="scene-grid">
+        ${scenes.map(sc => `
+          <div class="scene-chip ${(s.bg || '') === sc.cls ? 'active' : ''}" onclick="selectScene(this,'${sc.cls}')">
+            <div class="scene-chip-icon">${sc.icon}</div>
+            <div class="scene-chip-label">${sc.label}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // ── MULTI CHARACTER ──
+  else if (currentType === 'multi') {
+    html += `
+    <div class="field-group">
+      <div class="field-label">Characters</div>
+      <div class="multi-char-block">
+        <div class="char-dialogue-row">
+          <div class="char-dialogue-who"><div class="char-dot a"></div> Lumina</div>
+          <textarea class="field-textarea" rows="2">${s.dialogueA || ''}</textarea>
+        </div>
+        <div class="char-dialogue-row" style="margin-top:8px">
+          <div class="char-dialogue-who" style="justify-content:flex-end;text-align:right">
+            <span>Nova</span> <div class="char-dot b"></div>
+          </div>
+          <textarea class="field-textarea" rows="2">${s.dialogueB || ''}</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Scene</div>
+      <div class="scene-grid">
+        ${scenes.map(sc => `
+          <div class="scene-chip ${(s.bg || '') === sc.cls ? 'active' : ''}" onclick="selectScene(this,'${sc.cls}')">
+            <div class="scene-chip-icon">${sc.icon}</div>
+            <div class="scene-chip-label">${sc.label}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // ── CHARACTER REFERENCE (always shown except empty) ──
+  html += `
+  <div class="advanced-toggle" onclick="toggleAdvanced()">
+    <span>⚙ Advanced Settings</span>
+    <span id="adv-arrow">${advancedOpen ? '▲' : '▼'}</span>
+  </div>
+  <div class="advanced-content ${advancedOpen ? 'open' : ''}" id="advanced-content">
+    <div class="field-group">
+      <div class="field-label">Character Reference <span class="ref-auto-badge">Auto</span></div>
+      <div class="ref-row">
+        <div class="ref-thumb">🧝</div>
+        <div class="ref-info">
+          <div class="ref-name">Lumina</div>
+          <div class="ref-sub">Loaded from IP · Fantasy Robe</div>
+        </div>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Output</div>
+      <div class="output-row">
+        <div class="output-chip">16:9</div>
+        <div class="output-chip active">9:16</div>
+        <div class="output-chip">1:1</div>
+        <div class="output-chip" style="margin-left:auto">2K</div>
+        <div class="output-chip">4K</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Model</div>
+      <select class="field-select">
+        <option>LTX Video 0.9.8 (Default)</option>
+        <option>Wan 2.1</option>
+        <option>Seedream 4.5</option>
+      </select>
+    </div>
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+function switchType(type) {
+  currentType = type;
+  const ts = document.getElementById('type-selector');
+  ts.querySelectorAll('.type-chip').forEach(c => {
+    c.classList.toggle('active', c.textContent.trim().toLowerCase().includes(type));
+  });
+  const pipeline = pipelineMap[type] || 'Generate';
+  document.getElementById('gen-label').textContent = pipeline;
+  document.getElementById('pipeline-label').textContent = `${pipeline} · 9:16 · 2K`;
+  renderCreationBody(shots[currentShot]);
+}
+
+function setType(type) {
+  shots[currentShot].type = type;
+  currentType = type;
+  render();
+}
+
+function selectExpr(el, key) {
+  shots[currentShot].expression = key;
+  el.closest('.expression-grid').querySelectorAll('.expr-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectScene(el, cls) {
+  shots[currentShot].bg = cls;
+  el.closest('.scene-grid').querySelectorAll('.scene-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  // update preview background
+  const stage = document.getElementById('preview-stage');
+  stage.className = `preview-stage ${cls}`;
+}
+
+function selectMood(el, mood) {
+  shots[currentShot].mood = mood;
+  el.closest('.mood-row').querySelectorAll('.mood-tag').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectVersion(el) {
+  el.closest('.history-scroll').querySelectorAll('.history-thumb').forEach(c => {
+    c.classList.remove('current');
+    const badge = c.querySelector('.history-thumb-badge');
+    if (badge) badge.remove();
+  });
+  el.classList.add('current');
+  const badge = document.createElement('div');
+  badge.className = 'history-thumb-badge';
+  badge.textContent = '✓';
+  el.appendChild(badge);
+  toast('Version selected ✓');
+}
+
+function toggleAdvanced() {
+  advancedOpen = !advancedOpen;
+  const content = document.getElementById('advanced-content');
+  const arrow = document.getElementById('adv-arrow');
+  if (content) content.classList.toggle('open', advancedOpen);
+  if (arrow) arrow.textContent = advancedOpen ? '▲' : '▼';
+}
+
+function doGenerate() {
+  const btn = document.getElementById('gen-btn');
+  const label = document.getElementById('gen-label');
+  btn.classList.add('loading');
+  const orig = label.textContent;
+  label.textContent = 'Generating...';
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    label.textContent = orig;
+    toast('✦ Shot generated successfully!');
+    // add to history
+    const s = shots[currentShot];
+    const newVersion = { bg: s.bg || 'bg-night', icon: '✨' };
+    s.versions = [newVersion, ...(s.versions || [])];
+    s.status = 'done';
+    document.querySelector(`#shot-card-${currentShot} .shot-status-dot`).className = 'shot-status-dot done';
+    const strip = document.getElementById('history-strip');
+    const thumb = document.createElement('div');
+    thumb.className = `history-thumb ${newVersion.bg} current`;
+    thumb.innerHTML = `<span style="font-size:18px">${newVersion.icon}</span><div class="history-thumb-badge">✓</div>`;
+    thumb.onclick = function() { selectVersion(this); };
+    strip.querySelectorAll('.history-thumb').forEach(c => {
+      c.classList.remove('current');
+      const b = c.querySelector('.history-thumb-badge'); if(b) b.remove();
+    });
+    strip.insertBefore(thumb, strip.children[1]);
+  }, 2200);
+}
+
+function switchTab(el) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  if (el.textContent !== 'Shots') toast(`Switching to ${el.textContent}...`);
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// init
+selectShot(1);
+</script>
+</body>
+</html>
