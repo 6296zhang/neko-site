@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenArt Story — Storyboard v2</title>
+<style>
+:root {
+  --accent: #7c5cfc;
+  --accent2: #a78bfa;
+  --pink: #e879a0;
+  --green: #34d399;
+  --yellow: #fbbf24;
+  --orange: #fb923c;
+  --bg: #0d0d10;
+  --surface: #141418;
+  --surface2: #1c1c22;
+  --surface3: #242430;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f0f5;
+  --text2: #8888a0;
+  --text3: #44445a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── TOP NAV ── */
+.nav {
+  height: 48px; min-height: 48px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 12px; flex-shrink: 0;
+}
+.nav-left { display: flex; align-items: center; gap: 12px; }
+.nav-logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
+.nav-logo-dot { width: 22px; height: 22px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.story-name-row { display: flex; align-items: center; gap: 6px; }
+.story-name { font-size: 13px; color: var(--text); font-weight: 500; }
+.story-icon-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border2); background: transparent; color: var(--text2); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; transition: all .15s; }
+.story-icon-btn:hover { background: var(--surface2); color: var(--text); }
+.divider { width: 1px; height: 20px; background: var(--border2); }
+.nav-tabs { display: flex; gap: 2px; }
+.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all .15s; }
+.nav-tab:hover { color: var(--text); background: var(--surface2); }
+.nav-tab.active { color: var(--text); background: var(--surface3); }
+.nav-right { display: flex; align-items: center; gap: 8px; }
+.credits-badge { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text2); padding: 4px 8px; background: var(--surface2); border-radius: 6px; }
+.credits-badge span { color: var(--yellow); font-size: 10px; }
+.btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: none; font-weight: 500; transition: all .15s; }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+.btn-icon { width: 32px; height: 32px; border-radius: 7px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: all .15s; }
+.btn-icon:hover { background: var(--surface3); color: var(--text); }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+
+/* ── SUB NAV ── */
+.subnav {
+  height: 40px; min-height: 40px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; flex-shrink: 0;
+}
+.subnav-left { display: flex; align-items: center; gap: 8px; }
+.story-type-tag {
+  display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+  background: rgba(124,92,252,.15); border: 1px solid rgba(124,92,252,.3);
+  border-radius: 6px; font-size: 12px; color: var(--accent2); cursor: pointer;
+  transition: all .15s;
+}
+.story-type-tag:hover { background: rgba(124,92,252,.25); }
+.subnav-divider { width: 1px; height: 16px; background: var(--border2); }
+.char-tag {
+  display: flex; align-items: center; gap: 6px; padding: 4px 10px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 12px; color: var(--text2); cursor: pointer;
+  transition: all .15s;
+}
+.char-tag:hover { border-color: var(--accent2); color: var(--text); }
+.char-tag-avatar { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 9px; }
+.prop-tag {
+  display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 12px; color: var(--text2); cursor: pointer;
+  transition: all .15s;
+}
+.prop-tag:hover { border-color: var(--accent2); color: var(--text); }
+.subnav-right { display: flex; align-items: center; gap: 6px; }
+.connect-btn {
+  display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 12px; color: var(--text2); cursor: pointer;
+  transition: all .15s;
+}
+.connect-btn:hover { border-color: var(--green); color: var(--green); }
+
+/* ── CONTENT AREA ── */
+.content { flex: 1; overflow-y: auto; padding: 16px 20px 120px; }
+.content::-webkit-scrollbar { width: 5px; }
+.content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+/* ── SCENE GROUP ── */
+.scene-group { margin-bottom: 8px; }
+.scene-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 0 2px;
+}
+.scene-header-title { font-size: 12px; font-weight: 600; color: var(--text2); }
+.scene-header-beat {
+  font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 4px;
+}
+.beat-hook { background: rgba(124,92,252,.15); color: var(--accent2); }
+.beat-build { background: rgba(251,191,36,.12); color: var(--yellow); }
+.beat-climax { background: rgba(232,121,160,.15); color: var(--pink); }
+.beat-cta { background: rgba(52,211,153,.12); color: var(--green); }
+.scene-header-line { flex: 1; height: 1px; background: var(--border); }
+.scene-header-add {
+  font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 6px;
+  border-radius: 4px; transition: all .15s;
+}
+.scene-header-add:hover { color: var(--accent2); background: rgba(124,92,252,.08); }
+
+/* ── SHOT ROW ── */
+.shot-row {
+  display: grid;
+  grid-template-columns: 280px 1fr 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.shot-row:hover { border-color: var(--border2); }
+.shot-row.active { border-color: rgba(124,92,252,.4); }
+
+/* Brief Column */
+.brief-col {
+  border-right: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.brief-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.shot-num-badge {
+  font-size: 11px; font-weight: 700; color: var(--text3);
+  width: 22px; height: 22px; background: var(--surface2);
+  border-radius: 5px; display: flex; align-items: center; justify-content: center;
+}
+.shot-type-row { display: flex; align-items: center; gap: 4px; }
+.shot-type-pill {
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 12px;
+  cursor: pointer; transition: all .15s; border: 1px solid transparent;
+}
+.pill-dialogue { background: rgba(124,92,252,.2); color: var(--accent2); border-color: rgba(124,92,252,.3); }
+.pill-scene { background: rgba(52,211,153,.15); color: var(--green); border-color: rgba(52,211,153,.25); }
+.pill-action { background: rgba(251,191,36,.12); color: var(--yellow); border-color: rgba(251,191,36,.2); }
+.pill-multi { background: rgba(232,121,160,.15); color: var(--pink); border-color: rgba(232,121,160,.25); }
+.pill-special { background: rgba(255,255,255,.07); color: var(--text2); border-color: var(--border2); }
+
+.brief-edit-btn {
+  font-size: 10px; color: var(--text3); cursor: pointer; padding: 2px 6px;
+  border-radius: 4px; border: 1px solid var(--border); background: var(--surface2);
+  transition: all .15s; white-space: nowrap;
+}
+.brief-edit-btn:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+
+/* Brief content preview */
+.brief-content { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.brief-char-row { display: flex; align-items: center; gap: 6px; }
+.brief-char-avatar { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; }
+.brief-char-name { font-size: 11px; font-weight: 600; }
+.brief-text {
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.brief-text.dialogue { color: var(--text); font-style: italic; }
+
+.brief-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.brief-meta-tag {
+  font-size: 10px; padding: 1px 6px; border-radius: 4px;
+  background: var(--surface2); color: var(--text3);
+  display: flex; align-items: center; gap: 3px;
+}
+.brief-expr { display: flex; align-items: center; gap: 4px; }
+.expr-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); }
+
+/* dirty state */
+.brief-pending {
+  display: flex; align-items: center; gap: 5px; padding: 4px 8px;
+  background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2);
+  border-radius: 6px; font-size: 10px; color: var(--yellow); cursor: pointer;
+}
+.brief-pending:hover { background: rgba(251,191,36,.15); }
+
+/* Image Column */
+.image-col {
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.col-header {
+  padding: 8px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.col-header-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; gap: 5px; }
+.col-header-model { font-size: 10px; color: var(--text3); background: var(--surface2); padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+.col-header-model:hover { color: var(--text2); }
+.col-actions { display: flex; gap: 4px; }
+.col-action-btn {
+  width: 22px; height: 22px; border-radius: 5px; background: var(--surface2);
+  border: 1px solid var(--border2); color: var(--text3); display: flex; align-items: center;
+  justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s;
+}
+.col-action-btn:hover { color: var(--text2); border-color: var(--accent2); }
+
+.col-media {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 12px; min-height: 110px; position: relative;
+}
+.media-thumb {
+  width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+  position: relative; cursor: pointer;
+}
+.media-thumb:hover .media-overlay { opacity: 1; }
+.media-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  opacity: 0; transition: opacity .15s; border-radius: 8px;
+}
+.media-overlay-btn {
+  padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
+  background: rgba(255,255,255,.9); color: #1a1a2e; cursor: pointer;
+}
+.media-empty {
+  width: 100%; aspect-ratio: 16/9; border-radius: 8px;
+  border: 1.5px dashed var(--border2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; cursor: pointer; transition: all .15s;
+}
+.media-empty:hover { border-color: var(--accent); background: rgba(124,92,252,.04); }
+.media-empty-icon { font-size: 18px; color: var(--text3); }
+.media-empty-label { font-size: 11px; color: var(--text3); }
+.media-empty-sub { font-size: 10px; color: var(--text3); opacity: .7; }
+
+.col-footer {
+  padding: 6px 12px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.col-gen-btn {
+  padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: none; transition: all .15s; display: flex; align-items: center; gap: 4px;
+}
+.col-gen-btn.image { background: rgba(124,92,252,.2); color: var(--accent2); border: 1px solid rgba(124,92,252,.3); }
+.col-gen-btn.image:hover { background: rgba(124,92,252,.35); }
+.col-gen-btn.video { background: rgba(232,121,160,.15); color: var(--pink); border: 1px solid rgba(232,121,160,.3); }
+.col-gen-btn.video:hover { background: rgba(232,121,160,.25); }
+.col-gen-cost { font-size: 10px; color: var(--text3); }
+
+/* Video Column */
+.video-col { display: flex; flex-direction: column; }
+
+/* Arrow connector */
+.arrow-connector {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 2px; color: var(--text3); font-size: 14px;
+}
+
+/* background gradients */
+.bg-night { background: linear-gradient(160deg, #0a0a1a 0%, #1a1040 40%, #0d1a2a 100%); }
+.bg-forest { background: linear-gradient(160deg, #0a1f0a 0%, #0d2d0d 40%, #1a3a15 100%); }
+.bg-castle { background: linear-gradient(160deg, #1a0a20 0%, #2d1540 40%, #1a0a30 100%); }
+.bg-ocean { background: linear-gradient(160deg, #051525 0%, #0a2540 40%, #0d3050 100%); }
+.bg-golden { background: linear-gradient(160deg, #2a1800 0%, #3d2800 40%, #1a1000 100%); }
+.bg-cafe { background: linear-gradient(160deg, #1a1008 0%, #2a1a08 40%, #1a0f05 100%); }
+
+/* status dot */
+.status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.status-dot.done { background: var(--green); }
+.status-dot.empty { background: var(--text3); }
+.status-dot.pending { background: var(--yellow); }
+
+/* ── ADD SHOT ── */
+.add-shot-row {
+  border: 1.5px dashed var(--border2); border-radius: 10px;
+  padding: 12px; text-align: center; cursor: pointer; color: var(--text3);
+  font-size: 12px; transition: all .15s; margin-bottom: 6px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.add-shot-row:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 56px; background: var(--surface);
+  border-top: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; gap: 16px;
+  backdrop-filter: blur(12px);
+}
+.bottom-section { display: flex; align-items: center; gap: 8px; }
+.bottom-model {
+  display: flex; align-items: center; gap: 6px; padding: 5px 10px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 7px; font-size: 11px; color: var(--text2); cursor: pointer;
+  transition: all .15s;
+}
+.bottom-model:hover { border-color: var(--border2); background: var(--surface3); }
+.bottom-model-icon { font-size: 13px; }
+.bottom-model-name { color: var(--text); font-weight: 500; }
+.bottom-divider { width: 1px; height: 24px; background: var(--border2); }
+.bottom-gen-btn {
+  padding: 8px 20px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; display: flex; align-items: center; gap: 6px;
+  transition: all .15s;
+}
+.bottom-gen-btn.image { background: rgba(124,92,252,.25); color: var(--accent2); border: 1px solid rgba(124,92,252,.4); }
+.bottom-gen-btn.image:hover { background: rgba(124,92,252,.4); }
+.bottom-gen-btn.video { background: rgba(232,121,160,.2); color: var(--pink); border: 1px solid rgba(232,121,160,.4); }
+.bottom-gen-btn.video:hover { background: rgba(232,121,160,.35); }
+.bottom-cost { font-size: 11px; color: var(--text3); }
+.bottom-center { display: flex; align-items: center; gap: 8px; }
+.story-progress { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); }
+.progress-bar { width: 80px; height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); border-radius: 2px; }
+
+/* ── BRIEF EDITOR MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  display: none; align-items: center; justify-content: center; z-index: 100;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 14px; width: 480px; max-height: 80vh;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.6);
+}
+.modal-header {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title { font-size: 15px; font-weight: 600; }
+.modal-close { width: 28px; height: 28px; border-radius: 7px; background: var(--surface2); border: none; color: var(--text2); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.modal-close:hover { background: var(--surface3); color: var(--text); }
+.modal-body { padding: 16px 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+.modal-field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; }
+.modal-field textarea { width: 100%; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-size: 13px; resize: none; outline: none; font-family: inherit; line-height: 1.5; }
+.modal-field textarea:focus { border-color: var(--accent); }
+.modal-field select { width: 100%; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-size: 12px; outline: none; cursor: pointer; }
+.modal-field select:focus { border-color: var(--accent); }
+.expr-grid { display: flex; gap: 5px; flex-wrap: wrap; }
+.expr-opt { padding: 4px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); transition: all .15s; display: flex; align-items: center; gap: 4px; }
+.expr-opt:hover { border-color: var(--accent2); }
+.expr-opt.active { background: rgba(124,92,252,.2); border-color: var(--accent); color: var(--accent2); }
+.modal-footer { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.modal-btn { padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+.modal-btn.secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+.modal-btn.primary { background: var(--accent); color: white; }
+.modal-btn.primary:hover { background: #6d4ff0; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px;
+  padding: 8px 16px; font-size: 12px; color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s ease; z-index: 200;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="nav-logo">
+      <div class="nav-logo-dot">✦</div>
+      OpenArt
+    </div>
+    <div class="story-name-row">
+      <span class="story-name">Lumina's Night City Story</span>
+      <div class="story-icon-btn" onclick="toast('Rename...')">✏</div>
+      <div class="story-icon-btn" onclick="toast('Undo')">↩</div>
+      <div class="story-icon-btn" onclick="toast('Redo')">↪</div>
+    </div>
+    <div class="divider"></div>
+    <div class="nav-tabs">
+      <div class="nav-tab active">Storyboard</div>
+      <div class="nav-tab" onclick="toast('Opening Timeline...')">Timeline</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="credits-badge"><span>✦</span> 268,860</div>
+    <button class="btn btn-ghost">Upgrade</button>
+    <div class="btn-icon" onclick="toast('Preview...')">▶</div>
+    <div class="btn-icon" onclick="toast('Download...')">⬇</div>
+    <div class="btn-icon" onclick="toast('Share...')">↗</div>
+    <div class="avatar">🧝</div>
+  </div>
+</nav>
+
+<!-- SUB NAV -->
+<div class="subnav">
+  <div class="subnav-left">
+    <div class="story-type-tag" onclick="toast('Change story type...')">
+      💬 Talking Avatar
+    </div>
+    <div class="subnav-divider"></div>
+    <div class="char-tag" onclick="toast('Character settings...')">
+      <div class="char-tag-avatar">🧝</div>
+      Lumina · Fantasy Robe
+    </div>
+    <div class="prop-tag" onclick="toast('Recurring props...')">
+      📦 Props (0)
+    </div>
+  </div>
+  <div class="subnav-right">
+    <div class="connect-btn" onclick="toast('Connecting shots for consistency...')">
+      🔗 Connect Shots
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- Scene 1: Hook -->
+  <div class="scene-group">
+    <div class="scene-header">
+      <div class="scene-header-title">Scene 1</div>
+      <div class="scene-header-beat beat-hook">Hook</div>
+      <div class="scene-header-line"></div>
+      <div class="scene-header-add" onclick="addShot(0)">+ Add Shot</div>
+    </div>
+
+    <!-- Shot 01 - Scene -->
+    <div class="shot-row" id="row-0">
+      <div class="brief-col">
+        <div class="brief-header">
+          <div class="shot-num-badge">01</div>
+          <div class="shot-type-row">
+            <div class="shot-type-pill pill-scene">🌍 Scene</div>
+          </div>
+          <div class="brief-edit-btn" onclick="openModal(0)">Edit Brief ›</div>
+        </div>
+        <div class="brief-content">
+          <div class="brief-meta">
+            <div class="brief-meta-tag">🌌 Night City</div>
+            <div class="brief-meta-tag">孤独</div>
+          </div>
+          <div class="brief-text">Lumina 独自走过霓虹街道，城市的喧嚣在她身后消散。镜头从背后跟拍缓缓拉远。</div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="col-header">
+          <div class="col-header-label">📷 Image <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Seedream 4.0</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Regenerate image...')">↻</div>
+              <div class="col-action-btn" onclick="toast('Edit image...')">✏</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-night" onclick="toast('View image...')">
+            <span style="font-size:28px">🌃</span>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+              <div class="media-overlay-btn">Edit</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn image" onclick="toast('Regenerating image...')">↻ Regenerate</div>
+          <div class="col-gen-cost">✦ 0</div>
+        </div>
+      </div>
+
+      <div class="video-col">
+        <div class="col-header">
+          <div class="col-header-label">🎬 Video <div class="status-dot empty" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Kling 2.8</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Upload video...')">⬆</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-empty" onclick="toast('Converting to video...')">
+            <div class="media-empty-icon">▶</div>
+            <div class="media-empty-label">Add Video</div>
+            <div class="media-empty-sub">Convert from image</div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn video" onclick="toast('Generating video...')">✦ Convert to Video</div>
+          <div class="col-gen-cost">✦ 100</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shot 02 - Dialogue -->
+    <div class="shot-row" id="row-1">
+      <div class="brief-col">
+        <div class="brief-header">
+          <div class="shot-num-badge">02</div>
+          <div class="shot-type-row">
+            <div class="shot-type-pill pill-dialogue">💬 Dialogue</div>
+          </div>
+          <div class="brief-edit-btn" onclick="openModal(1)">Edit Brief ›</div>
+        </div>
+        <div class="brief-content">
+          <div class="brief-char-row">
+            <div class="brief-char-avatar">🧝</div>
+            <div class="brief-char-name">Lumina</div>
+            <div style="margin-left:auto;font-size:10px;color:var(--text3)">🤔 沉思</div>
+          </div>
+          <div class="brief-text dialogue">"你知道吗？每个夜晚，我都在等待一个不可能出现的奇迹。"</div>
+          <div class="brief-meta">
+            <div class="brief-meta-tag">🎤 Warm EN</div>
+            <div class="brief-meta-tag">Motion Sync</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="col-header">
+          <div class="col-header-label">📷 Image <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Seedream 4.0</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Regenerate...')">↻</div>
+              <div class="col-action-btn" onclick="toast('Edit...')">✏</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-night">
+            <span style="font-size:28px">🧝</span>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+              <div class="media-overlay-btn">Edit</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn image" onclick="toast('Regenerating...')">↻ Regenerate</div>
+          <div class="col-gen-cost">✦ 0</div>
+        </div>
+      </div>
+
+      <div class="video-col">
+        <div class="col-header">
+          <div class="col-header-label">🎬 Video <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Motion Sync</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Re-sync...')">↻</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-night" style="position:relative">
+            <span style="font-size:28px">💬</span>
+            <div style="position:absolute;bottom:6px;right:6px;background:rgba(52,211,153,.9);border-radius:4px;padding:2px 6px;font-size:9px;color:#000;font-weight:700">Motion Sync ✓</div>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+              <div class="media-overlay-btn">Re-sync</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn video" onclick="toast('Re-syncing...')">↻ Re-sync</div>
+          <div class="col-gen-cost">✦ 50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 2: Build-up -->
+  <div class="scene-group">
+    <div class="scene-header">
+      <div class="scene-header-title">Scene 2</div>
+      <div class="scene-header-beat beat-build">Build-up</div>
+      <div class="scene-header-line"></div>
+      <div class="scene-header-add" onclick="addShot(1)">+ Add Shot</div>
+    </div>
+
+    <!-- Shot 03 - Action -->
+    <div class="shot-row" id="row-2">
+      <div class="brief-col">
+        <div class="brief-header">
+          <div class="shot-num-badge">03</div>
+          <div class="shot-type-row">
+            <div class="shot-type-pill pill-action">🎬 Action</div>
+          </div>
+          <div class="brief-edit-btn" onclick="openModal(2)">Edit Brief ›</div>
+        </div>
+        <div class="brief-content">
+          <div class="brief-char-row">
+            <div class="brief-char-avatar">🧝</div>
+            <div class="brief-char-name">Lumina</div>
+          </div>
+          <div class="brief-text">她小心翼翼地翻开那本落满灰尘的魔法书，金色文字开始在页面上浮现，光芒在昏暗的图书馆中蔓延。</div>
+          <div class="brief-meta">
+            <div class="brief-meta-tag">🏰 Ancient Library</div>
+          </div>
+          <div class="brief-pending" onclick="toast('Regenerating with updated brief...')">
+            ⚡ Brief updated · Regenerate to apply
+          </div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="col-header">
+          <div class="col-header-label">📷 Image <div class="status-dot pending" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Seedream 4.0</div>
+            <div class="col-actions">
+              <div class="col-action-btn">↻</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-castle" style="opacity:.5;filter:grayscale(.4)">
+            <span style="font-size:28px">📖</span>
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;border-radius:8px">
+              <div style="background:rgba(251,191,36,.9);color:#1a1a2e;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700">Outdated</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn image" style="background:rgba(251,191,36,.2);color:var(--yellow);border-color:rgba(251,191,36,.35)" onclick="toast('Regenerating with updated brief...')">⚡ Regenerate</div>
+          <div class="col-gen-cost">✦ 0</div>
+        </div>
+      </div>
+
+      <div class="video-col">
+        <div class="col-header">
+          <div class="col-header-label">🎬 Video <div class="status-dot empty" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Kling 2.8</div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-empty" onclick="toast('Generate image first...')">
+            <div class="media-empty-icon">🔒</div>
+            <div class="media-empty-label">Regenerate image first</div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn video" style="opacity:.4;cursor:not-allowed">✦ Convert to Video</div>
+          <div class="col-gen-cost">✦ 100</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shot 04 - Dialogue -->
+    <div class="shot-row" id="row-3">
+      <div class="brief-col">
+        <div class="brief-header">
+          <div class="shot-num-badge">04</div>
+          <div class="shot-type-row">
+            <div class="shot-type-pill pill-dialogue">💬 Dialogue</div>
+          </div>
+          <div class="brief-edit-btn" onclick="openModal(3)">Edit Brief ›</div>
+        </div>
+        <div class="brief-content">
+          <div class="brief-char-row">
+            <div class="brief-char-avatar">🧝</div>
+            <div class="brief-char-name">Lumina</div>
+            <div style="margin-left:auto;font-size:10px;color:var(--text3)">😤 自信</div>
+          </div>
+          <div class="brief-text dialogue">"这里记载着一个从未被实现的预言……我就是那个被选中的人。"</div>
+          <div class="brief-meta">
+            <div class="brief-meta-tag">🎤 Warm EN</div>
+            <div class="brief-meta-tag">Motion Sync</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="col-header">
+          <div class="col-header-label">📷 Image <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Seedream 4.0</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Regenerate...')">↻</div>
+              <div class="col-action-btn" onclick="toast('Edit...')">✏</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-castle">
+            <span style="font-size:28px">🧝</span>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+              <div class="media-overlay-btn">Edit</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn image" onclick="toast('Regenerating...')">↻ Regenerate</div>
+          <div class="col-gen-cost">✦ 0</div>
+        </div>
+      </div>
+
+      <div class="video-col">
+        <div class="col-header">
+          <div class="col-header-label">🎬 Video <div class="status-dot empty" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Motion Sync</div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-empty" onclick="toast('Generating with Motion Sync...')">
+            <div class="media-empty-icon">🎤</div>
+            <div class="media-empty-label">Generate with Motion Sync</div>
+            <div class="media-empty-sub">Dialogue detected</div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn video" onclick="toast('Generating with Motion Sync...')">✦ Motion Sync</div>
+          <div class="col-gen-cost">✦ 50</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shot 05 - Multi -->
+    <div class="shot-row" id="row-4">
+      <div class="brief-col">
+        <div class="brief-header">
+          <div class="shot-num-badge">05</div>
+          <div class="shot-type-row">
+            <div class="shot-type-pill pill-multi">🎭 Multi</div>
+          </div>
+          <div class="brief-edit-btn" onclick="openModal(4)">Edit Brief ›</div>
+        </div>
+        <div class="brief-content">
+          <div class="brief-char-row">
+            <div class="brief-char-avatar">🧝</div>
+            <div class="brief-char-name" style="color:var(--accent2)">Lumina</div>
+            <div style="font-size:10px;color:var(--text3);margin:0 4px">·</div>
+            <div class="brief-char-avatar" style="background:linear-gradient(135deg,var(--pink),#ff6b9d)">🧙</div>
+            <div class="brief-char-name" style="color:var(--pink)">Nova</div>
+          </div>
+          <div class="brief-text dialogue">"你相信预言这种东西吗？" / "我只相信眼前发生的一切。"</div>
+          <div class="brief-meta">
+            <div class="brief-meta-tag">🏰 Ancient Library</div>
+            <div class="brief-meta-tag">Motion Sync</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="col-header">
+          <div class="col-header-label">📷 Image <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Seedream 4.0</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Regenerate...')">↻</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-castle">
+            <span style="font-size:28px">🎭</span>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+              <div class="media-overlay-btn">Edit</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn image" onclick="toast('Regenerating...')">↻ Regenerate</div>
+          <div class="col-gen-cost">✦ 0</div>
+        </div>
+      </div>
+
+      <div class="video-col">
+        <div class="col-header">
+          <div class="col-header-label">🎬 Video <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Motion Sync</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Re-sync...')">↻</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-castle">
+            <span style="font-size:28px">💬</span>
+            <div style="position:absolute;bottom:6px;right:6px;background:rgba(52,211,153,.9);border-radius:4px;padding:2px 6px;font-size:9px;color:#000;font-weight:700">Motion Sync ✓</div>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn video" onclick="toast('Re-syncing...')">↻ Re-sync</div>
+          <div class="col-gen-cost">✦ 50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 3: Climax -->
+  <div class="scene-group">
+    <div class="scene-header">
+      <div class="scene-header-title">Scene 3</div>
+      <div class="scene-header-beat beat-climax">Climax</div>
+      <div class="scene-header-line"></div>
+      <div class="scene-header-add" onclick="addShot(2)">+ Add Shot</div>
+    </div>
+
+    <!-- Shot 06 - Dialogue -->
+    <div class="shot-row" id="row-5">
+      <div class="brief-col">
+        <div class="brief-header">
+          <div class="shot-num-badge">06</div>
+          <div class="shot-type-row">
+            <div class="shot-type-pill pill-dialogue">💬 Dialogue</div>
+          </div>
+          <div class="brief-edit-btn" onclick="openModal(5)">Edit Brief ›</div>
+        </div>
+        <div class="brief-content">
+          <div class="brief-char-row">
+            <div class="brief-char-avatar">🧝</div>
+            <div class="brief-char-name">Lumina</div>
+            <div style="margin-left:auto;font-size:10px;color:var(--text3)">😤 坚定</div>
+          </div>
+          <div class="brief-text dialogue">"这个世界需要改变，而我已经等待太久了。现在，是时候了。"</div>
+          <div class="brief-meta">
+            <div class="brief-meta-tag">☀️ Golden Sky</div>
+            <div class="brief-meta-tag">🎤 Fierce EN</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-col">
+        <div class="col-header">
+          <div class="col-header-label">📷 Image <div class="status-dot done" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Seedream 4.0</div>
+            <div class="col-actions">
+              <div class="col-action-btn" onclick="toast('Regenerate...')">↻</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-thumb bg-golden">
+            <span style="font-size:28px">⚡</span>
+            <div class="media-overlay">
+              <div class="media-overlay-btn">View</div>
+              <div class="media-overlay-btn">Edit</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn image" onclick="toast('Regenerating...')">↻ Regenerate</div>
+          <div class="col-gen-cost">✦ 0</div>
+        </div>
+      </div>
+
+      <div class="video-col">
+        <div class="col-header">
+          <div class="col-header-label">🎬 Video <div class="status-dot empty" style="margin-left:4px"></div></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="col-header-model">Motion Sync</div>
+          </div>
+        </div>
+        <div class="col-media">
+          <div class="media-empty" onclick="toast('Generating with Motion Sync...')">
+            <div class="media-empty-icon">🎤</div>
+            <div class="media-empty-label">Generate with Motion Sync</div>
+            <div class="media-empty-sub">Dialogue detected</div>
+          </div>
+        </div>
+        <div class="col-footer">
+          <div class="col-gen-btn video" onclick="toast('Generating...')">✦ Motion Sync</div>
+          <div class="col-gen-cost">✦ 50</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shot 07 - Empty -->
+    <div class="shot-row" id="row-6" style="border-style:dashed;border-color:var(--border2)">
+      <div class="brief-col" style="display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center">
+          <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Shot 07 · CTA</div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:12px">No brief yet</div>
+          <div class="brief-edit-btn" style="display:inline-block" onclick="openModal(6)">+ Write Brief</div>
+        </div>
+      </div>
+      <div class="image-col">
+        <div class="col-header"><div class="col-header-label">📷 Image <div class="status-dot empty" style="margin-left:4px"></div></div></div>
+        <div class="col-media">
+          <div class="media-empty" onclick="toast('Write brief first...')">
+            <div class="media-empty-icon">✏</div>
+            <div class="media-empty-label">Write brief first</div>
+          </div>
+        </div>
+        <div class="col-footer"><div class="col-gen-btn image" style="opacity:.3;cursor:not-allowed">Generate Image</div></div>
+      </div>
+      <div class="video-col">
+        <div class="col-header"><div class="col-header-label">🎬 Video <div class="status-dot empty" style="margin-left:4px"></div></div></div>
+        <div class="col-media">
+          <div class="media-empty" style="opacity:.4;pointer-events:none">
+            <div class="media-empty-icon">🔒</div>
+            <div class="media-empty-label">Image required first</div>
+          </div>
+        </div>
+        <div class="col-footer"><div class="col-gen-btn video" style="opacity:.3;cursor:not-allowed">Convert to Video</div></div>
+      </div>
+    </div>
+
+    <div class="add-shot-row" onclick="addShot(2)">
+      + Add Shot &nbsp;·&nbsp; <span style="font-size:10px;color:var(--text3)">drag to reorder</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div class="bottom-section">
+    <div class="bottom-model" onclick="toast('Change image model...')">
+      <div class="bottom-model-icon">📷</div>
+      <div>
+        <div style="font-size:9px;color:var(--text3)">Image Model</div>
+        <div class="bottom-model-name">Seedream 4.0</div>
+      </div>
+    </div>
+    <div class="bottom-divider"></div>
+    <div class="bottom-gen-btn image" onclick="genAll('images')">
+      ✦ Generate All Images
+    </div>
+    <div class="bottom-cost">15 × ✦0 = free</div>
+  </div>
+
+  <div class="bottom-center">
+    <div class="story-progress">
+      <span>4 / 7 shots complete</span>
+      <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div class="bottom-cost">7 × ✦100</div>
+    <div class="bottom-gen-btn video" onclick="genAll('videos')">
+      ✦ Generate All Videos
+    </div>
+    <div class="bottom-divider"></div>
+    <div class="bottom-model" onclick="toast('Change video model...')">
+      <div class="bottom-model-icon">🎬</div>
+      <div>
+        <div style="font-size:9px;color:var(--text3)">Video Model</div>
+        <div class="bottom-model-name">Kling 2.8</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BRIEF EDIT MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Edit Shot Brief</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="saveBrief()">Save Brief</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const shotsData = [
+  { id:0, num:'01', scene:'Scene 1', beat:'Hook', type:'scene', scene_name:'Night City', desc:'Lumina 独自走过霓虹街道，城市的喧嚣在她身后消散。镜头从背后跟拍缓缓拉远。', mood:'孤独' },
+  { id:1, num:'02', scene:'Scene 1', beat:'Hook', type:'dialogue', char:'Lumina', dialogue:'你知道吗？每个夜晚，我都在等待一个不可能出现的奇迹。', expr:'thoughtful', voice:'Warm EN' },
+  { id:2, num:'03', scene:'Scene 2', beat:'Build-up', type:'action', char:'Lumina', action:'她小心翼翼地翻开那本落满灰尘的魔法书，金色文字开始在页面上浮现，光芒在昏暗的图书馆中蔓延。', scene_name:'Ancient Library' },
+  { id:3, num:'04', scene:'Scene 2', beat:'Build-up', type:'dialogue', char:'Lumina', dialogue:'这里记载着一个从未被实现的预言……我就是那个被选中的人。', expr:'confident', voice:'Warm EN' },
+  { id:4, num:'05', scene:'Scene 2', beat:'Build-up', type:'multi', charA:'Lumina', charB:'Nova', dialogueA:'你相信预言这种东西吗？', dialogueB:'我只相信眼前发生的一切。而你，正在改变它。', scene_name:'Ancient Library' },
+  { id:5, num:'06', scene:'Scene 3', beat:'Climax', type:'dialogue', char:'Lumina', dialogue:'这个世界需要改变，而我已经等待太久了。现在，是时候了。', expr:'fierce', voice:'Fierce EN' },
+  { id:6, num:'07', scene:'Scene 3', beat:'CTA', type:'empty' },
+];
+
+const expressions = [
+  {key:'natural',emoji:'😌',label:'自然'},{key:'excited',emoji:'😊',label:'兴奋'},
+  {key:'thoughtful',emoji:'🤔',label:'沉思'},{key:'confident',emoji:'😤',label:'自信'},
+  {key:'sad',emoji:'😢',label:'伤感'},{key:'playful',emoji:'😏',label:'俏皮'},
+  {key:'fierce',emoji:'⚡',label:'坚定'},{key:'surprised',emoji:'😲',label:'惊讶'},
+];
+
+function openModal(idx) {
+  const s = shotsData[idx];
+  document.getElementById('modal-title').textContent = `Shot ${s.num} · Edit Brief`;
+  const body = document.getElementById('modal-body');
+
+  let html = `
+    <div class="modal-field">
+      <label>Shot Type</label>
+      <select onchange="this.dataset.val=this.value">
+        <option ${s.type==='dialogue'?'selected':''}>dialogue</option>
+        <option ${s.type==='scene'?'selected':''}>scene</option>
+        <option ${s.type==='action'?'selected':''}>action</option>
+        <option ${s.type==='multi'?'selected':''}>multi</option>
+        <option ${s.type==='special'?'selected':''}>special</option>
+      </select>
+    </div>`;
+
+  if (s.type === 'dialogue') {
+    html += `
+      <div class="modal-field">
+        <label>Dialogue</label>
+        <textarea rows="3">${s.dialogue||''}</textarea>
+      </div>
+      <div class="modal-field">
+        <label>Expression</label>
+        <div class="expr-grid">
+          ${expressions.map(e=>`<div class="expr-opt ${s.expr===e.key?'active':''}" onclick="toggleExpr(this)">${e.emoji} ${e.label}</div>`).join('')}
+        </div>
+      </div>
+      <div class="modal-field">
+        <label>Voice Style</label>
+        <select><option>Warm EN</option><option>Cool EN</option><option>Fierce EN</option><option>Gentle EN</option></select>
+      </div>`;
+  } else if (s.type === 'scene') {
+    html += `
+      <div class="modal-field">
+        <label>What's happening</label>
+        <textarea rows="3">${s.desc||''}</textarea>
+      </div>
+      <div class="modal-field">
+        <label>Atmosphere</label>
+        <div class="expr-grid">
+          ${['孤独','神秘','温暖','史诗','浪漫','紧张'].map(m=>`<div class="expr-opt ${s.mood===m?'active':''}" onclick="toggleExpr(this)">${m}</div>`).join('')}
+        </div>
+      </div>`;
+  } else if (s.type === 'action') {
+    html += `
+      <div class="modal-field">
+        <label>What is ${s.char||'character'} doing?</label>
+        <textarea rows="3">${s.action||''}</textarea>
+      </div>`;
+  } else if (s.type === 'multi') {
+    html += `
+      <div class="modal-field">
+        <label>Lumina says</label>
+        <textarea rows="2">${s.dialogueA||''}</textarea>
+      </div>
+      <div class="modal-field">
+        <label>Nova says</label>
+        <textarea rows="2">${s.dialogueB||''}</textarea>
+      </div>`;
+  } else {
+    html += `
+      <div class="modal-field">
+        <label>What happens in this shot?</label>
+        <textarea rows="3" placeholder="Describe the scene, action, or dialogue..."></textarea>
+      </div>`;
+  }
+
+  body.innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+
+function toggleExpr(el) {
+  el.closest('.expr-grid').querySelectorAll('.expr-opt').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+  }
+}
+
+function saveBrief() {
+  closeModal();
+  toast('Brief saved · Changes pending regeneration');
+}
+
+function addShot(sceneIdx) {
+  toast('New shot added to Scene ' + (sceneIdx + 1));
+}
+
+function genAll(type) {
+  if (type === 'images') toast('Generating all images... ✦ Free (cached)');
+  else toast('Generating all videos... ✦ 700 credits');
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
