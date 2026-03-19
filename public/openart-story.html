@@ -267,8 +267,8 @@ input,textarea,select{font-family:inherit;outline:none;}
 /* center */
 .se-center-panel{flex:1;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;}
 .se-preview{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;}
-.se-preview-img{max-width:320px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);}
-.se-preview-inner{aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;font-size:80px;}
+.se-preview-img{max-width:300px;max-height:calc(100% - 32px);width:auto;height:auto;aspect-ratio:9/16;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);display:flex;align-items:stretch;}
+.se-preview-inner{flex:1;display:flex;align-items:center;justify-content:center;font-size:80px;min-height:0;}
 .se-versions{padding:16px 20px;border-top:1px solid var(--bd);background:var(--s1);}
 .se-versions-label{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;}
 .se-version-strip{display:flex;gap:8px;overflow-x:auto;}
@@ -329,8 +329,8 @@ input,textarea,select{font-family:inherit;outline:none;}
 .ve-asset-name{font-size:12px;font-weight:600;}
 .ve-asset-type{font-size:11px;color:var(--t3);margin-top:2px;display:flex;align-items:center;gap:4px;}
 .ve-asset-added{font-size:10px;font-weight:600;color:var(--success);margin-left:auto;flex-shrink:0;}
-.ve-center{flex:1;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;}
-.ve-preview-area{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;}
+.ve-center{flex:1;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;min-width:0;}
+.ve-preview-area{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;}
 .ve-preview-img{max-width:240px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);}
 .ve-preview-inner{aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;font-size:64px;}
 .ve-preview-shot-info{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(4px);padding:4px 12px;border-radius:999px;font-size:11px;color:rgba(255,255,255,.8);white-space:nowrap;}
@@ -338,22 +338,22 @@ input,textarea,select{font-family:inherit;outline:none;}
 .ve-play-btn{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:all .15s;}
 .ve-play-btn:hover{background:var(--accent-h);}
 .ve-time{font-size:12px;color:var(--t2);font-variant-numeric:tabular-nums;}
-.ve-timeline{height:130px;min-height:130px;background:var(--s1);border-top:1px solid var(--bd);padding:12px 20px;overflow:hidden;display:flex;flex-direction:column;}
+.ve-timeline{height:160px;min-height:160px;background:var(--s1);border-top:1px solid var(--bd);padding:14px 20px;overflow:hidden;display:flex;flex-direction:column;}
 .ve-timeline-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
-.ve-timeline-track{display:flex;gap:8px;overflow-x:auto;flex:1;align-items:stretch;padding-bottom:4px;}
+.ve-timeline-track{display:flex;gap:10px;overflow-x:auto;flex:1;align-items:stretch;padding-bottom:4px;}
 .ve-timeline-track::-webkit-scrollbar{height:3px;}
 .ve-timeline-track::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;}
-.ve-block{flex-shrink:0;width:140px;border-radius:10px;overflow:hidden;border:2px solid var(--bd);cursor:pointer;position:relative;transition:all .15s;display:flex;flex-direction:column;}
-.ve-block:hover{border-color:var(--bds);}
-.ve-block.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
-.ve-block-img{flex:1;display:flex;align-items:center;justify-content:center;font-size:22px;min-height:50px;}
-.ve-block-info{background:rgba(0,0,0,.75);padding:5px 8px;}
-.ve-block-name{font-size:10px;font-weight:700;color:#fff;margin-bottom:1px;}
-.ve-block-meta{font-size:9px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:4px;}
-.ve-block-type-badge{padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600;}
+.ve-block{flex-shrink:0;width:150px;height:90px;border-radius:12px;overflow:hidden;border:2px solid var(--bd);cursor:pointer;position:relative;transition:all .15s;display:flex;flex-direction:column;background:var(--s2);}
+.ve-block:hover{border-color:var(--bds);transform:translateY(-1px);}
+.ve-block.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,92,255,.3);}
+.ve-block-img{flex:1;display:flex;align-items:center;justify-content:center;font-size:24px;min-height:0;}
+.ve-block-info{background:rgba(0,0,0,.8);padding:5px 8px;flex-shrink:0;}
+.ve-block-name{font-size:11px;font-weight:700;color:#fff;margin-bottom:2px;}
+.ve-block-meta{font-size:10px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:4px;}
+.ve-block-type-badge{padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
 .ve-block-type-badge.video{background:rgba(60,203,127,.3);color:var(--success);}
 .ve-block-type-badge.image{background:rgba(124,92,255,.25);color:var(--accent-h);}
-.ve-block-del{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,.7);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;color:#fff;cursor:pointer;}
+.ve-block-del{position:absolute;top:5px;right:5px;width:18px;height:18px;background:rgba(0,0,0,.7);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;color:#fff;cursor:pointer;}
 .ve-block:hover .ve-block-del{display:flex;}
 .ve-empty-timeline{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--t3);}
 .ve-empty-title{font-size:14px;font-weight:600;}
@@ -1664,19 +1664,30 @@ function renderVEAssets() {
       const added = state.veTimeline.includes(sh.id);
       const isActive = state.veActiveShotId === sh.id;
       const isVideo = sh.status === 'videoReady';
-      html += `<div class="ve-asset-item ${isActive ? 'active-asset' : ''}" onclick="${added ? `selectFromAsset('${sh.id}')` : `addToTimeline('${sh.id}')`}">
-        <div class="ve-asset-thumb" style="background:${sh.bg}">${sh.icon}</div>
-        <div class="ve-asset-info">
-          <div class="ve-asset-name">Shot ${sh.id}</div>
-          <div class="ve-asset-type">
-            <span>${sh.type}</span>
-            <span>·</span>
-            <span style="color:${isVideo ? 'var(--success)' : 'var(--accent-h)'}">${isVideo ? '▶ Video' : '🖼 Image'}</span>
-            ${isVideo ? `<span>· ${sh.duration}s</span>` : ''}
+      const isFailed = sh.status === 'failed';
+      if (isFailed) {
+        html += `<div class="ve-asset-item" style="opacity:.4;cursor:not-allowed;" title="Shot failed — fix in Shot Editor" onclick="event.preventDefault()">
+          <div class="ve-asset-thumb" style="background:${sh.bg};filter:grayscale(.7)">${sh.icon}</div>
+          <div class="ve-asset-info">
+            <div class="ve-asset-name" style="color:var(--t3)">Shot ${sh.id}</div>
+            <div class="ve-asset-type" style="color:var(--error)">⚠ Failed · Fix in Shot Editor</div>
           </div>
-        </div>
-        ${added ? '<div class="ve-asset-added">✓ In timeline</div>' : ''}
-      </div>`;
+        </div>`;
+      } else {
+        html += `<div class="ve-asset-item ${isActive ? 'active-asset' : ''}" onclick="${added ? `selectFromAsset('${sh.id}')` : `addToTimeline('${sh.id}')`}">
+          <div class="ve-asset-thumb" style="background:${sh.bg}">${sh.icon}</div>
+          <div class="ve-asset-info">
+            <div class="ve-asset-name">Shot ${sh.id}</div>
+            <div class="ve-asset-type">
+              <span>${sh.type}</span>
+              <span>·</span>
+              <span style="color:${isVideo ? 'var(--success)' : 'var(--accent-h)'}">${isVideo ? '▶ Video' : '🖼 Image'}</span>
+              ${isVideo ? `<span>· ${sh.duration}s</span>` : ''}
+            </div>
+          </div>
+          ${added ? '<div class="ve-asset-added">✓ In timeline</div>' : ''}
+        </div>`;
+      }
     });
     html += `</div>`;
   });
