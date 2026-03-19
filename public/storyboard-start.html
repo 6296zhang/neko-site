@@ -24,12 +24,12 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* NAV */
+/* ── TOP NAV ── */
 .nav { height: 48px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
 .nav-left { display: flex; align-items: center; gap: 12px; }
 .logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
 .logo-dot { width: 22px; height: 22px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.story-name input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; width: 160px; padding: 2px 0; transition: all .15s; }
+.story-name input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; width: 180px; padding: 2px 0; transition: all .15s; }
 .story-name input:focus { border-bottom-color: var(--accent); color: var(--text); }
 .divider { width: 1px; height: 20px; background: var(--border2); }
 .nav-tabs { display: flex; gap: 2px; }
@@ -41,93 +41,99 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .credits span { color: var(--yellow); font-size: 10px; }
 .nav-btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); transition: all .15s; }
 .nav-btn:hover { background: var(--surface2); color: var(--text); }
-.convert-btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; display: none; align-items: center; gap: 6px; transition: all .15s; }
-.convert-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
+.convert-btn { padding: 6px 16px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; align-items: center; gap: 6px; transition: all .15s; display: none; }
 .convert-btn.show { display: flex; }
+.convert-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
 
-/* CONTENT */
+/* ── TOOLBAR ── */
+.toolbar { height: 38px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
+.toolbar-left { display: flex; align-items: center; gap: 8px; }
+.ratio-tag { padding: 3px 8px; border-radius: 5px; background: var(--surface2); border: 1px solid var(--border2); font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; }
+.ratio-tag:hover { color: var(--text); }
+.ratio-tag.active { color: var(--text); border-color: var(--border2); }
+.toolbar-divider { width: 1px; height: 16px; background: var(--border2); }
+.zoom-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+.zoom-slider { width: 80px; height: 3px; appearance: none; background: var(--surface3); border-radius: 2px; outline: none; cursor: pointer; }
+.zoom-slider::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent2); cursor: pointer; }
+.zoom-val { font-size: 11px; color: var(--text2); min-width: 32px; }
+.toolbar-right { display: flex; align-items: center; gap: 4px; }
+.view-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; transition: all .15s; }
+.view-btn:hover { background: var(--surface2); color: var(--text2); }
+.view-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+
+/* ── CONTENT ── */
 .content { flex: 1; overflow-y: auto; padding: 20px 24px 60px; }
 .content::-webkit-scrollbar { width: 5px; }
 .content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* SCENE BLOCK */
-.scene-block { margin-bottom: 20px; }
+/* ── SCENE BLOCK ── */
+.scene-block { margin-bottom: 24px; }
 
-/* Scene header row */
-.scene-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 0 2px; user-select: none; }
-.scene-drag { color: var(--text3); font-size: 12px; cursor: grab; }
-.scene-collapse { width: 18px; height: 18px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; transition: all .15s; flex-shrink: 0; }
-.scene-collapse:hover { color: var(--text2); }
-.scene-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
-.scene-desc-text { font-size: 12px; color: var(--text2); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.scene-meta { font-size: 10px; color: var(--text3); white-space: nowrap; }
-.scene-header-add { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; white-space: nowrap; }
-.scene-header-add:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+/* Scene header */
+.scene-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 0 2px; }
+.scene-drag-h { color: var(--text3); font-size: 12px; cursor: grab; opacity: .5; }
+.scene-drag-h:hover { opacity: 1; }
+.scene-collapse-btn { width: 18px; height: 18px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; transition: all .15s; flex-shrink: 0; }
+.scene-collapse-btn:hover { color: var(--text2); }
+.scene-label-tag { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
+.scene-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
+.scene-shots-count { font-size: 11px; color: var(--text3); white-space: nowrap; }
+.scene-desc-inline { font-size: 12px; color: var(--text2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scene-spacer { flex: 1; }
+.scene-header-actions { display: flex; align-items: center; gap: 2px; }
+.sh-act { width: 26px; height: 26px; border-radius: 6px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all .15s; }
+.sh-act:hover { background: var(--surface2); border-color: var(--border2); color: var(--text2); }
+.sh-act.del:hover { color: var(--pink); border-color: rgba(232,121,160,.25); }
 
 /* Shot grid */
-.shot-grid { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; }
+.shot-grid { display: flex; gap: 6px; overflow-x: auto; align-items: stretch; }
 .shot-grid::-webkit-scrollbar { height: 3px; }
 .shot-grid::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
 
-/* Shot tile — image state */
-.shot-tile {
-  position: relative; flex-shrink: 0; width: 200px; border-radius: 10px;
-  overflow: hidden; cursor: pointer; transition: all .15s;
-  border: 2px solid transparent;
-}
+/* Shot tile — image */
+.shot-tile { position: relative; flex-shrink: 0; width: 210px; border-radius: 10px; overflow: hidden; cursor: pointer; transition: all .15s; border: 2px solid transparent; background: var(--surface2); }
 .shot-tile:hover { border-color: rgba(124,92,252,.5); }
-.shot-tile-img {
-  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
-  font-size: 30px; position: relative; overflow: hidden;
-}
-.shot-tile-num {
-  position: absolute; top: 6px; left: 6px;
-  background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
-  padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white;
-}
-.shot-tile-overlay {
-  position: absolute; inset: 0; background: rgba(0,0,0,.55);
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  opacity: 0; transition: opacity .15s;
-}
-.shot-tile:hover .shot-tile-overlay { opacity: 1; }
+.shot-img { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 32px; position: relative; overflow: hidden; }
+.shot-num-badge { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,.65); backdrop-filter: blur(4px); padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
+.shot-drag-icon { color: rgba(255,255,255,.4); font-size: 10px; }
+.shot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; gap: 5px; opacity: 0; transition: opacity .15s; }
+.shot-tile:hover .shot-overlay { opacity: 1; }
 .shot-ov-btn { padding: 4px 10px; background: rgba(255,255,255,.92); color: #1a1a2e; border-radius: 5px; font-size: 11px; font-weight: 600; }
 
-/* Shot tile — empty/compose state */
-.shot-tile.compose-tile {
-  background: var(--surface); border: 1px solid var(--border);
-  width: auto; min-width: 320px; max-width: 480px; flex: 1;
-}
-.compose-inner { padding: 16px 16px 12px; }
-.compose-ta { width: 100%; background: transparent; border: none; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; min-height: 64px; }
+/* Add shot tile */
+.add-shot-tile { flex-shrink: 0; width: 210px; border-radius: 10px; border: 1.5px dashed var(--border2); aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; color: var(--text3); font-size: 11px; transition: all .15s; }
+.add-shot-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+
+/* Compose tile */
+.compose-tile { flex-shrink: 0; width: 380px; border-radius: 10px; border: 1px solid var(--border2); background: var(--surface); transition: border-color .2s; }
+.compose-tile.focused { border-color: rgba(124,92,252,.4); box-shadow: 0 0 0 3px rgba(124,92,252,.07); }
+.compose-inner { padding: 14px 16px 10px; }
+.compose-ta { width: 100%; background: transparent; border: none; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; min-height: 60px; }
 .compose-ta::placeholder { color: var(--text3); font-size: 14px; }
 .compose-params { display: flex; gap: 5px; flex-wrap: wrap; padding: 8px 16px; border-top: 1px solid var(--border); }
 .param-chip { display: flex; align-items: center; gap: 4px; padding: 4px 9px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
 .param-chip:hover { border-color: var(--accent2); color: var(--text); }
-.compose-footer { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; }
-.compose-footer-left { display: flex; gap: 6px; align-items: center; }
-.manual-btn { display: flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 7px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: transparent; cursor: pointer; transition: all .15s; }
+.compose-actions { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; }
+.compose-actions-l { display: flex; align-items: center; gap: 6px; }
+.manual-btn { display: flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 6px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: transparent; cursor: pointer; transition: all .15s; }
 .manual-btn:hover { background: var(--surface2); color: var(--text); }
 .or-t { font-size: 10px; color: var(--text3); }
 .gen-btn { padding: 7px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; opacity: .35; pointer-events: none; transition: all .2s; display: flex; align-items: center; gap: 6px; }
 .gen-btn.ready { opacity: 1; pointer-events: auto; }
 .gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(124,92,252,.45); }
 
-/* Script review state */
-.script-tile {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; width: auto; min-width: 360px; flex: 1;
-}
-.script-tile-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 8px; border-bottom: 1px solid var(--border); }
-.script-tile-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; gap: 8px; }
-.script-tile-count { font-size: 11px; color: var(--text3); font-weight: 400; text-transform: none; letter-spacing: 0; }
-.script-back { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
-.script-back:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
-.script-list { padding: 8px 12px; display: flex; flex-direction: column; gap: 5px; max-height: 240px; overflow-y: auto; }
+/* Script tile */
+.script-tile { flex-shrink: 0; width: 380px; border-radius: 10px; border: 1px solid var(--border2); background: var(--surface); display: flex; flex-direction: column; }
+.script-tile-hdr { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px 8px; border-bottom: 1px solid var(--border); }
+.script-tile-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; display: flex; align-items: center; gap: 7px; }
+.script-tile-cnt { font-size: 11px; color: var(--text3); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.script-back-btn { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
+.script-back-btn:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+.script-list { padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; max-height: 200px; }
 .script-list::-webkit-scrollbar { width: 3px; }
 .script-list::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
-.sc-card { display: flex; align-items: flex-start; gap: 7px; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; transition: all .15s; }
+.sc-card { display: flex; align-items: flex-start; gap: 6px; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; transition: all .15s; }
 .sc-card:hover { border-color: rgba(124,92,252,.25); }
 .sc-card.editing { border-color: var(--accent); }
 .drag-h { color: var(--text3); font-size: 11px; cursor: grab; padding-top: 2px; flex-shrink: 0; }
@@ -146,25 +152,16 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .sc-act { width: 20px; height: 20px; border-radius: 4px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s; }
 .sc-act:hover { background: var(--surface3); color: var(--text2); }
 .sc-act.del:hover { color: var(--pink); }
-.script-add-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; margin: 4px 12px 0; border: 1.5px dashed var(--border2); border-radius: 7px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
-.script-add-btn:hover { border-color: var(--accent); color: var(--accent2); }
-.script-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-top: 1px solid var(--border); margin-top: 8px; }
-.script-footer-info { font-size: 11px; color: var(--text3); }
+.script-add-row { display: flex; align-items: center; gap: 5px; padding: 6px 12px; margin: 2px 12px 0; border: 1.5px dashed var(--border2); border-radius: 7px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
+.script-add-row:hover { border-color: var(--accent); color: var(--accent2); }
+.script-ftr { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-top: 1px solid var(--border); margin-top: 6px; }
+.script-ftr-info { font-size: 11px; color: var(--text3); }
 .gen-img-btn { padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; }
 .gen-img-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(124,92,252,.45); }
 
-/* Add shot tile */
-.add-shot-tile {
-  flex-shrink: 0; width: 120px; border-radius: 10px;
-  border: 1.5px dashed var(--border2); aspect-ratio: 16/9;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 4px; cursor: pointer; color: var(--text3); font-size: 11px; transition: all .15s;
-}
-.add-shot-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
-
-/* Add scene row */
-.add-scene-row { display: flex; align-items: center; justify-content: center; padding: 8px 0; }
-.add-scene-btn { display: flex; align-items: center; gap: 6px; padding: 8px 20px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
+/* Add scene */
+.add-scene-row { display: flex; justify-content: center; padding: 8px 0 16px; }
+.add-scene-btn { display: flex; align-items: center; gap: 6px; padding: 8px 24px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
 .add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
 /* bgs */
@@ -172,7 +169,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
 .bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
 .bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
-.bg-ocean { background: linear-gradient(160deg, #051525, #0a2540, #0d3050); }
+.bg-ocean  { background: linear-gradient(160deg, #051525, #0a2540, #0d3050); }
 
 @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
 .gen-pulse { animation: pulse 1s ease-in-out infinite; }
@@ -185,6 +182,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 </head>
 <body>
 
+<!-- TOP NAV -->
 <nav class="nav">
   <div class="nav-left">
     <div class="logo"><div class="logo-dot">✦</div> OpenArt</div>
@@ -193,105 +191,130 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
     <div class="divider"></div>
     <div class="nav-tabs">
       <div class="nav-tab active">Storyboard</div>
-      <div class="nav-tab" onclick="toast('Timeline...')">Timeline</div>
+      <div class="nav-tab" onclick="toast('Video Editor...')">Video Editor</div>
     </div>
   </div>
   <div class="nav-right">
     <div class="credits"><span>✦</span> 268,860</div>
     <button class="nav-btn">Share</button>
-    <button class="convert-btn" id="convert-btn" onclick="toast('Converting all shots to video...')">▶ Convert images to video</button>
+    <button class="convert-btn" id="convert-btn" onclick="toast('Converting to video...')">▶ Convert images to video</button>
     <div class="avatar">🧝</div>
   </div>
 </nav>
 
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <div class="ratio-tag active" onclick="toast('16:9')">16:9</div>
+    <div class="ratio-tag" onclick="toast('9:16')">9:16</div>
+    <div class="ratio-tag" onclick="toast('1:1')">1:1</div>
+    <div class="toolbar-divider"></div>
+    <div class="zoom-row">
+      <span>Zoom</span>
+      <input type="range" class="zoom-slider" min="50" max="150" value="100" oninput="document.getElementById('zoom-val').textContent=this.value+'%'">
+      <span class="zoom-val" id="zoom-val">100%</span>
+    </div>
+  </div>
+  <div class="toolbar-right">
+    <div class="view-btn active" title="Row view" onclick="setView(this,'row')">☰</div>
+    <div class="view-btn" title="Grid view" onclick="setView(this,'grid')">⊞</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
 <div class="content" id="content">
   <div id="scenes"></div>
   <div class="add-scene-row" id="add-scene-row" style="display:none">
-    <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
+    <div class="add-scene-btn" onclick="addScene()">+ SCENE</div>
   </div>
 </div>
 
 <div class="toast" id="toast-el"></div>
 
 <script>
-const SCRIPTS = {
-  0: [
+const SCRIPTS = [
+  [
     { type:'scene',    desc:'Wide shot — Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
     { type:'dialogue', desc:'Close-up — She pauses, looks up at glowing signs. Whispers: "Every night I wait for something impossible."' },
     { type:'scene',    desc:'Pull back — City skyline looms behind her small figure in the vast urban night' },
   ],
-  1: [
-    { type:'scene',    desc:'Lumina pushes open heavy library doors, dust motes swirling in shafts of golden light' },
-    { type:'action',   desc:'She runs her fingers along ancient book spines, stops at one that glows faintly' },
-    { type:'dialogue', desc:'Pages flutter open on their own. She reads aloud: "This prophecy... it\'s about me."' },
+  [
+    { type:'scene',    desc:'Lumina pushes open heavy library doors, dust motes swirling in golden light shafts' },
+    { type:'action',   desc:'She runs fingers along ancient book spines, stops at one glowing faintly from within' },
+    { type:'dialogue', desc:'Pages flutter open. She reads aloud: "This prophecy... it\'s about me."' },
   ],
-  2: [
-    { type:'action',   desc:'Lumina stands at a cliff edge, wind whipping her hair, the valley sprawling below' },
+  [
+    { type:'action',   desc:'Lumina stands at a cliff edge, wind whipping her hair, vast valley below' },
     { type:'dialogue', desc:'"I didn\'t come this far to stop now." Her eyes glow faintly violet.' },
     { type:'scene',    desc:'Epic wide — golden light breaks through clouds as she steps forward' },
   ],
-};
-const SHOTS = {
-  0: [
-    { bg:'bg-night',  icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets at night' },
-    { bg:'bg-night',  icon:'🧝', desc:'Close-up: wistful expression, looks up at city signs' },
-    { bg:'bg-night',  icon:'✨', desc:'Pull back: small figure against vast city skyline' },
+];
+const SHOTS = [
+  [
+    { bg:'bg-night',  icon:'🌃' },
+    { bg:'bg-night',  icon:'🧝' },
+    { bg:'bg-night',  icon:'✨' },
   ],
-  1: [
-    { bg:'bg-castle', icon:'📖', desc:'Library doors open, golden dust motes in light shafts' },
-    { bg:'bg-castle', icon:'🧝', desc:'Her fingers trace glowing book spine, eyes curious' },
-    { bg:'bg-castle', icon:'⚡', desc:'Pages flutter: "This prophecy... it\'s about me."' },
+  [
+    { bg:'bg-castle', icon:'📖' },
+    { bg:'bg-castle', icon:'🧝' },
+    { bg:'bg-castle', icon:'⚡' },
   ],
-  2: [
-    { bg:'bg-golden', icon:'🏔', desc:'Cliff edge: Lumina stands against vast valley below' },
-    { bg:'bg-golden', icon:'🧝', desc:'Eyes glow violet: "I didn\'t come this far to stop now."' },
-    { bg:'bg-golden', icon:'☀️', desc:'Epic wide: golden light breaks as she steps forward' },
+  [
+    { bg:'bg-golden', icon:'🏔' },
+    { bg:'bg-golden', icon:'🧝' },
+    { bg:'bg-golden', icon:'☀️' },
   ],
-};
+];
 
 let sceneCount = 0;
-let scenesWithImages = 0;
+let totalScenes = 0;
+let scenesComplete = 0;
 
-function init() {
-  addSceneBlock(true); // first scene starts in compose mode
-}
+function init() { addSceneBlock(true); }
 
 function addSceneBlock(isFirst) {
   const sid = sceneCount++;
+  totalScenes++;
   const container = document.getElementById('scenes');
   const div = document.createElement('div');
   div.className = 'scene-block' + (isFirst ? '' : ' fade-up');
   div.id = `sb-${sid}`;
 
   div.innerHTML = `
-    <div class="scene-header">
-      <span class="scene-drag">⠿</span>
-      <div class="scene-collapse" onclick="toggleCollapse(${sid})">▾</div>
-      <span class="scene-label">Scene ${sid+1}</span>
-      <span class="scene-desc-text" id="sdesc-${sid}" style="display:none"></span>
-      <span class="scene-meta" id="smeta-${sid}" style="display:none"></span>
-      <div style="flex:1"></div>
-      <div class="scene-header-add" onclick="addManualShot(${sid})">+ Add Shot</div>
+    <div class="scene-header" id="sh-${sid}">
+      <span class="scene-drag-h">⠿</span>
+      <div class="scene-collapse-btn" onclick="toggleCollapse(${sid})">▾</div>
+      <span class="scene-label-tag">Scene ${sid+1}</span>
+      <span class="scene-dot" id="sdot-${sid}" style="display:none"></span>
+      <span class="scene-shots-count" id="scount-${sid}" style="display:none"></span>
+      <span class="scene-dot" id="sdot2-${sid}" style="display:none"></span>
+      <span class="scene-desc-inline" id="sdesc-${sid}"></span>
+      <div class="scene-spacer"></div>
+      <div class="scene-header-actions">
+        <div class="sh-act" title="Play scene" onclick="toast('Playing scene ${sid+1}...')">▶</div>
+        <div class="sh-act" title="Duplicate" onclick="toast('Duplicating scene...')">⧉</div>
+        <div class="sh-act del" title="Delete" onclick="toast('Delete scene?')">🗑</div>
+      </div>
     </div>
     <div class="shot-grid" id="grid-${sid}">
-      <!-- compose tile -->
-      <div class="shot-tile compose-tile" id="compose-${sid}">
+      <div class="compose-tile" id="compose-${sid}">
         <div class="compose-inner">
           <textarea class="compose-ta" id="ta-${sid}" rows="3"
             placeholder="Describe this scene — what happens, where, what mood..."
-            oninput="onInput(this,'gbtn-${sid}')"></textarea>
+            oninput="onInput(this,'gbtn-${sid}','compose-${sid}')"></textarea>
         </div>
         <div class="compose-params">
           <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters</div>
-          <div class="param-chip" onclick="toast('Reference...')">📎 Reference</div>
+          <div class="param-chip" onclick="toast('Reference images...')">📎 Reference</div>
           <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
           <div class="param-chip" id="cc-${sid}" onclick="cycleCount('cc-${sid}')">🎬 Auto · 3 shots</div>
         </div>
-        <div class="compose-footer">
-          <div class="compose-footer-left">
+        <div class="compose-actions">
+          <div class="compose-actions-l">
             <div class="manual-btn" onclick="addManualShot(${sid})">＋ Manual</div>
             <span class="or-t">or</span>
-            <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
+            <div class="manual-btn" onclick="toast('Import media...')">⬆ Import</div>
           </div>
           <button class="gen-btn" id="gbtn-${sid}" onclick="genScripts(${sid})">✦ Generate</button>
         </div>
@@ -299,20 +322,19 @@ function addSceneBlock(isFirst) {
     </div>`;
 
   container.appendChild(div);
-  if (isFirst) {
-    setTimeout(() => document.getElementById(`ta-${sid}`).focus(), 100);
-  }
+  if (isFirst) setTimeout(() => document.getElementById(`ta-0`).focus(), 80);
 }
 
-const countOpts = ['Auto · 2','Auto · 3','Auto · 4'];
+const countOpts = ['Auto · 2 shots','Auto · 3 shots','Auto · 4 shots'];
 let countIdx = {};
 function cycleCount(id) {
   countIdx[id] = ((countIdx[id]||1)+1) % countOpts.length;
-  document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdx[id]]} shots`;
+  document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdx[id]]}`;
 }
 
-function onInput(ta, btnId) {
+function onInput(ta, btnId, tileId) {
   document.getElementById(btnId).classList.toggle('ready', ta.value.trim().length > 0);
+  document.getElementById(tileId).classList.toggle('focused', document.activeElement === ta && ta.value.trim().length > 0);
 }
 
 function genScripts(sid) {
@@ -321,22 +343,21 @@ function genScripts(sid) {
   if (!document.getElementById('story-title').value)
     document.getElementById('story-title').value = ta.value.trim().slice(0,44);
 
-  // show loading in compose tile
   const compose = document.getElementById(`compose-${sid}`);
-  compose.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:24px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shot scripts...</div>`;
+  compose.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:20px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shot scripts...</div>`;
 
   const scripts = SCRIPTS[sid % 3];
-  setTimeout(() => showScripts(sid, scripts, ta.value.trim()), 1000);
+  const desc = ta.value.trim();
+  setTimeout(() => showScripts(sid, scripts, desc), 1000);
 }
 
 function showScripts(sid, scripts, desc) {
   const grid = document.getElementById(`grid-${sid}`);
   const compose = document.getElementById(`compose-${sid}`);
 
-  // replace compose tile with script tile
-  const scriptTile = document.createElement('div');
-  scriptTile.className = 'script-tile fade-up';
-  scriptTile.id = `script-tile-${sid}`;
+  const tile = document.createElement('div');
+  tile.className = 'script-tile fade-up';
+  tile.id = `stile-${sid}`;
 
   const cardsHTML = scripts.map((s,i) => `
     <div class="sc-card" id="scc-${sid}-${i}" onclick="toggleSCEdit(${sid},${i})">
@@ -357,43 +378,43 @@ function showScripts(sid, scripts, desc) {
       </div>
     </div>`).join('');
 
-  scriptTile.innerHTML = `
-    <div class="script-tile-header">
-      <div class="script-tile-label">Shot Scripts <span class="script-tile-count" id="scc-count-${sid}">${scripts.length} shots</span></div>
-      <div class="script-back" onclick="backToCompose(${sid},'${desc}')">← Edit description</div>
+  tile.innerHTML = `
+    <div class="script-tile-hdr">
+      <div class="script-tile-label">Shot Scripts <span class="script-tile-cnt" id="scc-cnt-${sid}">${scripts.length} shots</span></div>
+      <div class="script-back-btn" onclick="backToCompose(${sid},'${desc.replace(/'/g,"\\'")}')">← Edit description</div>
     </div>
     <div class="script-list" id="scl-${sid}">${cardsHTML}</div>
-    <div class="script-add-btn" onclick="addSCShot(${sid})">+ Add shot</div>
-    <div class="script-footer">
-      <div class="script-footer-info">${scripts.length} shots · free preview</div>
+    <div class="script-add-row" onclick="addSCShot(${sid})">+ Add shot</div>
+    <div class="script-ftr">
+      <div class="script-ftr-info">${scripts.length} shots · confirm to generate images</div>
       <button class="gen-img-btn" onclick="genImages(${sid})">✦ Generate Images →</button>
     </div>`;
 
-  grid.replaceChild(scriptTile, compose);
-  toast('✦ Shot scripts ready · Review and edit');
+  grid.replaceChild(tile, compose);
+  toast('✦ Scripts ready · Review and edit');
 }
 
 function toggleSCEdit(sid, idx) {
-  const card = document.getElementById(`scc-${sid}-${idx}`);
-  const editing = card.classList.contains('editing');
-  document.querySelectorAll(`[id^="scc-${sid}-"]`).forEach(c => c.classList.remove('editing'));
-  if (!editing) { card.classList.add('editing'); card.querySelector('.sc-desc-e').focus(); }
+  const c = document.getElementById(`scc-${sid}-${idx}`);
+  const editing = c.classList.contains('editing');
+  document.querySelectorAll(`[id^="scc-${sid}-"]`).forEach(x => x.classList.remove('editing'));
+  if (!editing) { c.classList.add('editing'); c.querySelector('.sc-desc-e').focus(); }
 }
 function saveSCEdit(sid, idx, ta) {
-  const card = document.getElementById(`scc-${sid}-${idx}`);
-  card.querySelector('.sc-desc-v').textContent = ta.value;
-  card.classList.remove('editing');
+  const c = document.getElementById(`scc-${sid}-${idx}`);
+  c.querySelector('.sc-desc-v').textContent = ta.value;
+  c.classList.remove('editing');
 }
 function deleteSC(sid, idx) {
   const c = document.getElementById(`scc-${sid}-${idx}`);
-  c.style.opacity='0'; c.style.transition='all .2s';
+  c.style.opacity = '0'; c.style.transition = 'all .18s';
   setTimeout(() => {
     c.remove();
     const list = document.getElementById(`scl-${sid}`);
     const count = list.querySelectorAll('.sc-card').length;
-    document.getElementById(`scc-count-${sid}`).textContent = `${count} shots`;
+    document.getElementById(`scc-cnt-${sid}`).textContent = `${count} shots`;
     toast('Shot removed');
-  }, 200);
+  }, 180);
 }
 function addSCShot(sid) {
   const list = document.getElementById(`scl-${sid}`);
@@ -414,19 +435,19 @@ function addSCShot(sid) {
     </div>`;
   list.appendChild(div);
   div.querySelector('textarea').focus();
-  document.getElementById(`scc-count-${sid}`).textContent = `${count+1} shots`;
+  document.getElementById(`scc-cnt-${sid}`).textContent = `${count+1} shots`;
 }
 function backToCompose(sid, desc) {
   const grid = document.getElementById(`grid-${sid}`);
-  const scriptTile = document.getElementById(`script-tile-${sid}`);
-  const composeTile = document.createElement('div');
-  composeTile.className = 'shot-tile compose-tile';
-  composeTile.id = `compose-${sid}`;
-  composeTile.innerHTML = `
+  const stile = document.getElementById(`stile-${sid}`);
+  const compose = document.createElement('div');
+  compose.className = 'compose-tile';
+  compose.id = `compose-${sid}`;
+  compose.innerHTML = `
     <div class="compose-inner">
       <textarea class="compose-ta" id="ta-${sid}" rows="3"
         placeholder="Describe this scene..."
-        oninput="onInput(this,'gbtn-${sid}')">${desc}</textarea>
+        oninput="onInput(this,'gbtn-${sid}','compose-${sid}')">${desc}</textarea>
     </div>
     <div class="compose-params">
       <div class="param-chip">👤 Characters</div>
@@ -434,95 +455,88 @@ function backToCompose(sid, desc) {
       <div class="param-chip">🎨 Photographic</div>
       <div class="param-chip" id="cc-${sid}" onclick="cycleCount('cc-${sid}')">🎬 Auto · 3 shots</div>
     </div>
-    <div class="compose-footer">
-      <div class="compose-footer-left">
+    <div class="compose-actions">
+      <div class="compose-actions-l">
         <div class="manual-btn" onclick="addManualShot(${sid})">＋ Manual</div>
         <span class="or-t">or</span>
         <div class="manual-btn">⬆ Import</div>
       </div>
       <button class="gen-btn ready" id="gbtn-${sid}" onclick="genScripts(${sid})">✦ Generate</button>
     </div>`;
-  grid.replaceChild(composeTile, scriptTile);
+  grid.replaceChild(compose, stile);
 }
 
 function genImages(sid) {
   const list = document.getElementById(`scl-${sid}`);
   const cards = list.querySelectorAll('.sc-card');
-  const scriptTile = document.getElementById(`script-tile-${sid}`);
+  const stile = document.getElementById(`stile-${sid}`);
   const grid = document.getElementById(`grid-${sid}`);
 
-  // loading
-  scriptTile.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:24px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating images...</div>`;
+  stile.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:20px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating images...</div>`;
 
-  const shotData = SHOTS[sid % 3];
-  const descs = Array.from(cards).map(c => c.querySelector('.sc-desc-v').textContent || '');
+  const descs = Array.from(cards).map(c => c.querySelector('.sc-desc-v').textContent);
+  const shotSet = SHOTS[sid % 3];
 
   let count = 0;
   const iv = setInterval(() => {
     count++;
-    if (count > shotData.length) {
+    if (count > shotSet.length) {
       clearInterval(iv);
-      // remove script tile
-      scriptTile.remove();
-      // add "+ add shot" tile
+      stile.remove();
+      // add shot tile
       const addTile = document.createElement('div');
       addTile.className = 'add-shot-tile fade-up';
-      addTile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
+      addTile.innerHTML = `<span style="font-size:18px">+</span><span>Add Shot</span>`;
       addTile.onclick = () => toast('Opening shot editor...');
       grid.appendChild(addTile);
       // update scene header
-      document.getElementById(`sdesc-${sid}`).textContent = descs[0]?.slice(0,50) + '...';
-      document.getElementById(`sdesc-${sid}`).style.display = '';
-      document.getElementById(`smeta-${sid}`).textContent = `${shotData.length} shots`;
-      document.getElementById(`smeta-${sid}`).style.display = '';
-      scenesWithImages++;
+      document.getElementById(`sdot-${sid}`).style.display = '';
+      document.getElementById(`scount-${sid}`).textContent = `${shotSet.length} Shots`;
+      document.getElementById(`scount-${sid}`).style.display = '';
+      document.getElementById(`sdot2-${sid}`).style.display = '';
+      document.getElementById(`sdesc-${sid}`).textContent = descs[0]?.slice(0,60) + (descs[0]?.length > 60 ? '...' : '');
+      scenesComplete++;
       document.getElementById('convert-btn').classList.add('show');
       document.getElementById('add-scene-row').style.display = 'flex';
-      toast(`✦ Scene ${sid+1} complete · ${shotData.length} images generated`);
+      toast(`✦ Scene ${sid+1} complete · ${shotSet.length} images generated`);
       return;
     }
-    const s = shotData[count-1];
-    const desc = descs[count-1] || s.desc;
+    const s = shotSet[count-1];
     const tile = document.createElement('div');
     tile.className = 'shot-tile fade-up';
     tile.innerHTML = `
-      <div class="shot-tile-img ${s.bg}">
-        <span style="font-size:30px">${s.icon}</span>
-        <div class="shot-tile-num">${sid+1}.${count}</div>
-        <div class="shot-tile-overlay">
+      <div class="shot-img ${s.bg}">
+        <span style="font-size:32px">${s.icon}</span>
+        <div class="shot-num-badge"><span class="shot-drag-icon">⠿</span>${sid+1}.${count}</div>
+        <div class="shot-overlay">
           <div class="shot-ov-btn">Edit</div>
           <div class="shot-ov-btn">Regen</div>
         </div>
       </div>`;
     tile.onclick = () => toast(`Shot ${sid+1}.${count} — opening editor...`);
-    grid.insertBefore(tile, scriptTile);
+    grid.insertBefore(tile, stile);
   }, 650);
 }
 
 function addManualShot(sid) {
-  // if compose tile still there, replace it
-  const compose = document.getElementById(`compose-${sid}`);
   const grid = document.getElementById(`grid-${sid}`);
+  const compose = document.getElementById(`compose-${sid}`);
   if (compose) compose.remove();
-
-  const count = grid.querySelectorAll('.shot-tile:not(.compose-tile)').length;
+  const count = grid.querySelectorAll('.shot-tile').length;
   const tile = document.createElement('div');
   tile.className = 'shot-tile fade-up';
-  tile.style.background = 'var(--surface2)';
   tile.innerHTML = `
-    <div class="shot-tile-img" style="background:var(--surface2)">
+    <div class="shot-img" style="background:var(--surface3)">
       <div style="text-align:center;color:var(--text3)">
         <div style="font-size:18px;margin-bottom:3px">+</div>
         <div style="font-size:10px">Write prompt</div>
       </div>
-      <div class="shot-tile-num">${sid+1}.${count+1}</div>
+      <div class="shot-num-badge">${sid+1}.${count+1}</div>
     </div>`;
   tile.onclick = () => toast('Opening shot editor...');
-
   const addTile = grid.querySelector('.add-shot-tile');
   if (addTile) grid.insertBefore(tile, addTile);
   else grid.appendChild(tile);
-
   document.getElementById('add-scene-row').style.display = 'flex';
   toast('Shot added · click to edit');
 }
@@ -538,10 +552,16 @@ function addScene() {
 
 function toggleCollapse(sid) {
   const grid = document.getElementById(`grid-${sid}`);
-  const btn = document.querySelector(`#sb-${sid} .scene-collapse`);
+  const btn = document.querySelector(`#sb-${sid} .scene-collapse-btn`);
   const collapsed = grid.style.display === 'none';
   grid.style.display = collapsed ? 'flex' : 'none';
   btn.textContent = collapsed ? '▾' : '▸';
+}
+
+function setView(el, mode) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  toast(mode === 'grid' ? 'Grid view' : 'Row view');
 }
 
 let toastTimer;
