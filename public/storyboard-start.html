@@ -92,6 +92,44 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .gen-btn.ready { opacity: 1; pointer-events: auto; }
 .gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
 
+/* SCRIPT LIST — State B */
+.script-area { border-top: 1px solid var(--border); }
+.script-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 8px; }
+.script-header-left { display: flex; align-items: center; gap: 8px; }
+.script-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; }
+.script-count { font-size: 11px; color: var(--text3); }
+.script-edit-desc { font-size: 11px; color: var(--text3); cursor: pointer; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
+.script-edit-desc:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+
+.script-list { padding: 0 16px 8px; display: flex; flex-direction: column; gap: 5px; }
+.script-card { display: flex; align-items: flex-start; gap: 8px; padding: 9px 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 9px; cursor: pointer; transition: all .15s; }
+.script-card:hover { border-color: rgba(124,92,252,.25); }
+.script-card.editing { border-color: var(--accent); }
+.drag-handle { color: var(--text3); font-size: 12px; cursor: grab; padding-top: 2px; flex-shrink: 0; user-select: none; }
+.script-body { flex: 1; min-width: 0; }
+.script-top { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.script-num { font-size: 10px; font-weight: 700; color: var(--text3); }
+.script-type { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 10px; }
+.t-scene { background: rgba(52,211,153,.12); color: var(--green); }
+.t-dialogue { background: rgba(124,92,252,.2); color: var(--accent2); }
+.t-action { background: rgba(251,191,36,.12); color: var(--yellow); }
+.script-desc-view { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.script-desc-edit { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; color: var(--text); font-size: 12px; line-height: 1.5; padding: 5px 8px; outline: none; font-family: inherit; resize: none; margin-top: 4px; }
+.script-card.editing .script-desc-view { display: none; }
+.script-card.editing .script-desc-edit { display: block; }
+.script-actions { display: flex; gap: 3px; flex-shrink: 0; }
+.script-action { width: 22px; height: 22px; border-radius: 5px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s; }
+.script-action:hover { background: var(--surface3); border-color: var(--border2); color: var(--text2); }
+.script-action.del:hover { color: var(--pink); border-color: rgba(232,121,160,.3); }
+
+.script-add { display: flex; align-items: center; gap: 6px; padding: 7px 12px; margin: 4px 16px 0; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
+.script-add:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+
+.script-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--border); }
+.script-footer-left { font-size: 11px; color: var(--text3); }
+.gen-images-btn { padding: 9px 22px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; }
+.gen-images-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
+
 /* SHOTS STRIP */
 .shots-strip { display: flex; gap: 8px; padding: 16px 16px; flex-wrap: nowrap; overflow-x: auto; border-top: 1px solid var(--border); }
 .shots-strip::-webkit-scrollbar { height: 3px; }
@@ -197,7 +235,10 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
         </div>
       </div>
 
-      <!-- Shots strip (hidden until generated) -->
+      <!-- Script area — State B -->
+      <div class="script-area" id="script-1" style="display:none"></div>
+
+      <!-- Shots strip — State C -->
       <div class="shots-strip" id="strip-1" style="display:none"></div>
     </div>
   </div>
@@ -249,46 +290,177 @@ function cycleCount(id) {
   document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdxMap[id]]}`;
 }
 
+const SCRIPTS = {
+  a: [
+    { type:'scene',    desc:'Wide shot: Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
+    { type:'dialogue', desc:'Close-up: Lumina pauses mid-step, looks up at glowing signs — she whispers "every night I wait for something impossible"' },
+    { type:'scene',    desc:'Pull back reveal: City skyline looms behind her small figure in the vast urban night' },
+  ],
+  b: [
+    { type:'scene',    desc:'Lumina pushes open heavy library doors, dust motes swirling in golden light' },
+    { type:'action',   desc:'She runs her fingers along ancient spines, stops at a glowing book — pulls it from the shelf' },
+    { type:'dialogue', desc:'Pages flutter open on their own. Lumina reads aloud: "This prophecy... it\'s about me."' },
+  ],
+};
+
 function generateScene(sid) {
   const ta = document.getElementById('ta-'+sid);
   if (!ta.value.trim()) return;
 
-  // auto-title from input
   if (!document.getElementById('story-title').value) {
     document.getElementById('story-title').value = ta.value.trim().slice(0,40);
   }
 
-  // hide compose, show strip
+  // hide compose
   document.getElementById('compose-'+sid).style.display = 'none';
-  const strip = document.getElementById('strip-'+sid);
-  strip.style.display = 'flex';
-  strip.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:10px 4px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shots...</div>`;
 
-  // show bottom bar & add scene btn
+  // show script area with loading
+  const scriptEl = document.getElementById('script-'+sid);
+  scriptEl.style.display = 'block';
+  scriptEl.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:20px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shot scripts...</div>`;
+
   document.getElementById('bottom-bar').style.display = 'flex';
   document.getElementById('add-scene-btn').style.display = 'inline-flex';
 
-  const shots = SHOTS[setAB];
-  setAB = setAB === 'a' ? 'b' : 'a';
-  let count = 0;
+  const scripts = SCRIPTS[setAB];
 
+  setTimeout(() => {
+    renderScriptList(sid, scripts);
+    toast('✦ Shot scripts ready · Review and edit before generating images');
+  }, 1200);
+}
+
+function renderScriptList(sid, scripts) {
+  const scriptEl = document.getElementById('script-'+sid);
+  let cardsHTML = scripts.map((s, i) => `
+    <div class="script-card" id="sc-${sid}-${i}" onclick="toggleScriptEdit('${sid}',${i})">
+      <div class="drag-handle">⠿</div>
+      <div class="script-body">
+        <div class="script-top">
+          <div class="script-num">Shot ${sid}.${i+1}</div>
+          <div class="script-type t-${s.type}">${s.type.charAt(0).toUpperCase()+s.type.slice(1)}</div>
+        </div>
+        <div class="script-desc-view">${s.desc}</div>
+        <textarea class="script-desc-edit" rows="2"
+          onclick="event.stopPropagation()"
+          onblur="saveScriptEdit('${sid}',${i},this)">${s.desc}</textarea>
+      </div>
+      <div class="script-actions" onclick="event.stopPropagation()">
+        <div class="script-action" onclick="toggleScriptEdit('${sid}',${i})">✏</div>
+        <div class="script-action del" onclick="deleteScript('${sid}',${i})">✕</div>
+      </div>
+    </div>`).join('');
+
+  scriptEl.innerHTML = `
+    <div class="script-header">
+      <div class="script-header-left">
+        <div class="script-label">Shot Scripts</div>
+        <div class="script-count" id="sc-count-${sid}">${scripts.length} shots</div>
+      </div>
+      <div class="script-edit-desc" onclick="backToCompose('${sid}')">✏ Edit description</div>
+    </div>
+    <div class="script-list" id="sc-list-${sid}">${cardsHTML}</div>
+    <div class="script-add" onclick="addScriptShot('${sid}')">+ Add shot</div>
+    <div class="script-footer">
+      <div class="script-footer-left">${scripts.length} shots · images generated after confirmation</div>
+      <button class="gen-images-btn" onclick="generateImages('${sid}')">✦ Generate Images →</button>
+    </div>`;
+}
+
+function toggleScriptEdit(sid, idx) {
+  const card = document.getElementById(`sc-${sid}-${idx}`);
+  const editing = card.classList.contains('editing');
+  document.querySelectorAll(`[id^="sc-${sid}-"]`).forEach(c => c.classList.remove('editing'));
+  if (!editing) { card.classList.add('editing'); card.querySelector('.script-desc-edit').focus(); }
+}
+
+function saveScriptEdit(sid, idx, ta) {
+  const card = document.getElementById(`sc-${sid}-${idx}`);
+  card.querySelector('.script-desc-view').textContent = ta.value;
+  card.classList.remove('editing');
+}
+
+function deleteScript(sid, idx) {
+  const card = document.getElementById(`sc-${sid}-${idx}`);
+  card.style.opacity = '0'; card.style.transform = 'translateX(8px)'; card.style.transition = 'all .2s';
+  setTimeout(() => {
+    card.remove();
+    const list = document.getElementById(`sc-list-${sid}`);
+    list.querySelectorAll('.script-card').forEach((c,i) => {
+      c.querySelector('.script-num').textContent = `Shot ${sid}.${i+1}`;
+    });
+    const count = list.querySelectorAll('.script-card').length;
+    document.getElementById(`sc-count-${sid}`).textContent = `${count} shots`;
+  }, 200);
+  toast('Shot removed');
+}
+
+function addScriptShot(sid) {
+  const list = document.getElementById(`sc-list-${sid}`);
+  const count = list.querySelectorAll('.script-card').length;
+  const div = document.createElement('div');
+  div.className = 'script-card fade-up editing';
+  div.id = `sc-${sid}-${count}`;
+  div.innerHTML = `
+    <div class="drag-handle">⠿</div>
+    <div class="script-body">
+      <div class="script-top">
+        <div class="script-num">Shot ${sid}.${count+1}</div>
+        <div class="script-type t-scene">Scene</div>
+      </div>
+      <div class="script-desc-view"></div>
+      <textarea class="script-desc-edit" rows="2" placeholder="Describe this shot..."
+        onblur="saveScriptEdit('${sid}',${count},this)"></textarea>
+    </div>
+    <div class="script-actions" onclick="event.stopPropagation()">
+      <div class="script-action del" onclick="deleteScript('${sid}',${count})">✕</div>
+    </div>`;
+  list.appendChild(div);
+  div.querySelector('textarea').focus();
+  document.getElementById(`sc-count-${sid}`).textContent = `${count+1} shots`;
+}
+
+function backToCompose(sid) {
+  document.getElementById('compose-'+sid).style.display = 'block';
+  document.getElementById('script-'+sid).style.display = 'none';
+}
+
+function generateImages(sid) {
+  const list = document.getElementById(`sc-list-${sid}`);
+  const cards = list.querySelectorAll('.script-card');
+  const shots = SHOTS[setAB === 'a' ? 'b' : 'a'];
+  setAB = setAB === 'a' ? 'b' : 'a';
+
+  // hide script
+  document.getElementById('script-'+sid).style.display = 'none';
+
+  const strip = document.getElementById('strip-'+sid);
+  strip.style.display = 'flex';
+  strip.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:10px 4px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating images...</div>`;
+
+  const shotData = Array.from(cards).map((c, i) => ({
+    desc: c.querySelector('.script-desc-view').textContent || c.querySelector('.script-desc-edit').value,
+    bg: shots[i]?.bg || 'bg-night',
+    icon: shots[i]?.icon || '✨',
+  }));
+
+  let count = 0;
   const iv = setInterval(() => {
     count++;
-    if (count > shots.length) {
+    if (count > shotData.length) {
       clearInterval(iv);
-      // add tile
       const tile = document.createElement('div');
       tile.className = 'shot-add-tile fade-up';
       tile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
       tile.onclick = () => addManualShot(sid);
       strip.appendChild(tile);
-      totalShots += shots.length; doneShots += shots.length;
+      totalShots += shotData.length; doneShots += shotData.length;
       updateProgress();
-      toast(`✦ ${shots.length} shots ready`);
+      toast(`✦ ${shotData.length} images generated`);
       return;
     }
     if (count === 1) strip.innerHTML = '';
-    const s = shots[count-1];
+    const s = shotData[count-1];
     const el = document.createElement('div');
     el.className = 'shot-thumb fade-up';
     el.innerHTML = `
@@ -384,6 +556,7 @@ function addScene() {
           <button class="gen-btn" id="gbtn-${n}" onclick="generateScene(${n})">✦ Generate Scene</button>
         </div>
       </div>
+      <div class="script-area" id="script-${n}" style="display:none"></div>
       <div class="shots-strip" id="strip-${n}" style="display:none"></div>
     </div>`;
 
