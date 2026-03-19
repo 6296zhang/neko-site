@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenArt Story — Storyboard</title>
+<title>OpenArt Story — New Project</title>
 <style>
 :root {
   --accent: #7c5cfc;
@@ -24,162 +24,191 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* NAV */
+/* ── NAV ── */
 .nav { height: 48px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
 .nav-left { display: flex; align-items: center; gap: 12px; }
 .logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
 .logo-dot { width: 22px; height: 22px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.story-name input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text); font-size: 13px; font-weight: 500; outline: none; width: 200px; padding: 2px 0; }
-.story-name input:focus { border-bottom-color: var(--accent); }
+.story-name input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; width: 160px; padding: 2px 0; transition: all .15s; }
+.story-name input:focus { border-bottom-color: var(--accent); color: var(--text); }
 .divider { width: 1px; height: 20px; background: var(--border2); }
 .nav-tabs { display: flex; gap: 2px; }
-.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; }
+.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all .15s; }
+.nav-tab:hover { color: var(--text); background: var(--surface2); }
 .nav-tab.active { color: var(--text); background: var(--surface3); }
 .nav-right { display: flex; align-items: center; gap: 8px; }
 .credits { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text2); padding: 4px 8px; background: var(--surface2); border-radius: 6px; }
 .credits span { color: var(--yellow); font-size: 10px; }
-.btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); transition: all .15s; }
-.btn:hover { background: var(--surface2); color: var(--text); }
+.nav-btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); transition: all .15s; }
+.nav-btn:hover { background: var(--surface2); color: var(--text); }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
 
-/* SUBNAV */
-.subnav { height: 40px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 8px; flex-shrink: 0; }
-.ip-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all .15s; }
-.ip-tag:hover { border-color: var(--accent2); color: var(--text); }
-.ip-av { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 9px; }
-.type-tag { display: flex; align-items: center; gap: 5px; padding: 4px 10px; background: rgba(124,92,252,.12); border: 1px solid rgba(124,92,252,.25); border-radius: 6px; font-size: 12px; color: var(--accent2); cursor: pointer; }
-
-/* CONTENT */
-.content { flex: 1; overflow-y: auto; padding: 24px 28px 100px; }
+/* ── CONTENT ── */
+.content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 .content::-webkit-scrollbar { width: 5px; }
 .content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* SCENE BLOCK */
-.scene-block { margin-bottom: 16px; }
-.scene-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.scene-num { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
-.scene-title-input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; padding: 2px 0; width: 180px; transition: all .15s; }
-.scene-title-input:focus { border-bottom-color: var(--accent); color: var(--text); }
-.scene-title-input::placeholder { color: var(--text3); }
-.scene-line { flex: 1; height: 1px; background: var(--border); }
+/* ── EMPTY STATE ── */
+.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 0; }
 
-/* SCENE CARD */
-.scene-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color .2s; }
-.scene-card.focused { border-color: rgba(124,92,252,.3); }
-.scene-card.confirmed { border-color: rgba(52,211,153,.25); }
+.empty-scene-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 20px; }
 
-/* ── STATE A: COMPOSE ── */
-.compose-box { padding: 16px 18px 12px; }
-.compose-textarea { width: 100%; background: transparent; border: none; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; min-height: 68px; }
-.compose-textarea::placeholder { color: var(--text3); }
-.compose-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
-.compose-params { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.param-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
-.param-chip:hover { border-color: var(--accent2); color: var(--text); }
-.param-chip.auto { border-color: rgba(124,92,252,.3); color: var(--accent2); background: rgba(124,92,252,.1); }
-.param-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
-.gen-btn { padding: 8px 20px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; opacity: .4; pointer-events: none; }
-.gen-btn.ready { opacity: 1; pointer-events: auto; }
-.gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.4); }
-.or-row { display: flex; align-items: center; gap: 10px; padding: 8px 18px; border-top: 1px solid var(--border); }
-.or-line { flex: 1; height: 1px; background: var(--border); }
-.or-text { font-size: 10px; color: var(--text3); }
-.manual-btns { display: flex; gap: 6px; }
-.manual-btn { display: flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 6px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: var(--surface2); cursor: pointer; transition: all .15s; }
-.manual-btn:hover { background: var(--surface3); color: var(--text); }
-
-/* ── STATE B: SHOT DRAFT LIST ── */
-.draft-section { display: none; }
-.draft-section.show { display: block; }
-
-.draft-header { padding: 14px 18px 10px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); }
-.draft-header-left { display: flex; align-items: center; gap: 8px; }
-.draft-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; }
-.draft-count { font-size: 11px; color: var(--text3); }
-.draft-edit-desc { font-size: 11px; color: var(--text3); cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border2); transition: all .15s; }
-.draft-edit-desc:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
-
-.draft-list { padding: 0 18px 4px; display: flex; flex-direction: column; gap: 6px; }
-
-.draft-card {
-  display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
-  background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: 10px; cursor: pointer; transition: all .15s; position: relative;
+/* Main compose area */
+.compose-card {
+  width: 100%; max-width: 640px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.4);
+  transition: border-color .2s;
 }
-.draft-card:hover { border-color: rgba(124,92,252,.25); background: var(--surface3); }
-.draft-card.editing { border-color: var(--accent); }
+.compose-card.active { border-color: rgba(124,92,252,.4); box-shadow: 0 8px 40px rgba(0,0,0,.4), 0 0 0 3px rgba(124,92,252,.08); }
 
-.drag-handle { color: var(--text3); font-size: 12px; cursor: grab; padding-top: 2px; flex-shrink: 0; user-select: none; }
-.drag-handle:active { cursor: grabbing; }
+.compose-inner { padding: 20px 20px 14px; }
+.compose-textarea {
+  width: 100%; background: transparent; border: none; color: var(--text);
+  font-size: 15px; line-height: 1.7; outline: none; resize: none;
+  font-family: inherit; min-height: 88px;
+}
+.compose-textarea::placeholder { color: var(--text3); font-size: 15px; }
 
-.draft-card-body { flex: 1; min-width: 0; }
-.draft-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.draft-shot-num { font-size: 10px; font-weight: 700; color: var(--text3); }
-.draft-type-pill { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 10px; }
-.pill-dialogue { background: rgba(124,92,252,.2); color: var(--accent2); }
-.pill-scene { background: rgba(52,211,153,.12); color: var(--green); }
-.pill-action { background: rgba(251,191,36,.12); color: var(--yellow); }
+.compose-params {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 10px 20px; border-top: 1px solid var(--border);
+}
+.param-chip {
+  display: flex; align-items: center; gap: 5px; padding: 5px 11px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 20px; font-size: 11px; color: var(--text2);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.param-chip:hover { border-color: var(--accent2); color: var(--text); }
 
-.draft-desc-view { font-size: 12px; color: var(--text2); line-height: 1.55; }
-.draft-desc-edit { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; color: var(--text); font-size: 12px; line-height: 1.55; padding: 5px 8px; outline: none; font-family: inherit; resize: none; margin-top: 4px; }
-.draft-card.editing .draft-desc-view { display: none; }
-.draft-card.editing .draft-desc-edit { display: block; }
+.compose-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; border-top: 1px solid var(--border);
+  background: var(--surface2);
+}
+.compose-footer-left { font-size: 11px; color: var(--text3); }
+.compose-footer-left span { color: var(--text2); }
 
-.draft-card-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-.draft-action-btn { width: 24px; height: 24px; border-radius: 5px; background: transparent; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; transition: all .15s; }
-.draft-action-btn:hover { background: var(--surface3); border-color: var(--border2); color: var(--text2); }
-.draft-action-btn.del:hover { color: var(--pink); border-color: rgba(232,121,160,.3); }
+.gen-btn {
+  padding: 9px 22px; border-radius: 9px; font-size: 13px; font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), #9d6fff); color: white;
+  border: none; cursor: pointer; display: flex; align-items: center; gap: 7px;
+  transition: all .2s; opacity: .35; pointer-events: none;
+}
+.gen-btn.ready { opacity: 1; pointer-events: auto; }
+.gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
 
-.draft-add-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; margin: 6px 18px 0; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
-.draft-add-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+/* OR row */
+.or-row {
+  display: flex; align-items: center; gap: 16px; margin-top: 20px;
+  width: 100%; max-width: 640px;
+}
+.or-line { flex: 1; height: 1px; background: var(--border); }
+.or-text { font-size: 11px; color: var(--text3); white-space: nowrap; }
 
-.draft-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.draft-footer-left { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
-.draft-footer-cost { color: var(--yellow); }
-.gen-images-btn { padding: 10px 24px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; }
-.gen-images-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,92,252,.45); }
+/* Manual actions */
+.manual-actions { display: flex; gap: 8px; margin-top: 16px; }
+.manual-action {
+  display: flex; align-items: center; gap: 7px; padding: 8px 16px;
+  border-radius: 9px; font-size: 12px; color: var(--text2);
+  border: 1px solid var(--border2); background: var(--surface);
+  cursor: pointer; transition: all .15s;
+}
+.manual-action:hover { border-color: var(--border2); background: var(--surface2); color: var(--text); }
+.manual-action-icon { font-size: 14px; }
 
-/* ── STATE C: IMAGES GENERATED ── */
-.shots-row { display: flex; min-height: 0; }
-.shot-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); cursor: pointer; transition: background .15s; min-width: 0; }
-.shot-card:last-child { border-right: none; }
-.shot-card:hover { background: rgba(255,255,255,.02); }
-.shot-thumb { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; }
-.shot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity .15s; }
-.shot-card:hover .shot-overlay { opacity: 1; }
-.shot-ov-btn { padding: 4px 10px; background: rgba(255,255,255,.9); color: #1a1a2e; border-radius: 5px; font-size: 11px; font-weight: 500; }
-.shot-info { padding: 8px 10px; }
-.shot-num { font-size: 10px; font-weight: 600; color: var(--text3); margin-bottom: 3px; }
-.shot-desc { font-size: 11px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.shot-add-tile { flex: 0 0 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s; border-left: 1px solid var(--border); }
-.shot-add-tile:hover { color: var(--accent2); background: rgba(124,92,252,.04); }
+/* ── STORYBOARD STATE (after content) ── */
+.storyboard { display: none; flex-direction: column; padding: 20px 24px 100px; gap: 0; }
+.storyboard.show { display: flex; }
 
-.bg-night { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
-.bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
-.bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
-.bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
+/* Scene row */
+.scene-row { margin-bottom: 24px; }
+.scene-row-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.scene-row-num { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
+.scene-row-title { font-size: 13px; font-weight: 500; color: var(--text2); }
+.scene-row-line { flex: 1; height: 1px; background: var(--border); }
+.scene-row-add { font-size: 11px; color: var(--text3); cursor: pointer; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
+.scene-row-add:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
 
-/* ADD SCENE */
-.add-scene-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; margin-top: 4px; }
+.shots-strip { display: flex; gap: 8px; align-items: flex-start; }
+
+/* Shot thumb */
+.shot-thumb {
+  width: 160px; flex-shrink: 0; border-radius: 10px; overflow: hidden;
+  border: 2px solid transparent; cursor: pointer; transition: all .15s;
+  background: var(--surface);
+}
+.shot-thumb:hover { border-color: rgba(124,92,252,.4); }
+.shot-thumb-img {
+  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; position: relative; overflow: hidden;
+}
+.shot-thumb-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  opacity: 0; transition: opacity .15s;
+}
+.shot-thumb:hover .shot-thumb-overlay { opacity: 1; }
+.shot-ov-btn { padding: 4px 9px; background: rgba(255,255,255,.9); color: #1a1a2e; border-radius: 5px; font-size: 10px; font-weight: 600; }
+.shot-thumb-info { padding: 6px 8px; }
+.shot-thumb-num { font-size: 10px; font-weight: 700; color: var(--text3); margin-bottom: 2px; }
+.shot-thumb-desc { font-size: 10px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Add shot tile */
+.shot-add-tile {
+  width: 160px; flex-shrink: 0; aspect-ratio: 16/9;
+  border-radius: 10px; border: 1.5px dashed var(--border2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s; font-size: 11px;
+}
+.shot-add-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+
+/* Add scene btn */
+.add-scene-row { padding: 0 0 12px; }
+.add-scene-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
 .add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* TOAST */
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-size: 12px; color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200; }
-.toast.show { transform: translateX(-50%) translateY(0); }
+/* Bottom bar */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: var(--surface); border-top: 1px solid var(--border2); display: none; align-items: center; justify-content: space-between; padding: 0 20px; }
+.bottom-bar.show { display: flex; }
+.bottom-left { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); }
+.bottom-progress { display: flex; align-items: center; gap: 8px; }
+.progress-bar { width: 80px; height: 3px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); border-radius: 2px; transition: width .3s; }
+.bottom-right { display: flex; align-items: center; gap: 8px; }
+.bottom-btn { padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+.bottom-btn.secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+.bottom-btn.secondary:hover { background: var(--surface3); color: var(--text); }
+.bottom-btn.primary { background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; }
+.bottom-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
 
+/* bg colors */
+.bg-night { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
+.bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
+.bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
+.bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
+
+/* Generating */
 @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
-.generating { animation: pulse 1s ease-in-out infinite; }
-@keyframes slideIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-.slide-in { animation: slideIn .2s ease forwards; }
+.gen-pulse { animation: pulse 1s ease-in-out infinite; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { animation: fadeUp .25s ease forwards; }
+
+/* Toast */
+.toast { position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-size: 12px; color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200; }
+.toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
     <div class="logo"><div class="logo-dot">✦</div> OpenArt</div>
     <div class="divider"></div>
-    <div class="story-name"><input type="text" value="Lumina's Night City Story" /></div>
+    <div class="story-name"><input type="text" id="story-title" placeholder="Untitled Story" /></div>
     <div class="divider"></div>
     <div class="nav-tabs">
       <div class="nav-tab active">Storyboard</div>
@@ -188,348 +217,266 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
   <div class="nav-right">
     <div class="credits"><span>✦</span> 268,860</div>
-    <button class="btn">Share</button>
+    <button class="nav-btn">Share</button>
     <div class="avatar">🧝</div>
   </div>
 </nav>
 
-<div class="subnav">
-  <div class="ip-tag" onclick="toast('Switch IP...')"><div class="ip-av">🧝</div> Lumina</div>
-  <div class="type-tag" onclick="toast('Change type...')">💬 Talking Avatar</div>
-</div>
-
+<!-- CONTENT -->
 <div class="content" id="content">
 
-  <!-- SCENE 1 -->
-  <div class="scene-block" id="scene-1">
-    <div class="scene-header">
-      <div class="scene-num">Scene 1</div>
-      <input class="scene-title-input" type="text" placeholder="Name this scene..." />
-      <div class="scene-line"></div>
+  <!-- ── EMPTY STATE ── -->
+  <div class="empty-state" id="empty-state">
+
+    <div class="empty-scene-label">Scene 1</div>
+
+    <!-- Compose card -->
+    <div class="compose-card" id="compose-card">
+      <div class="compose-inner">
+        <textarea class="compose-textarea" id="main-ta" rows="4"
+          placeholder="Describe your first scene...&#10;What's happening? Where? What mood?"
+          oninput="onMainInput(this)"></textarea>
+      </div>
+
+      <div class="compose-params">
+        <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters & worlds</div>
+        <div class="param-chip" onclick="toast('Add reference images...')">📎 Reference images</div>
+        <div class="param-chip" onclick="toast('Choose style...')">🎨 Photographic</div>
+        <div class="param-chip" id="shot-count" onclick="cycleCount()">🎬 Auto · 3 shots</div>
+      </div>
+
+      <div class="compose-footer">
+        <div class="compose-footer-left">
+          AI will generate <span>shot scripts</span> first · then images
+        </div>
+        <button class="gen-btn" id="main-gen-btn" onclick="startGenerate()">
+          ✦ Generate Scene
+        </button>
+      </div>
     </div>
 
-    <div class="scene-card" id="card-1">
+    <!-- OR -->
+    <div class="or-row">
+      <div class="or-line"></div>
+      <div class="or-text">or start manually</div>
+      <div class="or-line"></div>
+    </div>
 
-      <!-- STATE A: Compose -->
-      <div class="compose-box" id="compose-1">
-        <textarea class="compose-textarea" id="ta-1" rows="3"
-          placeholder="Describe this scene... what happens, where, what mood"
-          oninput="onInput(this,'gbtn-1','card-1')"></textarea>
-        <div class="compose-footer">
-          <div class="compose-params">
-            <div class="param-chip auto"><div class="param-dot"></div> 🧝 Lumina · auto</div>
-            <div class="param-chip" onclick="toast('Reference images...')">📎 Reference</div>
-            <div class="param-chip" onclick="toast('Style...')">🎨 Cinematic</div>
-            <div class="param-chip" id="cc-1" onclick="cycleCount('cc-1')">🎬 × 3 shots</div>
-          </div>
-          <button class="gen-btn" id="gbtn-1" onclick="genDraft('1')">✦ Generate shots</button>
-        </div>
+    <!-- Manual actions -->
+    <div class="manual-actions">
+      <div class="manual-action" onclick="addManualShot()">
+        <span class="manual-action-icon">＋</span>
+        Add a shot
       </div>
-      <div class="or-row" id="or-1">
-        <div class="or-line"></div><div class="or-text">or start manually</div><div class="or-line"></div>
-        <div class="manual-btns">
-          <div class="manual-btn" onclick="toast('Adding shot...')">＋ Add shot</div>
-          <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
-        </div>
+      <div class="manual-action" onclick="toast('Import media...')">
+        <span class="manual-action-icon">⬆</span>
+        Import media
       </div>
+    </div>
 
-      <!-- STATE B: Draft list -->
-      <div class="draft-section" id="draft-1">
-        <div class="draft-header">
-          <div class="draft-header-left">
-            <div class="draft-label">Shot Breakdown</div>
-            <div class="draft-count" id="draft-count-1"></div>
-          </div>
-          <div class="draft-edit-desc" onclick="backToCompose('1')">✏ Edit description</div>
-        </div>
-        <div class="draft-list" id="draft-list-1"></div>
-        <div class="draft-add-btn" onclick="addDraftShot('1')">+ Add shot</div>
-        <div class="draft-footer">
-          <div class="draft-footer-left">
-            <span id="draft-cost-1"></span>
-            <span class="draft-footer-cost"></span>
-          </div>
-          <button class="gen-images-btn" onclick="genImages('1')">✦ Generate Images →</button>
-        </div>
-      </div>
+  </div>
 
-      <!-- STATE C: Images -->
-      <div class="shots-row" id="shots-1" style="display:none"></div>
-
+  <!-- ── STORYBOARD STATE ── -->
+  <div class="storyboard" id="storyboard">
+    <div id="scenes-container"></div>
+    <div class="add-scene-row">
+      <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
     </div>
   </div>
 
-  <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar" id="bottom-bar">
+  <div class="bottom-left">
+    <div class="bottom-progress">
+      <span id="progress-text">0 / 0 shots complete</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="bottom-right">
+    <button class="bottom-btn secondary" onclick="addScene()">+ Add Scene</button>
+    <button class="bottom-btn primary" onclick="toast('Converting all to video...')">✦ Create Videos</button>
+  </div>
 </div>
 
 <div class="toast" id="toast-el"></div>
 
 <script>
-const DRAFT_DATA = {
-  '1': [
-    { type:'scene',    icon:'🌃', desc:'Wide shot: Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights', bg:'bg-night' },
-    { type:'dialogue', icon:'🧝', desc:'Close-up: Lumina pauses mid-step, looks up at the glowing signs with a wistful expression', bg:'bg-night' },
-    { type:'scene',    icon:'✨', desc:'Pull back reveal: City skyline looms behind her small figure, vast urban night', bg:'bg-night' },
-  ],
-  '2': [
-    { type:'scene',    icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from the pages', bg:'bg-castle' },
-    { type:'dialogue', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition and wonder', bg:'bg-castle' },
-    { type:'action',   icon:'⚡', desc:'The library trembles as magic surges outward from the open book', bg:'bg-castle' },
-  ],
-};
-const typeLabels = { scene:'Scene', dialogue:'Dialogue', action:'Action' };
-const typePills  = { scene:'pill-scene', dialogue:'pill-dialogue', action:'pill-action' };
-const countCycle = ['× 2 shots','× 3 shots','× 4 shots'];
-let sceneCount = 1;
+const SHOTS_DATA = [
+  { bg:'bg-night', icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets at night' },
+  { bg:'bg-night', icon:'🧝', desc:'Close-up: She pauses, looks up at glowing city signs, wistful expression' },
+  { bg:'bg-night', icon:'✨', desc:'Pull back: City skyline behind her, a small figure in the vast urban night' },
+];
+const SHOTS_DATA_2 = [
+  { bg:'bg-castle', icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from pages' },
+  { bg:'bg-castle', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition' },
+  { bg:'bg-castle', icon:'⚡', desc:'The library trembles as magic surges outward' },
+];
 
-function onInput(ta, btnId, cardId) {
-  const btn = document.getElementById(btnId);
-  btn.classList.toggle('ready', ta.value.trim().length > 0);
-  document.getElementById(cardId).classList.toggle('focused', ta.value.trim().length > 0);
+const countCycles = ['Auto · 2 shots','Auto · 3 shots','Auto · 4 shots'];
+let countIdx = 1;
+let sceneCount = 0;
+let totalShots = 0;
+let doneShots = 0;
+
+function onMainInput(ta) {
+  const btn = document.getElementById('main-gen-btn');
+  const card = document.getElementById('compose-card');
+  const hasText = ta.value.trim().length > 0;
+  btn.classList.toggle('ready', hasText);
+  card.classList.toggle('active', hasText);
 }
 
-function cycleCount(id) {
-  const el = document.getElementById(id);
-  const txt = el.textContent.trim();
-  const i = countCycle.indexOf(txt);
-  el.textContent = countCycle[(i+1) % countCycle.length];
+function cycleCount() {
+  countIdx = (countIdx + 1) % countCycles.length;
+  document.getElementById('shot-count').innerHTML = `🎬 ${countCycles[countIdx]}`;
 }
 
-function genDraft(sid) {
-  const ta = document.getElementById('ta-'+sid);
+function startGenerate() {
+  const ta = document.getElementById('main-ta');
   if (!ta.value.trim()) return;
+  const title = ta.value.trim().slice(0, 40);
+  document.getElementById('story-title').value = title;
 
-  // hide compose
-  document.getElementById('compose-'+sid).style.opacity = '.5';
-  document.getElementById('compose-'+sid).style.pointerEvents = 'none';
-  document.getElementById('or-'+sid).style.display = 'none';
+  // switch to storyboard
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('storyboard').classList.add('show');
+  document.getElementById('bottom-bar').classList.add('show');
 
-  const draftEl = document.getElementById('draft-'+sid);
-  draftEl.classList.add('show');
-  const listEl = document.getElementById('draft-list-'+sid);
-  listEl.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px"><span class="generating" style="color:var(--accent2);font-size:16px">✦</span><div style="margin-top:8px">Generating shot breakdown...</div></div>`;
-
-  const shots = DRAFT_DATA[sid] || DRAFT_DATA['1'];
-  let count = 0;
-  const iv = setInterval(() => {
-    count++;
-    if (count > shots.length) { clearInterval(iv); return; }
-    renderDraftList(sid, shots.slice(0, count));
-    if (count === shots.length) {
-      updateDraftMeta(sid, shots.length);
-      toast('✦ Shot breakdown ready · Review and edit');
-    }
-  }, 600);
+  addSceneWithGenerate(1, 'Scene 1', SHOTS_DATA);
 }
 
-function renderDraftList(sid, shots) {
-  const list = document.getElementById('draft-list-'+sid);
-  list.innerHTML = shots.map((s, i) => `
-    <div class="draft-card slide-in" id="dc-${sid}-${i}" onclick="toggleEdit('${sid}',${i})">
-      <div class="drag-handle" onclick="event.stopPropagation()">⠿</div>
-      <div class="draft-card-body">
-        <div class="draft-card-top">
-          <div class="draft-shot-num">Shot 0${i+1}</div>
-          <div class="draft-type-pill ${typePills[s.type]}">${typeLabels[s.type]}</div>
-        </div>
-        <div class="draft-desc-view">${s.desc}</div>
-        <textarea class="draft-desc-edit" rows="2" onclick="event.stopPropagation()"
-          onblur="saveEdit('${sid}',${i},this)">${s.desc}</textarea>
-      </div>
-      <div class="draft-card-actions" onclick="event.stopPropagation()">
-        <div class="draft-action-btn" title="Edit" onclick="toggleEdit('${sid}',${i})">✏</div>
-        <div class="draft-action-btn del" title="Delete" onclick="deleteDraft('${sid}',${i})">✕</div>
-      </div>
-    </div>`).join('');
-}
+function addSceneWithGenerate(num, label, shotsData) {
+  sceneCount++;
+  const container = document.getElementById('scenes-container');
 
-function updateDraftMeta(sid, count) {
-  document.getElementById('draft-count-'+sid).textContent = count + ' shots';
-  const costEl = document.getElementById('draft-cost-'+sid);
-  if (costEl) costEl.innerHTML = `${count} shots · <span style="color:var(--yellow)">✦ ${count * 0} free preview</span>`;
-}
-
-function toggleEdit(sid, idx) {
-  const card = document.getElementById(`dc-${sid}-${idx}`);
-  const isEditing = card.classList.contains('editing');
-  // close all others
-  document.querySelectorAll(`[id^="dc-${sid}-"]`).forEach(c => c.classList.remove('editing'));
-  if (!isEditing) {
-    card.classList.add('editing');
-    card.querySelector('.draft-desc-edit').focus();
-  }
-}
-
-function saveEdit(sid, idx, ta) {
-  const card = document.getElementById(`dc-${sid}-${idx}`);
-  card.querySelector('.draft-desc-view').textContent = ta.value;
-  card.classList.remove('editing');
-}
-
-function deleteDraft(sid, idx) {
-  const card = document.getElementById(`dc-${sid}-${idx}`);
-  card.style.opacity = '0';
-  card.style.transform = 'translateX(10px)';
-  card.style.transition = 'all .2s';
-  setTimeout(() => {
-    card.remove();
-    // renumber
-    const list = document.getElementById('draft-list-'+sid);
-    list.querySelectorAll('.draft-card').forEach((c, i) => {
-      c.querySelector('.draft-shot-num').textContent = `Shot 0${i+1}`;
-    });
-    const count = list.querySelectorAll('.draft-card').length;
-    updateDraftMeta(sid, count);
-  }, 200);
-  toast('Shot removed');
-}
-
-function addDraftShot(sid) {
-  const list = document.getElementById('draft-list-'+sid);
-  const count = list.querySelectorAll('.draft-card').length;
-  const idx = count;
   const div = document.createElement('div');
-  div.className = 'draft-card slide-in editing';
-  div.id = `dc-${sid}-${idx}`;
+  div.className = 'scene-row fade-up';
+  div.id = `scene-row-${num}`;
   div.innerHTML = `
-    <div class="drag-handle">⠿</div>
-    <div class="draft-card-body">
-      <div class="draft-card-top">
-        <div class="draft-shot-num">Shot 0${idx+1}</div>
-        <div class="draft-type-pill pill-scene">Scene</div>
-      </div>
-      <div class="draft-desc-view"></div>
-      <textarea class="draft-desc-edit" rows="2" placeholder="Describe this shot..."
-        onblur="saveEdit('${sid}',${idx},this)"></textarea>
+    <div class="scene-row-header">
+      <div class="scene-row-num">Scene ${num}</div>
+      <div class="scene-row-title" id="scene-title-${num}">${label}</div>
+      <div class="scene-row-line"></div>
+      <div class="scene-row-add" onclick="addShotToScene(${num})">+ Add Shot</div>
     </div>
-    <div class="draft-card-actions" onclick="event.stopPropagation()">
-      <div class="draft-action-btn del" onclick="deleteDraft('${sid}',${idx})">✕</div>
+    <div class="shots-strip" id="strip-${num}">
+      <div style="display:flex;align-items:center;gap:10px;padding:20px;color:var(--text3);font-size:12px">
+        <span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span>
+        Generating shots...
+      </div>
     </div>`;
-  list.appendChild(div);
-  div.querySelector('textarea').focus();
-  updateDraftMeta(sid, idx+1);
-}
 
-function backToCompose(sid) {
-  document.getElementById('compose-'+sid).style.opacity = '1';
-  document.getElementById('compose-'+sid).style.pointerEvents = 'auto';
-  document.getElementById('or-'+sid).style.display = 'flex';
-  document.getElementById('draft-'+sid).classList.remove('show');
-}
+  container.appendChild(div);
 
-function genImages(sid) {
-  const list = document.getElementById('draft-list-'+sid);
-  const cards = list.querySelectorAll('.draft-card');
-  const shots = [];
-  cards.forEach(c => {
-    shots.push({
-      desc: c.querySelector('.draft-desc-view').textContent || c.querySelector('.draft-desc-edit').value,
-      bg: DRAFT_DATA[sid]?.[shots.length]?.bg || 'bg-night',
-      icon: DRAFT_DATA[sid]?.[shots.length]?.icon || '✨',
-    });
-  });
-
-  // hide draft
-  document.getElementById('draft-'+sid).classList.remove('show');
-  document.getElementById('compose-'+sid).style.display = 'none';
-  document.getElementById('or-'+sid).style.display = 'none';
-
-  const shotRow = document.getElementById('shots-'+sid);
-  shotRow.style.display = 'flex';
-  shotRow.innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;gap:8px;color:var(--text3)"><span class="generating" style="color:var(--accent2);font-size:18px">✦</span><span style="font-size:12px">Generating images...</span></div>`;
-
-  document.getElementById('card-'+sid).classList.add('confirmed');
-
+  // simulate generating shots one by one
   let count = 0;
+  const strip = document.getElementById(`strip-${num}`);
+
   const iv = setInterval(() => {
     count++;
-    if (count > shots.length) { clearInterval(iv); return; }
-    renderShots(shotRow, shots.slice(0, count), count === shots.length);
-    if (count === shots.length) toast('✦ ' + shots.length + ' images generated!');
-  }, 800);
-}
+    if (count > shotsData.length) {
+      clearInterval(iv);
+      // add "add shot" tile
+      const tile = document.createElement('div');
+      tile.className = 'shot-add-tile fade-up';
+      tile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
+      tile.onclick = () => addShotToScene(num);
+      strip.appendChild(tile);
+      totalShots += shotsData.length;
+      doneShots += shotsData.length;
+      updateProgress();
+      toast(`✦ Scene ${num} ready · ${shotsData.length} shots generated`);
+      return;
+    }
 
-function renderShots(row, shots, final) {
-  let html = shots.map((s, i) => `
-    <div class="shot-card">
-      <div class="shot-thumb ${s.bg}">
-        <span style="font-size:26px">${s.icon}</span>
-        <div class="shot-overlay">
+    // clear loading on first shot
+    if (count === 1) strip.innerHTML = '';
+
+    const s = shotsData[count - 1];
+    const thumb = document.createElement('div');
+    thumb.className = 'shot-thumb fade-up';
+    thumb.innerHTML = `
+      <div class="shot-thumb-img ${s.bg}">
+        <span style="font-size:24px">${s.icon}</span>
+        <div class="shot-thumb-overlay">
           <div class="shot-ov-btn">Edit</div>
           <div class="shot-ov-btn">Regen</div>
         </div>
       </div>
-      <div class="shot-info">
-        <div class="shot-num">Shot 0${i+1}</div>
-        <div class="shot-desc">${s.desc}</div>
-      </div>
-    </div>`).join('');
-  if (final) {
-    html += `<div class="shot-add-tile" onclick="toast('Add shot...')"><span style="font-size:16px">+</span><span style="font-size:10px">Add</span></div>`;
-  }
-  row.innerHTML = html;
+      <div class="shot-thumb-info">
+        <div class="shot-thumb-num">Shot ${num}.${count}</div>
+        <div class="shot-thumb-desc">${s.desc}</div>
+      </div>`;
+    thumb.onclick = () => toast(`Opening Shot ${num}.${count}...`);
+    strip.appendChild(thumb);
+  }, 700);
 }
 
-let sceneN = 1;
-function addScene() {
-  sceneN++;
-  const n = sceneN;
-  const content = document.getElementById('content');
-  const addBtn = content.querySelector('.add-scene-btn');
+function addShotToScene(sceneNum) {
+  const strip = document.getElementById(`strip-${sceneNum}`);
+  const existing = strip.querySelectorAll('.shot-thumb').length;
+  const tile = strip.querySelector('.shot-add-tile');
 
-  DRAFT_DATA[String(n)] = DRAFT_DATA['2'];
-
-  const div = document.createElement('div');
-  div.className = 'scene-block';
-  div.innerHTML = `
-    <div class="scene-header">
-      <div class="scene-num">Scene ${n}</div>
-      <input class="scene-title-input" type="text" placeholder="Name this scene..." />
-      <div class="scene-line"></div>
+  const thumb = document.createElement('div');
+  thumb.className = 'shot-thumb fade-up';
+  thumb.innerHTML = `
+    <div class="shot-thumb-img" style="background:var(--surface2)">
+      <div style="text-align:center;color:var(--text3)">
+        <div style="font-size:16px;margin-bottom:3px">+</div>
+        <div style="font-size:10px">Write prompt</div>
+      </div>
     </div>
-    <div class="scene-card" id="card-${n}">
-      <div class="compose-box" id="compose-${n}">
-        <textarea class="compose-textarea" id="ta-${n}" rows="3"
-          placeholder="Describe this scene..."
-          oninput="onInput(this,'gbtn-${n}','card-${n}')"></textarea>
-        <div class="compose-footer">
-          <div class="compose-params">
-            <div class="param-chip auto"><div class="param-dot"></div> 🧝 Lumina · auto</div>
-            <div class="param-chip">📎 Reference</div>
-            <div class="param-chip">🎨 Cinematic</div>
-            <div class="param-chip" id="cc-${n}" onclick="cycleCount('cc-${n}')">🎬 × 3 shots</div>
-          </div>
-          <button class="gen-btn" id="gbtn-${n}" onclick="genDraft('${n}')">✦ Generate shots</button>
-        </div>
-      </div>
-      <div class="or-row" id="or-${n}">
-        <div class="or-line"></div><div class="or-text">or start manually</div><div class="or-line"></div>
-        <div class="manual-btns">
-          <div class="manual-btn" onclick="toast('Adding shot...')">＋ Add shot</div>
-          <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
-        </div>
-      </div>
-      <div class="draft-section" id="draft-${n}">
-        <div class="draft-header">
-          <div class="draft-header-left">
-            <div class="draft-label">Shot Breakdown</div>
-            <div class="draft-count" id="draft-count-${n}"></div>
-          </div>
-          <div class="draft-edit-desc" onclick="backToCompose('${n}')">✏ Edit description</div>
-        </div>
-        <div class="draft-list" id="draft-list-${n}"></div>
-        <div class="draft-add-btn" onclick="addDraftShot('${n}')">+ Add shot</div>
-        <div class="draft-footer">
-          <div class="draft-footer-left"><span id="draft-cost-${n}"></span></div>
-          <button class="gen-images-btn" onclick="genImages('${n}')">✦ Generate Images →</button>
-        </div>
-      </div>
-      <div class="shots-row" id="shots-${n}" style="display:none"></div>
+    <div class="shot-thumb-info">
+      <div class="shot-thumb-num">Shot ${sceneNum}.${existing+1}</div>
+      <div class="shot-thumb-desc" style="color:var(--text3)">Empty · click to edit</div>
     </div>`;
+  thumb.onclick = () => toast('Opening shot editor...');
 
-  content.insertBefore(div, addBtn);
-  div.querySelector('textarea').focus();
-  div.scrollIntoView({ behavior:'smooth', block:'start' });
+  if (tile) strip.insertBefore(thumb, tile);
+  else strip.appendChild(thumb);
+
+  totalShots++;
+  updateProgress();
+  toast('Shot added');
+}
+
+function addManualShot() {
+  // switch to storyboard with empty scene
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('storyboard').classList.add('show');
+  document.getElementById('bottom-bar').classList.add('show');
+
+  sceneCount++;
+  const container = document.getElementById('scenes-container');
+  const div = document.createElement('div');
+  div.className = 'scene-row fade-up';
+  div.innerHTML = `
+    <div class="scene-row-header">
+      <div class="scene-row-num">Scene 1</div>
+      <div class="scene-row-line"></div>
+      <div class="scene-row-add" onclick="addShotToScene(99)">+ Add Shot</div>
+    </div>
+    <div class="shots-strip" id="strip-99">
+      <div class="shot-add-tile" onclick="addShotToScene(99)">
+        <span style="font-size:16px">+</span><span>Add Shot</span>
+      </div>
+    </div>`;
+  container.appendChild(div);
+  updateProgress();
+  toast('Manual shot mode · click + Add Shot to begin');
+}
+
+function addScene() {
+  const n = ++sceneCount;
+  addSceneWithGenerate(n, `Scene ${n}`, n % 2 === 0 ? SHOTS_DATA_2 : SHOTS_DATA);
+}
+
+function updateProgress() {
+  document.getElementById('progress-text').textContent = `${doneShots} / ${totalShots} shots complete`;
+  const pct = totalShots > 0 ? (doneShots / totalShots) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
 }
 
 let toastTimer;
@@ -542,7 +489,7 @@ function toast(msg) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('ta-1').focus();
+  document.getElementById('main-ta').focus();
 });
 </script>
 </body>
