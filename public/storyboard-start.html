@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenArt Story — Storyboard Start</title>
+<style>
+:root {
+  --accent: #7c5cfc;
+  --accent2: #a78bfa;
+  --pink: #e879a0;
+  --green: #34d399;
+  --yellow: #fbbf24;
+  --bg: #0d0d10;
+  --surface: #141418;
+  --surface2: #1c1c22;
+  --surface3: #242430;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f0f5;
+  --text2: #8888a0;
+  --text3: #44445a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* ── NAV ── */
+.nav {
+  height: 48px; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; flex-shrink: 0;
+}
+.nav-left { display: flex; align-items: center; gap: 12px; }
+.logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
+.logo-dot { width: 22px; height: 22px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.story-name { font-size: 13px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 6px; }
+.story-name input { background: transparent; border: none; color: var(--text); font-size: 13px; font-weight: 500; outline: none; width: 180px; }
+.story-name input:focus { border-bottom: 1px solid var(--accent); }
+.divider { width: 1px; height: 20px; background: var(--border2); }
+.nav-tabs { display: flex; gap: 2px; }
+.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; }
+.nav-tab.active { color: var(--text); background: var(--surface3); }
+.nav-right { display: flex; align-items: center; gap: 8px; }
+.credits { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text2); padding: 4px 8px; background: var(--surface2); border-radius: 6px; }
+.credits span { color: var(--yellow); font-size: 10px; }
+.btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); font-weight: 500; transition: all .15s; }
+.btn:hover { background: var(--surface2); color: var(--text); }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+
+/* ── SUBNAV ── */
+.subnav {
+  height: 40px; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; flex-shrink: 0;
+}
+.subnav-left { display: flex; align-items: center; gap: 8px; }
+.ip-tag {
+  display: flex; align-items: center; gap: 6px; padding: 4px 10px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all .15s;
+}
+.ip-tag:hover { border-color: var(--accent2); color: var(--text); }
+.ip-avatar { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 9px; }
+.type-tag {
+  display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+  background: rgba(124,92,252,.12); border: 1px solid rgba(124,92,252,.25);
+  border-radius: 6px; font-size: 12px; color: var(--accent2); cursor: pointer;
+}
+
+/* ── CONTENT ── */
+.content { flex: 1; overflow-y: auto; padding: 24px 28px 120px; }
+.content::-webkit-scrollbar { width: 5px; }
+.content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+/* ── SCENE BLOCK ── */
+.scene-block { margin-bottom: 12px; }
+.scene-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.scene-number {
+  font-size: 11px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .08em; white-space: nowrap;
+}
+.scene-title-input {
+  background: transparent; border: none; border-bottom: 1px solid transparent;
+  color: var(--text2); font-size: 13px; font-weight: 500; outline: none;
+  padding: 2px 0; transition: all .15s; width: 200px;
+}
+.scene-title-input:focus { border-bottom-color: var(--accent); color: var(--text); }
+.scene-title-input::placeholder { color: var(--text3); }
+.scene-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── SCENE CARD ── */
+.scene-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; transition: border-color .2s;
+}
+.scene-card:hover { border-color: var(--border2); }
+
+/* Description row */
+.scene-desc-row {
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--border);
+}
+.scene-desc-label {
+  padding: 12px 14px; font-size: 10px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+  border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 14px;
+  min-width: 100px;
+}
+.scene-desc-input {
+  flex: 1; background: transparent; border: none; color: var(--text2);
+  font-size: 13px; line-height: 1.6; outline: none; padding: 12px 14px;
+  resize: none; font-family: inherit; min-height: 52px;
+}
+.scene-desc-input:focus { color: var(--text); }
+.scene-desc-input::placeholder { color: var(--text3); }
+.scene-desc-ai-btn {
+  padding: 8px 12px; display: flex; align-items: flex-start; padding-top: 13px;
+  border-left: 1px solid var(--border);
+}
+.ai-chip {
+  display: flex; align-items: center; gap: 4px; padding: 4px 10px;
+  background: rgba(124,92,252,.12); border: 1px solid rgba(124,92,252,.25);
+  border-radius: 6px; font-size: 11px; color: var(--accent2); cursor: pointer;
+  white-space: nowrap; transition: all .15s;
+}
+.ai-chip:hover { background: rgba(124,92,252,.25); }
+
+/* Shots row */
+.shots-row {
+  display: flex; align-items: stretch; gap: 0; min-height: 160px;
+}
+
+/* Empty shot placeholder */
+.shot-placeholder {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; padding: 32px 24px; border-right: 1px solid var(--border);
+}
+.shot-placeholder:last-child { border-right: none; }
+
+.placeholder-icon { font-size: 28px; opacity: .25; }
+.placeholder-text { font-size: 12px; color: var(--text3); text-align: center; line-height: 1.6; }
+
+/* ── THREE CREATION BUTTONS ── */
+.creation-actions {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;
+}
+.create-btn {
+  width: 100%; max-width: 240px; padding: 9px 16px; border-radius: 9px;
+  font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid;
+  display: flex; align-items: center; gap: 8px; transition: all .15s;
+}
+.create-btn.primary {
+  background: linear-gradient(135deg, rgba(124,92,252,.25), rgba(167,139,250,.15));
+  border-color: rgba(124,92,252,.4); color: var(--accent2);
+}
+.create-btn.primary:hover { background: linear-gradient(135deg, rgba(124,92,252,.4), rgba(167,139,250,.25)); }
+.create-btn.secondary {
+  background: var(--surface2); border-color: var(--border2); color: var(--text2);
+}
+.create-btn.secondary:hover { border-color: var(--border2); background: var(--surface3); color: var(--text); }
+.create-btn-icon { font-size: 14px; flex-shrink: 0; }
+.create-btn-content { flex: 1; text-align: left; }
+.create-btn-title { font-size: 12px; font-weight: 600; line-height: 1.3; }
+.create-btn-sub { font-size: 10px; opacity: .65; font-weight: 400; margin-top: 1px; }
+
+/* divider between buttons */
+.btn-divider {
+  display: flex; align-items: center; gap: 8px; width: 100%; max-width: 240px;
+}
+.btn-divider-line { flex: 1; height: 1px; background: var(--border); }
+.btn-divider-text { font-size: 10px; color: var(--text3); }
+
+/* ── ADD SCENE ── */
+.add-scene-row {
+  display: flex; align-items: center; gap: 10px; margin-top: 6px; padding: 0 2px;
+}
+.add-scene-btn {
+  display: flex; align-items: center; gap: 6px; padding: 8px 16px;
+  border: 1.5px dashed var(--border2); border-radius: 8px;
+  font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s;
+}
+.add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+
+/* ── EXISTING SHOT (after generation) ── */
+.shot-card {
+  flex: 1; display: flex; flex-direction: column;
+  border-right: 1px solid var(--border); cursor: pointer;
+  transition: background .15s; position: relative;
+}
+.shot-card:last-child { border-right: none; }
+.shot-card:hover { background: rgba(255,255,255,.02); }
+.shot-thumb {
+  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; position: relative; overflow: hidden;
+}
+.shot-thumb-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  opacity: 0; transition: opacity .15s;
+}
+.shot-card:hover .shot-thumb-overlay { opacity: 1; }
+.shot-overlay-btn {
+  padding: 4px 10px; background: rgba(255,255,255,.9); color: #1a1a2e;
+  border-radius: 5px; font-size: 11px; font-weight: 500;
+}
+.shot-info { padding: 8px 10px; }
+.shot-num { font-size: 10px; font-weight: 600; color: var(--text3); margin-bottom: 2px; }
+.shot-desc { font-size: 11px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* background colors */
+.bg-night { background: linear-gradient(160deg, #0a0a1a 0%, #1a1040 40%, #0d1a2a 100%); }
+.bg-forest { background: linear-gradient(160deg, #0a1f0a 0%, #0d2d0d 40%, #1a3a15 100%); }
+.bg-castle { background: linear-gradient(160deg, #1a0a20 0%, #2d1540 40%, #1a0a30 100%); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  display: none; align-items: center; justify-content: center; z-index: 100;
+  backdrop-filter: blur(6px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 16px; width: 500px; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,.7);
+}
+.modal-header {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 700; }
+.modal-sub { font-size: 12px; color: var(--text2); margin-top: 3px; }
+.modal-close { width: 28px; height: 28px; border-radius: 7px; background: var(--surface2); border: none; color: var(--text2); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: var(--surface3); color: var(--text); }
+.modal-body { padding: 20px 22px; }
+.modal-label { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+.modal-textarea {
+  width: 100%; padding: 12px 14px; background: var(--surface2);
+  border: 1px solid var(--border2); border-radius: 10px; color: var(--text);
+  font-size: 13px; resize: none; outline: none; font-family: inherit; line-height: 1.6;
+  transition: border-color .15s;
+}
+.modal-textarea:focus { border-color: var(--accent); }
+.modal-examples { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.modal-example-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; }
+.example-chip {
+  padding: 6px 12px; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 7px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s;
+  line-height: 1.5;
+}
+.example-chip:hover { border-color: var(--accent2); color: var(--text); background: var(--surface3); }
+.modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-cost { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+.modal-cost span { color: var(--yellow); }
+.modal-gen-btn {
+  padding: 10px 24px; border-radius: 9px; font-size: 13px; font-weight: 600;
+  background: linear-gradient(135deg, var(--accent), #9d6fff); color: white;
+  border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s;
+}
+.modal-gen-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.4); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px;
+  padding: 8px 16px; font-size: 12px; color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Generating animation */
+@keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+.generating { animation: pulse 1.2s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="logo"><div class="logo-dot">✦</div> OpenArt</div>
+    <div class="divider"></div>
+    <div class="story-name">
+      <input type="text" value="Lumina's Night City Story" placeholder="Untitled Story" />
+    </div>
+    <div class="divider"></div>
+    <div class="nav-tabs">
+      <div class="nav-tab active">Storyboard</div>
+      <div class="nav-tab" onclick="toast('Timeline coming soon...')">Timeline</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="credits"><span>✦</span> 268,860</div>
+    <button class="btn">Share</button>
+    <div class="avatar">🧝</div>
+  </div>
+</nav>
+
+<!-- SUBNAV -->
+<div class="subnav">
+  <div class="subnav-left">
+    <div class="ip-tag" onclick="toast('Change IP...')">
+      <div class="ip-avatar">🧝</div>
+      Lumina
+    </div>
+    <div class="type-tag" onclick="toast('Change story type...')">
+      💬 Talking Avatar
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content">
+
+  <!-- Scene 1 - Empty (initial state) -->
+  <div class="scene-block" id="scene-1">
+    <div class="scene-header">
+      <div class="scene-number">Scene 1</div>
+      <input class="scene-title-input" type="text" placeholder="Name this scene..." />
+      <div class="scene-line"></div>
+    </div>
+
+    <div class="scene-card" id="scene-1-card">
+      <!-- Description row -->
+      <div class="scene-desc-row">
+        <div class="scene-desc-label">Description</div>
+        <textarea class="scene-desc-input" rows="2"
+          id="scene-desc"
+          placeholder="Describe what happens in this scene... AI will generate shots from your description"></textarea>
+        <div class="scene-desc-ai-btn">
+          <div class="ai-chip" onclick="openAIModal()">✦ Generate shots</div>
+        </div>
+      </div>
+
+      <!-- Shots area - empty state with 3 creation options -->
+      <div class="shots-row" id="shots-row-1">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">✦</div>
+          <div class="placeholder-text">How do you want to<br>start this scene?</div>
+          <div class="creation-actions">
+
+            <!-- Primary: AI Generate -->
+            <div class="create-btn primary" onclick="openAIModal()">
+              <div class="create-btn-icon">✦</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Generate from description</div>
+                <div class="create-btn-sub">AI creates shots for you · ~30s</div>
+              </div>
+            </div>
+
+            <div class="btn-divider">
+              <div class="btn-divider-line"></div>
+              <div class="btn-divider-text">or</div>
+              <div class="btn-divider-line"></div>
+            </div>
+
+            <!-- Secondary: Manual shot -->
+            <div class="create-btn secondary" onclick="addManualShot()">
+              <div class="create-btn-icon">＋</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Add a shot manually</div>
+                <div class="create-btn-sub">Write prompt yourself</div>
+              </div>
+            </div>
+
+            <!-- Secondary: Import -->
+            <div class="create-btn secondary" onclick="toast('Select media to import...')">
+              <div class="create-btn-icon">⬆</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Import media</div>
+                <div class="create-btn-sub">Image or video file</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Scene -->
+  <div class="add-scene-row">
+    <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
+  </div>
+
+</div>
+
+<!-- AI GENERATE MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">✦ Generate shots from description</div>
+        <div class="modal-sub">Describe the scene — AI will create multiple shots for you</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-label">Scene description</div>
+      <textarea class="modal-textarea" id="modal-input" rows="3"
+        placeholder="Lumina walks alone through neon-lit streets at night, city sounds fading behind her..."></textarea>
+      <div class="modal-examples">
+        <div class="modal-example-label">Try an example ↓</div>
+        <div class="example-chip" onclick="fillExample(0)">
+          🌃 Lumina walks alone through neon-lit streets, pausing to look up at the city lights
+        </div>
+        <div class="example-chip" onclick="fillExample(1)">
+          📖 Lumina discovers an ancient glowing book in a dusty library, pages turning by themselves
+        </div>
+        <div class="example-chip" onclick="fillExample(2)">
+          ⚡ Lumina stands at the top of a cliff, wind in her hair, eyes glowing with determination
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-cost">Estimated: <span>✦</span> 0 · ~3 shots · 30s</div>
+      <button class="modal-gen-btn" onclick="generateShots()">
+        ✦ Generate Shots
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"></div>
+
+<script>
+const examples = [
+  "Lumina walks alone through neon-lit streets at night, pausing to look up at the city lights with a wistful expression.",
+  "Lumina discovers an ancient glowing book in a dusty library, pages turning by themselves as golden light fills the room.",
+  "Lumina stands at the top of a cliff, wind in her hair, eyes glowing with determination as the sun rises behind her."
+];
+
+const generatedShots = [
+  { bg: 'bg-night', icon: '🌃', desc: 'Wide shot: Lumina walks alone through neon-lit streets, city reflected in puddles', dur: '4s' },
+  { bg: 'bg-night', icon: '🧝', desc: 'Close-up: Lumina pauses, looks up at glowing signs, expression wistful and searching', dur: '3.5s' },
+  { bg: 'bg-night', icon: '✨', desc: 'Pull back reveal: City skyline behind her, she\'s a small figure in the vast urban night', dur: '5s' },
+];
+
+function fillExample(idx) {
+  document.getElementById('modal-input').value = examples[idx];
+}
+
+function openAIModal() {
+  // pre-fill from scene description if typed
+  const desc = document.getElementById('scene-desc').value;
+  if (desc.trim()) document.getElementById('modal-input').value = desc;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+  }
+}
+
+function generateShots() {
+  const input = document.getElementById('modal-input').value.trim();
+  if (!input) { toast('Please describe the scene first'); return; }
+
+  closeModal();
+
+  const row = document.getElementById('shots-row-1');
+
+  // show generating state
+  row.innerHTML = `
+    <div class="shot-placeholder">
+      <div style="font-size:24px;color:var(--accent2)" class="generating">✦</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:8px">Generating shots...</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">~30 seconds</div>
+    </div>`;
+
+  // copy desc to scene input
+  document.getElementById('scene-desc').value = input;
+
+  let count = 0;
+  const interval = setInterval(() => {
+    count++;
+    if (count > 3) {
+      count = 3;
+      clearInterval(interval);
+    }
+    renderShots(count, row, input);
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    renderShots(3, row, input, true);
+    toast('✦ 3 shots generated!');
+  }, 3200);
+}
+
+function renderShots(count, row, input, final) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    const s = generatedShots[i];
+    if (final || i < count) {
+      html += `
+        <div class="shot-card" onclick="toast('Opening shot editor...')">
+          <div class="shot-thumb ${s.bg}">
+            <span style="font-size:26px">${s.icon}</span>
+            <div class="shot-thumb-overlay">
+              <div class="shot-overlay-btn">Edit</div>
+              <div class="shot-overlay-btn">Regen</div>
+            </div>
+          </div>
+          <div class="shot-info">
+            <div class="shot-num">Shot 0${i+1} · ${s.dur}</div>
+            <div class="shot-desc">${s.desc}</div>
+          </div>
+        </div>`;
+    }
+  }
+
+  if (final) {
+    // add the "+ add shot" tile
+    html += `
+      <div class="shot-card" style="flex:0 0 120px;display:flex;align-items:center;justify-content:center;border-right:none;cursor:pointer;background:transparent" onclick="addManualShot()">
+        <div style="text-align:center;color:var(--text3)">
+          <div style="font-size:20px;margin-bottom:4px">+</div>
+          <div style="font-size:10px">Add Shot</div>
+        </div>
+      </div>`;
+  }
+
+  row.innerHTML = html;
+}
+
+function addManualShot() {
+  const row = document.getElementById('shots-row-1');
+  const existing = row.querySelectorAll('.shot-card').length;
+
+  // if row still has placeholder, replace it
+  if (row.querySelector('.shot-placeholder')) {
+    row.innerHTML = '';
+  }
+
+  const idx = existing + 1;
+  const div = document.createElement('div');
+  div.className = 'shot-card';
+  div.style.flex = '1';
+  div.innerHTML = `
+    <div class="shot-thumb" style="background:var(--surface2);aspect-ratio:16/9">
+      <div style="text-align:center;color:var(--text3)">
+        <div style="font-size:18px;margin-bottom:4px">+</div>
+        <div style="font-size:11px">Write prompt</div>
+      </div>
+    </div>
+    <div class="shot-info">
+      <div class="shot-num">Shot 0${idx}</div>
+      <div class="shot-desc" style="color:var(--text3)">Empty shot · Click to edit</div>
+    </div>`;
+  div.onclick = () => toast('Opening shot editor...');
+  row.appendChild(div);
+  toast('Shot added · Click to edit');
+}
+
+let sceneCount = 1;
+function addScene() {
+  sceneCount++;
+  const content = document.getElementById('content');
+  const addRow = content.querySelector('.add-scene-row');
+
+  const div = document.createElement('div');
+  div.className = 'scene-block';
+  div.id = `scene-${sceneCount}`;
+  div.innerHTML = `
+    <div class="scene-header">
+      <div class="scene-number">Scene ${sceneCount}</div>
+      <input class="scene-title-input" type="text" placeholder="Name this scene..." />
+      <div class="scene-line"></div>
+    </div>
+    <div class="scene-card">
+      <div class="scene-desc-row">
+        <div class="scene-desc-label">Description</div>
+        <textarea class="scene-desc-input" rows="2" placeholder="Describe what happens in this scene..."></textarea>
+        <div class="scene-desc-ai-btn">
+          <div class="ai-chip" onclick="openAIModalFor(this)">✦ Generate shots</div>
+        </div>
+      </div>
+      <div class="shots-row">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">✦</div>
+          <div class="placeholder-text">How do you want to<br>start this scene?</div>
+          <div class="creation-actions">
+            <div class="create-btn primary" onclick="openAIModalFor(this)">
+              <div class="create-btn-icon">✦</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Generate from description</div>
+                <div class="create-btn-sub">AI creates shots for you · ~30s</div>
+              </div>
+            </div>
+            <div class="btn-divider">
+              <div class="btn-divider-line"></div>
+              <div class="btn-divider-text">or</div>
+              <div class="btn-divider-line"></div>
+            </div>
+            <div class="create-btn secondary" onclick="toast('Adding manual shot...')">
+              <div class="create-btn-icon">＋</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Add a shot manually</div>
+                <div class="create-btn-sub">Write prompt yourself</div>
+              </div>
+            </div>
+            <div class="create-btn secondary" onclick="toast('Select media to import...')">
+              <div class="create-btn-icon">⬆</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Import media</div>
+                <div class="create-btn-sub">Image or video file</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  content.insertBefore(div, addRow);
+  div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function openAIModalFor(el) {
+  openAIModal();
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast-el');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
