@@ -24,7 +24,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* ── TOP NAV ── */
+/* NAV */
 .nav { height: 48px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
 .nav-left { display: flex; align-items: center; gap: 12px; }
 .logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
@@ -46,130 +46,192 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .convert-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
 
-/* ── TOOLBAR ── */
+/* TOOLBAR */
 .toolbar { height: 38px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
 .toolbar-left { display: flex; align-items: center; gap: 8px; }
 .ratio-tag { padding: 3px 8px; border-radius: 5px; background: var(--surface2); border: 1px solid var(--border2); font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; }
-.ratio-tag:hover { color: var(--text); }
-.ratio-tag.active { color: var(--text); border-color: var(--border2); }
-.toolbar-divider { width: 1px; height: 16px; background: var(--border2); }
+.ratio-tag.active { color: var(--text); background: var(--surface3); }
+.tb-divider { width: 1px; height: 16px; background: var(--border2); }
 .zoom-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
-.zoom-slider { width: 80px; height: 3px; appearance: none; background: var(--surface3); border-radius: 2px; outline: none; cursor: pointer; }
-.zoom-slider::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent2); cursor: pointer; }
-.zoom-val { font-size: 11px; color: var(--text2); min-width: 32px; }
-.toolbar-right { display: flex; align-items: center; gap: 4px; }
+.zoom-slider { width: 72px; height: 3px; appearance: none; background: var(--surface3); border-radius: 2px; outline: none; cursor: pointer; }
+.zoom-slider::-webkit-slider-thumb { appearance: none; width: 11px; height: 11px; border-radius: 50%; background: var(--accent2); cursor: pointer; }
+.zoom-val { font-size: 11px; color: var(--text2); min-width: 34px; }
+.toolbar-right { display: flex; align-items: center; gap: 3px; }
 .view-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; transition: all .15s; }
 .view-btn:hover { background: var(--surface2); color: var(--text2); }
 .view-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); }
 
-/* ── CONTENT ── */
+/* CONTENT */
 .content { flex: 1; overflow-y: auto; padding: 20px 24px 60px; }
 .content::-webkit-scrollbar { width: 5px; }
 .content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* ── SCENE BLOCK ── */
+/* SCENE BLOCK */
 .scene-block { margin-bottom: 24px; }
-
-/* Scene header */
-.scene-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 0 2px; }
+.scene-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 0 2px; }
 .scene-drag-h { color: var(--text3); font-size: 12px; cursor: grab; opacity: .5; }
-.scene-drag-h:hover { opacity: 1; }
 .scene-collapse-btn { width: 18px; height: 18px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; transition: all .15s; flex-shrink: 0; }
-.scene-collapse-btn:hover { color: var(--text2); }
-.scene-label-tag { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
-.scene-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
-.scene-shots-count { font-size: 11px; color: var(--text3); white-space: nowrap; }
-.scene-desc-inline { font-size: 12px; color: var(--text2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scene-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
+.scene-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); flex-shrink: 0; display: none; }
+.scene-dot.show { display: block; }
+.scene-meta { font-size: 11px; color: var(--text3); white-space: nowrap; display: none; }
+.scene-meta.show { display: block; }
+.scene-desc-preview { font-size: 12px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: none; }
+.scene-desc-preview.show { display: block; }
 .scene-spacer { flex: 1; }
-.scene-header-actions { display: flex; align-items: center; gap: 2px; }
-.sh-act { width: 26px; height: 26px; border-radius: 6px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all .15s; }
-.sh-act:hover { background: var(--surface2); border-color: var(--border2); color: var(--text2); }
-.sh-act.del:hover { color: var(--pink); border-color: rgba(232,121,160,.25); }
+.scene-actions { display: flex; align-items: center; gap: 2px; }
+.sa-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all .15s; }
+.sa-btn:hover { background: var(--surface2); border-color: var(--border2); color: var(--text2); }
+.sa-btn.del:hover { color: var(--pink); border-color: rgba(232,121,160,.2); }
 
-/* Shot grid */
-.shot-grid { display: flex; gap: 6px; overflow-x: auto; align-items: stretch; }
+/* EMPTY STATE — inside scene block */
+.scene-empty {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 32px 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.empty-icon { font-size: 28px; opacity: .2; margin-bottom: 12px; }
+.empty-title { font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+.empty-sub { font-size: 12px; color: var(--text3); margin-bottom: 20px; }
+
+.gen-scene-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 28px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #9d6fff);
+  color: white; font-size: 13px; font-weight: 700; border: none; cursor: pointer;
+  transition: all .2s; margin-bottom: 14px;
+}
+.gen-scene-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,92,252,.45); }
+
+.empty-or { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 320px; margin-bottom: 12px; }
+.empty-or-line { flex: 1; height: 1px; background: var(--border2); }
+.empty-or-text { font-size: 11px; color: var(--text3); }
+
+.empty-manual { display: flex; gap: 8px; }
+.empty-manual-btn {
+  display: flex; align-items: center; gap: 6px; padding: 7px 16px;
+  border-radius: 8px; font-size: 12px; color: var(--text2);
+  border: 1px solid var(--border2); background: var(--surface2);
+  cursor: pointer; transition: all .15s;
+}
+.empty-manual-btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+
+/* SHOT GRID — filled state */
+.shot-grid { display: flex; gap: 6px; overflow-x: auto; }
 .shot-grid::-webkit-scrollbar { height: 3px; }
 .shot-grid::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
 
-/* Shot tile — image */
-.shot-tile { position: relative; flex-shrink: 0; width: 210px; border-radius: 10px; overflow: hidden; cursor: pointer; transition: all .15s; border: 2px solid transparent; background: var(--surface2); }
+.shot-tile { position: relative; flex-shrink: 0; width: 210px; border-radius: 10px; overflow: hidden; cursor: pointer; transition: all .15s; border: 2px solid transparent; }
 .shot-tile:hover { border-color: rgba(124,92,252,.5); }
 .shot-img { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 32px; position: relative; overflow: hidden; }
-.shot-num-badge { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,.65); backdrop-filter: blur(4px); padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
+.shot-num-badge { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,.65); backdrop-filter: blur(4px); padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white; display: flex; align-items: center; gap: 4px; }
 .shot-drag-icon { color: rgba(255,255,255,.4); font-size: 10px; }
 .shot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; gap: 5px; opacity: 0; transition: opacity .15s; }
 .shot-tile:hover .shot-overlay { opacity: 1; }
 .shot-ov-btn { padding: 4px 10px; background: rgba(255,255,255,.92); color: #1a1a2e; border-radius: 5px; font-size: 11px; font-weight: 600; }
-
-/* Add shot tile */
-.add-shot-tile { flex-shrink: 0; width: 210px; border-radius: 10px; border: 1.5px dashed var(--border2); aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; color: var(--text3); font-size: 11px; transition: all .15s; }
+.add-shot-tile { flex-shrink: 0; width: 210px; aspect-ratio: 16/9; border-radius: 10px; border: 1.5px dashed var(--border2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; color: var(--text3); font-size: 11px; transition: all .15s; }
 .add-shot-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* Compose tile */
-.compose-tile { flex-shrink: 0; width: 380px; border-radius: 10px; border: 1px solid var(--border2); background: var(--surface); transition: border-color .2s; }
-.compose-tile.focused { border-color: rgba(124,92,252,.4); box-shadow: 0 0 0 3px rgba(124,92,252,.07); }
-.compose-inner { padding: 14px 16px 10px; }
-.compose-ta { width: 100%; background: transparent; border: none; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; min-height: 60px; }
-.compose-ta::placeholder { color: var(--text3); font-size: 14px; }
-.compose-params { display: flex; gap: 5px; flex-wrap: wrap; padding: 8px 16px; border-top: 1px solid var(--border); }
-.param-chip { display: flex; align-items: center; gap: 4px; padding: 4px 9px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
-.param-chip:hover { border-color: var(--accent2); color: var(--text); }
-.compose-actions { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; }
-.compose-actions-l { display: flex; align-items: center; gap: 6px; }
-.manual-btn { display: flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 6px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: transparent; cursor: pointer; transition: all .15s; }
-.manual-btn:hover { background: var(--surface2); color: var(--text); }
-.or-t { font-size: 10px; color: var(--text3); }
-.gen-btn { padding: 7px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; opacity: .35; pointer-events: none; transition: all .2s; display: flex; align-items: center; gap: 6px; }
-.gen-btn.ready { opacity: 1; pointer-events: auto; }
-.gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(124,92,252,.45); }
+/* bgs */
+.bg-night  { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
+.bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
+.bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
+.bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
 
-/* Script tile */
-.script-tile { flex-shrink: 0; width: 380px; border-radius: 10px; border: 1px solid var(--border2); background: var(--surface); display: flex; flex-direction: column; }
-.script-tile-hdr { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px 8px; border-bottom: 1px solid var(--border); }
-.script-tile-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; display: flex; align-items: center; gap: 7px; }
-.script-tile-cnt { font-size: 11px; color: var(--text3); font-weight: 400; text-transform: none; letter-spacing: 0; }
-.script-back-btn { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
-.script-back-btn:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
-.script-list { padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; max-height: 200px; }
-.script-list::-webkit-scrollbar { width: 3px; }
-.script-list::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
-.sc-card { display: flex; align-items: flex-start; gap: 6px; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; transition: all .15s; }
-.sc-card:hover { border-color: rgba(124,92,252,.25); }
-.sc-card.editing { border-color: var(--accent); }
-.drag-h { color: var(--text3); font-size: 11px; cursor: grab; padding-top: 2px; flex-shrink: 0; }
-.sc-body { flex: 1; min-width: 0; }
-.sc-top { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
-.sc-num { font-size: 10px; font-weight: 700; color: var(--text3); }
-.sc-type { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; }
-.t-scene { background: rgba(52,211,153,.12); color: var(--green); }
-.t-dialogue { background: rgba(124,92,252,.18); color: var(--accent2); }
-.t-action { background: rgba(251,191,36,.12); color: var(--yellow); }
-.sc-desc-v { font-size: 12px; color: var(--text2); line-height: 1.45; }
-.sc-desc-e { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 5px; color: var(--text); font-size: 12px; line-height: 1.45; padding: 4px 7px; outline: none; font-family: inherit; resize: none; margin-top: 3px; }
-.sc-card.editing .sc-desc-v { display: none; }
-.sc-card.editing .sc-desc-e { display: block; }
-.sc-acts { display: flex; gap: 2px; flex-shrink: 0; }
-.sc-act { width: 20px; height: 20px; border-radius: 4px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s; }
-.sc-act:hover { background: var(--surface3); color: var(--text2); }
-.sc-act.del:hover { color: var(--pink); }
-.script-add-row { display: flex; align-items: center; gap: 5px; padding: 6px 12px; margin: 2px 12px 0; border: 1.5px dashed var(--border2); border-radius: 7px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
-.script-add-row:hover { border-color: var(--accent); color: var(--accent2); }
-.script-ftr { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-top: 1px solid var(--border); margin-top: 6px; }
-.script-ftr-info { font-size: 11px; color: var(--text3); }
-.gen-img-btn { padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; }
-.gen-img-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(124,92,252,.45); }
-
-/* Add scene */
+/* ADD SCENE */
 .add-scene-row { display: flex; justify-content: center; padding: 8px 0 16px; }
 .add-scene-btn { display: flex; align-items: center; gap: 6px; padding: 8px 24px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
 .add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* bgs */
-.bg-night { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
-.bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
-.bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
-.bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
-.bg-ocean  { background: linear-gradient(160deg, #051525, #0a2540, #0d3050); }
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(6px); }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 18px; width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,.7); }
+.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; }
+.modal-header-title { font-size: 16px; font-weight: 700; }
+.modal-header-sub { font-size: 12px; color: var(--text3); margin-top: 3px; }
+.modal-close { width: 28px; height: 28px; border-radius: 7px; background: var(--surface2); border: none; color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; transition: all .15s; }
+.modal-close:hover { background: var(--surface3); color: var(--text); }
+
+/* Step indicator */
+.modal-steps { display: flex; align-items: center; gap: 0; padding: 14px 24px; border-bottom: 1px solid var(--border); }
+.step { display: flex; align-items: center; gap: 8px; flex: 1; }
+.step-dot { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border2); color: var(--text3); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
+.step.active .step-dot { background: var(--accent); border-color: var(--accent); color: white; }
+.step.done .step-dot { background: var(--green); border-color: var(--green); color: white; }
+.step-label { font-size: 11px; color: var(--text3); transition: all .2s; }
+.step.active .step-label { color: var(--text); font-weight: 600; }
+.step.done .step-label { color: var(--text2); }
+.step-line { height: 1px; background: var(--border2); flex: 1; margin: 0 8px; }
+.step-line.done { background: var(--green); }
+
+.modal-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+/* Step 1 — Describe */
+.field-label { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em; }
+.desc-textarea { width: 100%; padding: 12px 14px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; transition: border-color .15s; }
+.desc-textarea:focus { border-color: var(--accent); }
+.desc-textarea::placeholder { color: var(--text3); }
+.examples { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+.example-chip { padding: 8px 12px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all .15s; line-height: 1.5; }
+.example-chip:hover { border-color: var(--accent2); color: var(--text); background: var(--surface3); }
+.example-label { font-size: 10px; color: var(--text3); margin-bottom: 6px; }
+
+/* Step 2 — Scripts */
+.script-list { display: flex; flex-direction: column; gap: 6px; }
+.sc-card { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 9px; cursor: pointer; transition: all .15s; }
+.sc-card:hover { border-color: rgba(124,92,252,.3); }
+.sc-card.editing { border-color: var(--accent); }
+.drag-h { color: var(--text3); font-size: 12px; cursor: grab; padding-top: 2px; flex-shrink: 0; }
+.sc-body { flex: 1; min-width: 0; }
+.sc-top { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.sc-num { font-size: 10px; font-weight: 700; color: var(--text3); }
+.sc-type { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 8px; }
+.t-scene { background: rgba(52,211,153,.12); color: var(--green); }
+.t-dialogue { background: rgba(124,92,252,.18); color: var(--accent2); }
+.t-action { background: rgba(251,191,36,.12); color: var(--yellow); }
+.sc-desc-v { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.sc-desc-e { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; color: var(--text); font-size: 12px; line-height: 1.5; padding: 5px 8px; outline: none; font-family: inherit; resize: none; margin-top: 4px; }
+.sc-card.editing .sc-desc-v { display: none; }
+.sc-card.editing .sc-desc-e { display: block; }
+.sc-acts { display: flex; gap: 3px; flex-shrink: 0; }
+.sc-act { width: 22px; height: 22px; border-radius: 4px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s; }
+.sc-act:hover { background: var(--surface3); color: var(--text2); }
+.sc-act.del:hover { color: var(--pink); }
+.add-sc-row { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; margin-top: 6px; }
+.add-sc-row:hover { border-color: var(--accent); color: var(--accent2); }
+
+/* Step 3 — Cast & Scene */
+.cast-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all .15s; }
+.cast-row:hover { border-color: var(--accent2); }
+.cast-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.cast-info { flex: 1; }
+.cast-name { font-size: 13px; font-weight: 600; }
+.cast-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.cast-auto { font-size: 10px; padding: 2px 7px; background: rgba(52,211,153,.12); color: var(--green); border-radius: 4px; font-weight: 500; }
+.add-cast-btn { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; margin-bottom: 20px; }
+.add-cast-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+.env-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.env-chip { padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--text2); border: 1px solid var(--border2); background: var(--surface2); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
+.env-chip:hover { border-color: var(--accent2); color: var(--text); }
+.env-chip.active { background: rgba(124,92,252,.15); border-color: var(--accent); color: var(--accent2); }
+.mood-grid { display: flex; gap: 6px; flex-wrap: wrap; }
+.mood-chip { padding: 5px 12px; border-radius: 20px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: var(--surface2); cursor: pointer; transition: all .15s; }
+.mood-chip:hover { border-color: var(--accent2); color: var(--text); }
+.mood-chip.active { background: rgba(124,92,252,.15); border-color: var(--accent); color: var(--accent2); }
+.section-gap { margin-top: 20px; }
+
+.modal-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-footer-left { display: flex; align-items: center; gap: 8px; }
+.back-btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); transition: all .15s; }
+.back-btn:hover { background: var(--surface2); color: var(--text); }
+.modal-cost { font-size: 11px; color: var(--text3); }
+.modal-cost span { color: var(--yellow); }
+.next-btn { padding: 9px 24px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; }
+.next-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
+.next-btn:disabled { opacity: .4; pointer-events: none; }
 
 @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
 .gen-pulse { animation: pulse 1s ease-in-out infinite; }
@@ -182,7 +244,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 </head>
 <body>
 
-<!-- TOP NAV -->
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
     <div class="logo"><div class="logo-dot">✦</div> OpenArt</div>
@@ -197,7 +259,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   <div class="nav-right">
     <div class="credits"><span>✦</span> 268,860</div>
     <button class="nav-btn">Share</button>
-    <button class="convert-btn" id="convert-btn" onclick="toast('Converting to video...')">▶ Convert images to video</button>
+    <button class="convert-btn" id="convert-btn" onclick="toast('Converting to video...')">▶ Convert to video</button>
     <div class="avatar">🧝</div>
   </div>
 </nav>
@@ -205,19 +267,19 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 <!-- TOOLBAR -->
 <div class="toolbar">
   <div class="toolbar-left">
-    <div class="ratio-tag active" onclick="toast('16:9')">16:9</div>
+    <div class="ratio-tag active">16:9</div>
     <div class="ratio-tag" onclick="toast('9:16')">9:16</div>
     <div class="ratio-tag" onclick="toast('1:1')">1:1</div>
-    <div class="toolbar-divider"></div>
+    <div class="tb-divider"></div>
     <div class="zoom-row">
-      <span>Zoom</span>
-      <input type="range" class="zoom-slider" min="50" max="150" value="100" oninput="document.getElementById('zoom-val').textContent=this.value+'%'">
-      <span class="zoom-val" id="zoom-val">100%</span>
+      Zoom
+      <input type="range" class="zoom-slider" min="50" max="150" value="100" oninput="document.getElementById('zv').textContent=this.value+'%'">
+      <span class="zoom-val" id="zv">100%</span>
     </div>
   </div>
   <div class="toolbar-right">
-    <div class="view-btn active" title="Row view" onclick="setView(this,'row')">☰</div>
-    <div class="view-btn" title="Grid view" onclick="setView(this,'grid')">⊞</div>
+    <div class="view-btn active" title="Row view">☰</div>
+    <div class="view-btn" title="Grid view" onclick="toast('Grid view')">⊞</div>
   </div>
 </div>
 
@@ -225,283 +287,357 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 <div class="content" id="content">
   <div id="scenes"></div>
   <div class="add-scene-row" id="add-scene-row" style="display:none">
-    <div class="add-scene-btn" onclick="addScene()">+ SCENE</div>
+    <div class="add-scene-btn" onclick="openModal()">+ SCENE</div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleModalClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-header-title" id="modal-title">Create a Scene</div>
+        <div class="modal-header-sub" id="modal-sub">Describe what happens in this scene</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- Steps -->
+    <div class="modal-steps">
+      <div class="step active" id="step-1">
+        <div class="step-dot">1</div>
+        <div class="step-label">Describe</div>
+      </div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step" id="step-2">
+        <div class="step-dot">2</div>
+        <div class="step-label">Shot Scripts</div>
+      </div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step" id="step-3">
+        <div class="step-dot">3</div>
+        <div class="step-label">Cast & Scene</div>
+      </div>
+    </div>
+
+    <div class="modal-body" id="modal-body"></div>
+
+    <div class="modal-footer">
+      <div class="modal-footer-left">
+        <button class="back-btn" id="back-btn" onclick="goBack()" style="display:none">← Back</button>
+        <span class="modal-cost" id="modal-cost"></span>
+      </div>
+      <button class="next-btn" id="next-btn" onclick="goNext()" disabled>
+        <span id="next-label">Next →</span>
+      </button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast-el"></div>
 
 <script>
-const SCRIPTS = [
-  [
-    { type:'scene',    desc:'Wide shot — Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
-    { type:'dialogue', desc:'Close-up — She pauses, looks up at glowing signs. Whispers: "Every night I wait for something impossible."' },
-    { type:'scene',    desc:'Pull back — City skyline looms behind her small figure in the vast urban night' },
-  ],
-  [
-    { type:'scene',    desc:'Lumina pushes open heavy library doors, dust motes swirling in golden light shafts' },
-    { type:'action',   desc:'She runs fingers along ancient book spines, stops at one glowing faintly from within' },
-    { type:'dialogue', desc:'Pages flutter open. She reads aloud: "This prophecy... it\'s about me."' },
-  ],
-  [
-    { type:'action',   desc:'Lumina stands at a cliff edge, wind whipping her hair, vast valley below' },
-    { type:'dialogue', desc:'"I didn\'t come this far to stop now." Her eyes glow faintly violet.' },
-    { type:'scene',    desc:'Epic wide — golden light breaks through clouds as she steps forward' },
-  ],
+const SCRIPTS_DATA = [
+  { type:'scene',    desc:'Wide shot — Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
+  { type:'dialogue', desc:'Close-up — She pauses, looks up at glowing signs. Whispers: "Every night I wait for something impossible."' },
+  { type:'scene',    desc:'Pull back — City skyline looms behind her small figure in the vast urban night' },
 ];
-const SHOTS = [
-  [
-    { bg:'bg-night',  icon:'🌃' },
-    { bg:'bg-night',  icon:'🧝' },
-    { bg:'bg-night',  icon:'✨' },
-  ],
-  [
-    { bg:'bg-castle', icon:'📖' },
-    { bg:'bg-castle', icon:'🧝' },
-    { bg:'bg-castle', icon:'⚡' },
-  ],
-  [
-    { bg:'bg-golden', icon:'🏔' },
-    { bg:'bg-golden', icon:'🧝' },
-    { bg:'bg-golden', icon:'☀️' },
-  ],
+const SHOTS_DATA = [
+  { bg:'bg-night',  icon:'🌃' },
+  { bg:'bg-night',  icon:'🧝' },
+  { bg:'bg-night',  icon:'✨' },
 ];
 
+let currentStep = 1;
 let sceneCount = 0;
-let totalScenes = 0;
-let scenesComplete = 0;
+let currentDesc = '';
+let selectedEnv = 'Night City';
+let selectedMoods = ['Cinematic'];
 
-function init() { addSceneBlock(true); }
+// ── INIT ──
+function init() {
+  addEmptyScene();
+}
 
-function addSceneBlock(isFirst) {
+function addEmptyScene() {
   const sid = sceneCount++;
-  totalScenes++;
   const container = document.getElementById('scenes');
   const div = document.createElement('div');
-  div.className = 'scene-block' + (isFirst ? '' : ' fade-up');
+  div.className = 'scene-block';
   div.id = `sb-${sid}`;
-
   div.innerHTML = `
-    <div class="scene-header" id="sh-${sid}">
+    <div class="scene-header">
       <span class="scene-drag-h">⠿</span>
       <div class="scene-collapse-btn" onclick="toggleCollapse(${sid})">▾</div>
-      <span class="scene-label-tag">Scene ${sid+1}</span>
-      <span class="scene-dot" id="sdot-${sid}" style="display:none"></span>
-      <span class="scene-shots-count" id="scount-${sid}" style="display:none"></span>
-      <span class="scene-dot" id="sdot2-${sid}" style="display:none"></span>
-      <span class="scene-desc-inline" id="sdesc-${sid}"></span>
+      <span class="scene-label">Scene ${sid+1}</span>
+      <span class="scene-dot" id="sdot-${sid}"></span>
+      <span class="scene-meta" id="smeta-${sid}"></span>
+      <span class="scene-dot" id="sdot2-${sid}"></span>
+      <span class="scene-desc-preview" id="sdesc-${sid}"></span>
       <div class="scene-spacer"></div>
-      <div class="scene-header-actions">
-        <div class="sh-act" title="Play scene" onclick="toast('Playing scene ${sid+1}...')">▶</div>
-        <div class="sh-act" title="Duplicate" onclick="toast('Duplicating scene...')">⧉</div>
-        <div class="sh-act del" title="Delete" onclick="toast('Delete scene?')">🗑</div>
+      <div class="scene-actions">
+        <div class="sa-btn" onclick="toast('Play scene...')">▶</div>
+        <div class="sa-btn" onclick="toast('Duplicate scene...')">⧉</div>
+        <div class="sa-btn del" onclick="toast('Delete scene?')">🗑</div>
       </div>
     </div>
-    <div class="shot-grid" id="grid-${sid}">
-      <div class="compose-tile" id="compose-${sid}">
-        <div class="compose-inner">
-          <textarea class="compose-ta" id="ta-${sid}" rows="3"
-            placeholder="Describe this scene — what happens, where, what mood..."
-            oninput="onInput(this,'gbtn-${sid}','compose-${sid}')"></textarea>
+    <div id="scene-content-${sid}">
+      <div class="scene-empty" id="sempty-${sid}">
+        <div class="empty-icon">🎬</div>
+        <div class="empty-title">No shots yet</div>
+        <div class="empty-sub">Generate a scene or add shots manually</div>
+        <button class="gen-scene-btn" onclick="openModal(${sid})">
+          ✦ Generate a scene
+        </button>
+        <div class="empty-or">
+          <div class="empty-or-line"></div>
+          <div class="empty-or-text">or add manually</div>
+          <div class="empty-or-line"></div>
         </div>
-        <div class="compose-params">
-          <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters</div>
-          <div class="param-chip" onclick="toast('Reference images...')">📎 Reference</div>
-          <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
-          <div class="param-chip" id="cc-${sid}" onclick="cycleCount('cc-${sid}')">🎬 Auto · 3 shots</div>
-        </div>
-        <div class="compose-actions">
-          <div class="compose-actions-l">
-            <div class="manual-btn" onclick="addManualShot(${sid})">＋ Manual</div>
-            <span class="or-t">or</span>
-            <div class="manual-btn" onclick="toast('Import media...')">⬆ Import</div>
-          </div>
-          <button class="gen-btn" id="gbtn-${sid}" onclick="genScripts(${sid})">✦ Generate</button>
+        <div class="empty-manual">
+          <div class="empty-manual-btn" onclick="toast('Opening shot editor...')">＋ Add shot</div>
+          <div class="empty-manual-btn" onclick="toast('Import media...')">⬆ Import</div>
         </div>
       </div>
     </div>`;
-
   container.appendChild(div);
-  if (isFirst) setTimeout(() => document.getElementById(`ta-0`).focus(), 80);
 }
 
-const countOpts = ['Auto · 2 shots','Auto · 3 shots','Auto · 4 shots'];
-let countIdx = {};
-function cycleCount(id) {
-  countIdx[id] = ((countIdx[id]||1)+1) % countOpts.length;
-  document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdx[id]]}`;
+// ── MODAL ──
+let targetSid = 0;
+function openModal(sid) {
+  targetSid = sid !== undefined ? sid : sceneCount - 1;
+  currentStep = 1;
+  currentDesc = '';
+  document.getElementById('modal').classList.add('open');
+  renderStep();
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function handleModalClick(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
 }
 
-function onInput(ta, btnId, tileId) {
-  document.getElementById(btnId).classList.toggle('ready', ta.value.trim().length > 0);
-  document.getElementById(tileId).classList.toggle('focused', document.activeElement === ta && ta.value.trim().length > 0);
-}
+function renderStep() {
+  updateStepUI();
+  const body = document.getElementById('modal-body');
+  const nextBtn = document.getElementById('next-btn');
+  const backBtn = document.getElementById('back-btn');
+  const costEl = document.getElementById('modal-cost');
 
-function genScripts(sid) {
-  const ta = document.getElementById(`ta-${sid}`);
-  if (!ta.value.trim()) return;
-  if (!document.getElementById('story-title').value)
-    document.getElementById('story-title').value = ta.value.trim().slice(0,44);
+  backBtn.style.display = currentStep > 1 ? 'block' : 'none';
 
-  const compose = document.getElementById(`compose-${sid}`);
-  compose.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:20px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shot scripts...</div>`;
+  if (currentStep === 1) {
+    document.getElementById('modal-title').textContent = 'Create a Scene';
+    document.getElementById('modal-sub').textContent = 'Describe what happens in this scene';
+    document.getElementById('next-label').textContent = 'Generate Scripts →';
+    nextBtn.disabled = true;
+    costEl.innerHTML = '';
+    body.innerHTML = `
+      <div class="field-label">Scene description</div>
+      <textarea class="desc-textarea" id="desc-ta" rows="4"
+        placeholder="Describe this scene — what happens, where, what mood..."
+        oninput="onDescInput(this)">${currentDesc}</textarea>
+      <div class="examples" style="margin-top:14px">
+        <div class="example-label">Try an example ↓</div>
+        <div class="example-chip" onclick="fillExample(0)">🌃 Lumina walks alone through neon-lit streets at night, lost in thought, the city glowing around her</div>
+        <div class="example-chip" onclick="fillExample(1)">📖 She discovers an ancient glowing book in a dusty library, pages turning by themselves</div>
+        <div class="example-chip" onclick="fillExample(2)">⚡ A tense confrontation at the rooftop — Lumina faces her rival as lightning fills the sky</div>
+      </div>`;
+    if (currentDesc) {
+      document.getElementById('next-btn').disabled = false;
+    }
+  }
 
-  const scripts = SCRIPTS[sid % 3];
-  const desc = ta.value.trim();
-  setTimeout(() => showScripts(sid, scripts, desc), 1000);
-}
+  else if (currentStep === 2) {
+    document.getElementById('modal-title').textContent = 'Shot Scripts';
+    document.getElementById('modal-sub').textContent = 'Review and edit before generating images';
+    document.getElementById('next-label').textContent = 'Next →';
+    nextBtn.disabled = false;
+    costEl.innerHTML = `${SCRIPTS_DATA.length} shots · <span>✦ free preview</span>`;
 
-function showScripts(sid, scripts, desc) {
-  const grid = document.getElementById(`grid-${sid}`);
-  const compose = document.getElementById(`compose-${sid}`);
-
-  const tile = document.createElement('div');
-  tile.className = 'script-tile fade-up';
-  tile.id = `stile-${sid}`;
-
-  const cardsHTML = scripts.map((s,i) => `
-    <div class="sc-card" id="scc-${sid}-${i}" onclick="toggleSCEdit(${sid},${i})">
-      <div class="drag-h">⠿</div>
-      <div class="sc-body">
-        <div class="sc-top">
-          <span class="sc-num">Shot ${sid+1}.${i+1}</span>
-          <span class="sc-type t-${s.type}">${s.type}</span>
+    const cardsHTML = SCRIPTS_DATA.map((s,i) => `
+      <div class="sc-card" id="msc-${i}" onclick="toggleMSC(${i})">
+        <div class="drag-h">⠿</div>
+        <div class="sc-body">
+          <div class="sc-top">
+            <span class="sc-num">Shot 1.${i+1}</span>
+            <span class="sc-type t-${s.type}">${s.type}</span>
+          </div>
+          <div class="sc-desc-v">${s.desc}</div>
+          <textarea class="sc-desc-e" rows="2"
+            onclick="event.stopPropagation()"
+            onblur="saveMSC(${i},this)">${s.desc}</textarea>
         </div>
-        <div class="sc-desc-v">${s.desc}</div>
-        <textarea class="sc-desc-e" rows="2"
-          onclick="event.stopPropagation()"
-          onblur="saveSCEdit(${sid},${i},this)">${s.desc}</textarea>
-      </div>
-      <div class="sc-acts" onclick="event.stopPropagation()">
-        <div class="sc-act" onclick="toggleSCEdit(${sid},${i})">✏</div>
-        <div class="sc-act del" onclick="deleteSC(${sid},${i})">✕</div>
-      </div>
-    </div>`).join('');
+        <div class="sc-acts" onclick="event.stopPropagation()">
+          <div class="sc-act" onclick="toggleMSC(${i})">✏</div>
+          <div class="sc-act del" onclick="event.stopPropagation();toast('Shot removed')">✕</div>
+        </div>
+      </div>`).join('');
 
-  tile.innerHTML = `
-    <div class="script-tile-hdr">
-      <div class="script-tile-label">Shot Scripts <span class="script-tile-cnt" id="scc-cnt-${sid}">${scripts.length} shots</span></div>
-      <div class="script-back-btn" onclick="backToCompose(${sid},'${desc.replace(/'/g,"\\'")}')">← Edit description</div>
-    </div>
-    <div class="script-list" id="scl-${sid}">${cardsHTML}</div>
-    <div class="script-add-row" onclick="addSCShot(${sid})">+ Add shot</div>
-    <div class="script-ftr">
-      <div class="script-ftr-info">${scripts.length} shots · confirm to generate images</div>
-      <button class="gen-img-btn" onclick="genImages(${sid})">✦ Generate Images →</button>
-    </div>`;
+    body.innerHTML = `
+      <div class="script-list">${cardsHTML}</div>
+      <div class="add-sc-row" onclick="toast('Adding shot...')">+ Add shot</div>`;
+  }
 
-  grid.replaceChild(tile, compose);
-  toast('✦ Scripts ready · Review and edit');
+  else if (currentStep === 3) {
+    document.getElementById('modal-title').textContent = 'Cast & Scene';
+    document.getElementById('modal-sub').textContent = 'Confirm who appears and where';
+    document.getElementById('next-label').textContent = '✦ Generate Images';
+    nextBtn.disabled = false;
+    costEl.innerHTML = `3 shots · <span>✦ 0 credits</span>`;
+
+    body.innerHTML = `
+      <div class="field-label">Characters</div>
+      <div class="cast-row" onclick="toast('Edit character...')">
+        <div class="cast-avatar">🧝</div>
+        <div class="cast-info">
+          <div class="cast-name">Lumina</div>
+          <div class="cast-sub">Anime Fantasy · Fantasy Robe · Reference loaded</div>
+        </div>
+        <div class="cast-auto">auto</div>
+      </div>
+      <div class="add-cast-btn" onclick="toast('Add character...')">+ Add character</div>
+
+      <div class="field-label">Environment</div>
+      <div class="env-grid">
+        ${[['🌌','Night City'],['🏰','Castle'],['🌲','Forest'],['🌊','Ocean'],['☀️','Golden Sky'],['☕','Café']].map(([i,n]) =>
+          `<div class="env-chip ${n===selectedEnv?'active':''}" onclick="selectEnv(this,'${n}')">${i} ${n}</div>`
+        ).join('')}
+      </div>
+
+      <div class="section-gap">
+        <div class="field-label">Mood & Lighting</div>
+        <div class="mood-grid">
+          ${['Cinematic','Moody','Golden Hour','Neon','Dark Fantasy','Soft'].map(m =>
+            `<div class="mood-chip ${selectedMoods.includes(m)?'active':''}" onclick="toggleMood(this,'${m}')">${m}</div>`
+          ).join('')}
+        </div>
+      </div>`;
+  }
 }
 
-function toggleSCEdit(sid, idx) {
-  const c = document.getElementById(`scc-${sid}-${idx}`);
+function onDescInput(ta) {
+  currentDesc = ta.value;
+  document.getElementById('next-btn').disabled = ta.value.trim().length === 0;
+}
+
+function fillExample(idx) {
+  const examples = [
+    'Lumina walks alone through neon-lit streets at night, lost in thought, the city glowing around her',
+    'She discovers an ancient glowing book in a dusty library, pages turning by themselves',
+    'A tense confrontation at the rooftop — Lumina faces her rival as lightning fills the sky',
+  ];
+  const ta = document.getElementById('desc-ta');
+  ta.value = examples[idx];
+  currentDesc = examples[idx];
+  document.getElementById('next-btn').disabled = false;
+}
+
+function toggleMSC(idx) {
+  const c = document.getElementById(`msc-${idx}`);
   const editing = c.classList.contains('editing');
-  document.querySelectorAll(`[id^="scc-${sid}-"]`).forEach(x => x.classList.remove('editing'));
+  document.querySelectorAll('[id^="msc-"]').forEach(x => x.classList.remove('editing'));
   if (!editing) { c.classList.add('editing'); c.querySelector('.sc-desc-e').focus(); }
 }
-function saveSCEdit(sid, idx, ta) {
-  const c = document.getElementById(`scc-${sid}-${idx}`);
+function saveMSC(idx, ta) {
+  const c = document.getElementById(`msc-${idx}`);
   c.querySelector('.sc-desc-v').textContent = ta.value;
   c.classList.remove('editing');
 }
-function deleteSC(sid, idx) {
-  const c = document.getElementById(`scc-${sid}-${idx}`);
-  c.style.opacity = '0'; c.style.transition = 'all .18s';
-  setTimeout(() => {
-    c.remove();
-    const list = document.getElementById(`scl-${sid}`);
-    const count = list.querySelectorAll('.sc-card').length;
-    document.getElementById(`scc-cnt-${sid}`).textContent = `${count} shots`;
-    toast('Shot removed');
-  }, 180);
+
+function selectEnv(el, name) {
+  selectedEnv = name;
+  document.querySelectorAll('.env-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
 }
-function addSCShot(sid) {
-  const list = document.getElementById(`scl-${sid}`);
-  const count = list.querySelectorAll('.sc-card').length;
-  const div = document.createElement('div');
-  div.className = 'sc-card editing fade-up';
-  div.id = `scc-${sid}-${count}`;
-  div.innerHTML = `
-    <div class="drag-h">⠿</div>
-    <div class="sc-body">
-      <div class="sc-top"><span class="sc-num">Shot ${sid+1}.${count+1}</span><span class="sc-type t-scene">scene</span></div>
-      <div class="sc-desc-v"></div>
-      <textarea class="sc-desc-e" rows="2" placeholder="Describe this shot..."
-        onblur="saveSCEdit(${sid},${count},this)"></textarea>
-    </div>
-    <div class="sc-acts" onclick="event.stopPropagation()">
-      <div class="sc-act del" onclick="deleteSC(${sid},${count})">✕</div>
+function toggleMood(el, mood) {
+  el.classList.toggle('active');
+  if (el.classList.contains('active')) selectedMoods.push(mood);
+  else selectedMoods = selectedMoods.filter(m => m !== mood);
+}
+
+function goNext() {
+  if (currentStep === 1) {
+    // simulate generating scripts
+    const body = document.getElementById('modal-body');
+    body.innerHTML = `<div style="display:flex;align-items:center;gap:12px;padding:24px 0;color:var(--text3);font-size:13px"><span class="gen-pulse" style="color:var(--accent2);font-size:22px">✦</span> Generating shot scripts...</div>`;
+    document.getElementById('next-btn').disabled = true;
+    setTimeout(() => { currentStep = 2; renderStep(); }, 1000);
+  } else if (currentStep === 2) {
+    currentStep = 3; renderStep();
+  } else if (currentStep === 3) {
+    // generate images
+    closeModal();
+    generateImagesForScene(targetSid);
+    if (!document.getElementById('story-title').value)
+      document.getElementById('story-title').value = currentDesc.slice(0,44);
+  }
+}
+function goBack() {
+  if (currentStep > 1) { currentStep--; renderStep(); }
+}
+
+function updateStepUI() {
+  [1,2,3].forEach(n => {
+    const el = document.getElementById(`step-${n}`);
+    el.classList.remove('active','done');
+    if (n < currentStep) el.classList.add('done');
+    else if (n === currentStep) el.classList.add('active');
+    if (n < 3) {
+      const line = document.getElementById(`line-${n}`);
+      line.classList.toggle('done', n < currentStep);
+    }
+  });
+  // update dot text for done steps
+  [1,2,3].forEach(n => {
+    const dot = document.querySelector(`#step-${n} .step-dot`);
+    if (n < currentStep) dot.textContent = '✓';
+    else dot.textContent = n;
+  });
+}
+
+function generateImagesForScene(sid) {
+  const content = document.getElementById(`scene-content-${sid}`);
+  content.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;padding:20px 4px;color:var(--text3);font-size:12px">
+      <span class="gen-pulse" style="color:var(--accent2);font-size:20px">✦</span>
+      Generating images...
     </div>`;
-  list.appendChild(div);
-  div.querySelector('textarea').focus();
-  document.getElementById(`scc-cnt-${sid}`).textContent = `${count+1} shots`;
-}
-function backToCompose(sid, desc) {
-  const grid = document.getElementById(`grid-${sid}`);
-  const stile = document.getElementById(`stile-${sid}`);
-  const compose = document.createElement('div');
-  compose.className = 'compose-tile';
-  compose.id = `compose-${sid}`;
-  compose.innerHTML = `
-    <div class="compose-inner">
-      <textarea class="compose-ta" id="ta-${sid}" rows="3"
-        placeholder="Describe this scene..."
-        oninput="onInput(this,'gbtn-${sid}','compose-${sid}')">${desc}</textarea>
-    </div>
-    <div class="compose-params">
-      <div class="param-chip">👤 Characters</div>
-      <div class="param-chip">📎 Reference</div>
-      <div class="param-chip">🎨 Photographic</div>
-      <div class="param-chip" id="cc-${sid}" onclick="cycleCount('cc-${sid}')">🎬 Auto · 3 shots</div>
-    </div>
-    <div class="compose-actions">
-      <div class="compose-actions-l">
-        <div class="manual-btn" onclick="addManualShot(${sid})">＋ Manual</div>
-        <span class="or-t">or</span>
-        <div class="manual-btn">⬆ Import</div>
-      </div>
-      <button class="gen-btn ready" id="gbtn-${sid}" onclick="genScripts(${sid})">✦ Generate</button>
-    </div>`;
-  grid.replaceChild(compose, stile);
-}
 
-function genImages(sid) {
-  const list = document.getElementById(`scl-${sid}`);
-  const cards = list.querySelectorAll('.sc-card');
-  const stile = document.getElementById(`stile-${sid}`);
-  const grid = document.getElementById(`grid-${sid}`);
-
-  stile.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:20px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating images...</div>`;
-
-  const descs = Array.from(cards).map(c => c.querySelector('.sc-desc-v').textContent);
-  const shotSet = SHOTS[sid % 3];
+  const grid = document.createElement('div');
+  grid.className = 'shot-grid';
+  grid.id = `grid-${sid}`;
 
   let count = 0;
   const iv = setInterval(() => {
     count++;
-    if (count > shotSet.length) {
+    if (count > SHOTS_DATA.length) {
       clearInterval(iv);
-      stile.remove();
-      // add shot tile
+      content.innerHTML = '';
       const addTile = document.createElement('div');
       addTile.className = 'add-shot-tile fade-up';
       addTile.innerHTML = `<span style="font-size:18px">+</span><span>Add Shot</span>`;
       addTile.onclick = () => toast('Opening shot editor...');
       grid.appendChild(addTile);
+      content.appendChild(grid);
       // update scene header
-      document.getElementById(`sdot-${sid}`).style.display = '';
-      document.getElementById(`scount-${sid}`).textContent = `${shotSet.length} Shots`;
-      document.getElementById(`scount-${sid}`).style.display = '';
-      document.getElementById(`sdot2-${sid}`).style.display = '';
-      document.getElementById(`sdesc-${sid}`).textContent = descs[0]?.slice(0,60) + (descs[0]?.length > 60 ? '...' : '');
-      scenesComplete++;
+      document.getElementById(`sdot-${sid}`).classList.add('show');
+      const meta = document.getElementById(`smeta-${sid}`);
+      meta.textContent = `${SHOTS_DATA.length} Shots`;
+      meta.classList.add('show');
+      document.getElementById(`sdot2-${sid}`).classList.add('show');
+      const desc = document.getElementById(`sdesc-${sid}`);
+      desc.textContent = currentDesc.slice(0,60) + (currentDesc.length > 60 ? '...' : '');
+      desc.classList.add('show');
       document.getElementById('convert-btn').classList.add('show');
       document.getElementById('add-scene-row').style.display = 'flex';
-      toast(`✦ Scene ${sid+1} complete · ${shotSet.length} images generated`);
+      toast(`✦ Scene ${sid+1} complete · ${SHOTS_DATA.length} images generated`);
       return;
     }
-    const s = shotSet[count-1];
+    if (count === 1) content.innerHTML = '';
+    const s = SHOTS_DATA[count-1];
     const tile = document.createElement('div');
     tile.className = 'shot-tile fade-up';
     tile.innerHTML = `
@@ -514,54 +650,19 @@ function genImages(sid) {
         </div>
       </div>`;
     tile.onclick = () => toast(`Shot ${sid+1}.${count} — opening editor...`);
-    grid.insertBefore(tile, stile);
+    if (!content.contains(grid)) content.appendChild(grid);
+    grid.insertBefore(tile, grid.querySelector('.add-shot-tile'));
   }, 650);
 }
 
-function addManualShot(sid) {
-  const grid = document.getElementById(`grid-${sid}`);
-  const compose = document.getElementById(`compose-${sid}`);
-  if (compose) compose.remove();
-  const count = grid.querySelectorAll('.shot-tile').length;
-  const tile = document.createElement('div');
-  tile.className = 'shot-tile fade-up';
-  tile.innerHTML = `
-    <div class="shot-img" style="background:var(--surface3)">
-      <div style="text-align:center;color:var(--text3)">
-        <div style="font-size:18px;margin-bottom:3px">+</div>
-        <div style="font-size:10px">Write prompt</div>
-      </div>
-      <div class="shot-num-badge">${sid+1}.${count+1}</div>
-    </div>`;
-  tile.onclick = () => toast('Opening shot editor...');
-  const addTile = grid.querySelector('.add-shot-tile');
-  if (addTile) grid.insertBefore(tile, addTile);
-  else grid.appendChild(tile);
-  document.getElementById('add-scene-row').style.display = 'flex';
-  toast('Shot added · click to edit');
-}
-
-function addScene() {
-  addSceneBlock(false);
-  const newSid = sceneCount - 1;
-  setTimeout(() => {
-    document.getElementById(`sb-${newSid}`).scrollIntoView({ behavior:'smooth', block:'start' });
-    document.getElementById(`ta-${newSid}`).focus();
-  }, 100);
-}
+function addScene() { openModal(); }
 
 function toggleCollapse(sid) {
-  const grid = document.getElementById(`grid-${sid}`);
+  const c = document.getElementById(`scene-content-${sid}`);
   const btn = document.querySelector(`#sb-${sid} .scene-collapse-btn`);
-  const collapsed = grid.style.display === 'none';
-  grid.style.display = collapsed ? 'flex' : 'none';
+  const collapsed = c.style.display === 'none';
+  c.style.display = collapsed ? '' : 'none';
   btn.textContent = collapsed ? '▾' : '▸';
-}
-
-function setView(el, mode) {
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  toast(mode === 'grid' ? 'Grid view' : 'Row view');
 }
 
 let toastTimer;
