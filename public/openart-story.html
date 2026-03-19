@@ -103,13 +103,15 @@ input,textarea,select{font-family:inherit;outline:none;}
 .shot-card{flex-shrink:0;width:200px;height:356px;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;border:2px solid transparent;transition:transform .12s,box-shadow .12s,border-color .12s;background:var(--s2);}
 .shot-card.ar-169{width:200px;height:113px;}
 .shot-card.ar-11{width:200px;height:200px;}
-.shot-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.5);border-color:var(--bds);}
+.shot-card:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 44px rgba(0,0,0,.6);border-color:var(--bds);}
+.shot-row:hover .shot-card:not(:hover){opacity:.88;}
 .shot-card-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;}
 .shot-num-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);padding:3px 8px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;display:flex;align-items:center;gap:4px;}
 .shot-drag-icon{color:rgba(255,255,255,.4);font-size:10px;}
 .shot-video-badge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);padding:2px 7px;border-radius:999px;font-size:10px;font-weight:600;color:#fff;display:flex;align-items:center;gap:4px;}
 .shot-play-icon{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:8px;}
 /* shot states */
+.shot-card.failed{border-color:rgba(255,92,122,.4) !important;}
 .shot-card.failed .shot-card-img::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.65);}
 .shot-failed-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:2;}
 .shot-failed-icon{font-size:24px;}
@@ -248,6 +250,8 @@ input,textarea,select{font-family:inherit;outline:none;}
 .se-nav-btn:hover{background:var(--s3);color:var(--t1);}
 .se-save-status{font-size:12px;color:var(--success);font-weight:500;}
 .se-save-status.dirty{color:var(--warning);font-weight:600;background:rgba(242,184,75,.1);padding:3px 8px;border-radius:6px;border:1px solid rgba(242,184,75,.25);}
+.se-ctrl-btn.regen-active{background:rgba(124,92,255,.2);border-color:rgba(124,92,255,.4);color:var(--accent-h);font-weight:700;}
+.se-ctrl-btn.regen-active:hover{background:rgba(124,92,255,.35);}
 .se-layout{flex:1;display:flex;overflow:hidden;}
 /* left panel */
 .se-left{width:280px;min-width:280px;background:var(--s1);border-right:1px solid var(--bd);overflow-y:auto;padding:20px;}
@@ -285,11 +289,11 @@ input,textarea,select{font-family:inherit;outline:none;}
 .se-ctrl-btn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* ── BATCH VIDEO MODE ── */
-.batch-bar{height:56px;min-height:56px;background:var(--s3);border-bottom:1px solid var(--bds);display:none;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;animation:slideDown .15s ease-out;}
+.batch-bar{height:60px;min-height:60px;background:rgba(124,92,255,.1);border-bottom:1px solid rgba(124,92,255,.25);display:none;align-items:center;padding:0 28px;gap:16px;flex-shrink:0;animation:slideDown .15s ease-out;}
 .batch-bar.active{display:flex;}
 @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
-.batch-bar-title{font-size:15px;font-weight:600;}
-.batch-bar-sub{font-size:13px;color:var(--t3);}
+.batch-bar-title{font-size:14px;font-weight:700;color:var(--accent-h);}
+.batch-bar-sub{font-size:12px;color:var(--t2);margin-top:2px;}
 .batch-bar-spacer{flex:1;}
 .batch-settings-panel{position:fixed;right:0;top:0;bottom:0;width:320px;background:var(--s1);border-left:1px solid var(--bd);padding:24px;z-index:50;display:none;animation:slideFromRight .2s ease-out;}
 .batch-settings-panel.active{display:block;}
@@ -313,33 +317,42 @@ input,textarea,select{font-family:inherit;outline:none;}
 .ve-layout{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .ve-main{flex:1;display:flex;overflow:hidden;}
 .ve-left{width:280px;min-width:280px;background:var(--s1);border-right:1px solid var(--bd);overflow-y:auto;padding:20px;}
-.ve-panel-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px;}
-.ve-scene-group{margin-bottom:16px;}
-.ve-scene-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bd);}
+.ve-panel-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--bd);}
+.ve-scene-group{margin-bottom:20px;}
+.ve-scene-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.ve-scene-label::after{content:'';flex:1;height:1px;background:var(--bd);}
 .ve-asset-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:all .15s;border:1px solid transparent;}
 .ve-asset-item:hover{background:var(--s2);border-color:var(--bd);}
-.ve-asset-thumb{width:40px;height:40px;border-radius:8px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.ve-asset-thumb.ar-169{width:56px;height:32px;}
-.ve-asset-info{flex:1;}
+.ve-asset-item.active-asset{background:rgba(124,92,255,.1);border-color:rgba(124,92,255,.3);}
+.ve-asset-thumb{width:36px;height:56px;border-radius:6px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.ve-asset-info{flex:1;min-width:0;}
 .ve-asset-name{font-size:12px;font-weight:600;}
-.ve-asset-type{font-size:11px;color:var(--t3);}
-.ve-asset-added{font-size:10px;font-weight:600;color:var(--success);}
+.ve-asset-type{font-size:11px;color:var(--t3);margin-top:2px;display:flex;align-items:center;gap:4px;}
+.ve-asset-added{font-size:10px;font-weight:600;color:var(--success);margin-left:auto;flex-shrink:0;}
 .ve-center{flex:1;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;}
 .ve-preview-area{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;}
-.ve-preview-img{max-width:220px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.5);}
-.ve-preview-inner{aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;font-size:48px;}
-.ve-controls{padding:12px 24px;border-top:1px solid var(--bd);background:var(--s1);display:flex;align-items:center;gap:12px;}
-.ve-play-btn{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .15s;}
+.ve-preview-img{max-width:240px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.7);}
+.ve-preview-inner{aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;font-size:64px;}
+.ve-preview-shot-info{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(4px);padding:4px 12px;border-radius:999px;font-size:11px;color:rgba(255,255,255,.8);white-space:nowrap;}
+.ve-controls{padding:10px 20px;border-top:1px solid var(--bd);background:var(--s1);display:flex;align-items:center;gap:12px;}
+.ve-play-btn{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:all .15s;}
 .ve-play-btn:hover{background:var(--accent-h);}
-.ve-time{font-size:13px;color:var(--t2);font-variant-numeric:tabular-nums;}
-.ve-timeline{height:120px;min-height:120px;background:var(--s1);border-top:1px solid var(--bd);padding:16px 20px;overflow:hidden;display:flex;flex-direction:column;}
-.ve-timeline-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
-.ve-timeline-track{display:flex;gap:8px;overflow-x:auto;flex:1;align-items:center;}
-.ve-block{flex-shrink:0;width:120px;height:64px;border-radius:10px;overflow:hidden;border:2px solid transparent;cursor:pointer;position:relative;transition:all .15s;}
+.ve-time{font-size:12px;color:var(--t2);font-variant-numeric:tabular-nums;}
+.ve-timeline{height:130px;min-height:130px;background:var(--s1);border-top:1px solid var(--bd);padding:12px 20px;overflow:hidden;display:flex;flex-direction:column;}
+.ve-timeline-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.ve-timeline-track{display:flex;gap:8px;overflow-x:auto;flex:1;align-items:stretch;padding-bottom:4px;}
+.ve-timeline-track::-webkit-scrollbar{height:3px;}
+.ve-timeline-track::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;}
+.ve-block{flex-shrink:0;width:140px;border-radius:10px;overflow:hidden;border:2px solid var(--bd);cursor:pointer;position:relative;transition:all .15s;display:flex;flex-direction:column;}
 .ve-block:hover{border-color:var(--bds);}
-.ve-block.active{border-color:var(--accent);}
-.ve-block-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;}
-.ve-block-label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);padding:3px 6px;font-size:10px;color:#fff;display:flex;justify-content:space-between;}
+.ve-block.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
+.ve-block-img{flex:1;display:flex;align-items:center;justify-content:center;font-size:22px;min-height:50px;}
+.ve-block-info{background:rgba(0,0,0,.75);padding:5px 8px;}
+.ve-block-name{font-size:10px;font-weight:700;color:#fff;margin-bottom:1px;}
+.ve-block-meta{font-size:9px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:4px;}
+.ve-block-type-badge{padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600;}
+.ve-block-type-badge.video{background:rgba(60,203,127,.3);color:var(--success);}
+.ve-block-type-badge.image{background:rgba(124,92,255,.25);color:var(--accent-h);}
 .ve-block-del{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,.7);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;color:#fff;cursor:pointer;}
 .ve-block:hover .ve-block-del{display:flex;}
 .ve-empty-timeline{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--t3);}
@@ -451,8 +464,8 @@ input,textarea,select{font-family:inherit;outline:none;}
   <!-- Batch Bar -->
   <div class="batch-bar" id="batch-bar">
     <div>
-      <div class="batch-bar-title">Convert images to video</div>
-      <div class="batch-bar-sub">Select the shots you want to animate.</div>
+      <div class="batch-bar-title">Batch video mode</div>
+      <div class="batch-bar-sub">Select shots to convert to video</div>
     </div>
     <button class="btn-ghost" onclick="exitBatchMode()">Cancel</button>
     <button class="btn-accent" id="batch-gen-btn" disabled onclick="runBatchGenerate()" style="opacity:.4">Generate videos</button>
@@ -575,7 +588,7 @@ input,textarea,select{font-family:inherit;outline:none;}
     <div class="se-right-panel">
       <div class="se-ctrl-group">
         <div class="se-ctrl-title">Generate</div>
-        <button class="se-ctrl-btn" onclick="seRegenerate()">↻ Regenerate</button>
+        <button class="se-ctrl-btn" id="se-regen-btn" onclick="seRegenerate()">↻ Regenerate</button>
         <button class="se-ctrl-btn" onclick="seVariation()">✦ Create variation</button>
       </div>
       <div class="se-ctrl-group">
@@ -699,6 +712,7 @@ input,textarea,select{font-family:inherit;outline:none;}
     <div class="drawer-close" onclick="closeWorldDrawer()">✕</div>
   </div>
   <div class="drawer-body">
+    <div style="font-size:12px;color:var(--t3);margin-bottom:20px;">Used in this story</div>
     <div class="drawer-group">
       <div class="drawer-group-title">Characters</div>
       <div class="ws-card">
@@ -1541,8 +1555,11 @@ function renderShotEditor() {
 }
 function updateSaveStatus() {
   const el = document.getElementById('se-save-status');
-  el.textContent = state.shotEditorDirty ? 'Changes not applied' : 'Saved';
+  el.textContent = state.shotEditorDirty ? '⚠ Changes not applied to this shot' : 'Saved';
   el.className = 'se-save-status' + (state.shotEditorDirty ? ' dirty' : '');
+  // Highlight Regenerate button when dirty
+  const regenBtn = document.getElementById('se-regen-btn');
+  if (regenBtn) regenBtn.className = 'se-ctrl-btn' + (state.shotEditorDirty ? ' regen-active' : '');
 }
 function markDirty() {
   state.shotEditorDirty = true;
@@ -1641,21 +1658,36 @@ function renderVEAssets() {
   const story = getStory();
   let html = '';
   story.scenes.forEach(sc => {
-    html += `<div class="ve-scene-group"><div class="ve-scene-label">${sc.label}</div>`;
+    html += `<div class="ve-scene-group">
+      <div class="ve-scene-label">${sc.label}</div>`;
     sc.shots.forEach(sh => {
       const added = state.veTimeline.includes(sh.id);
-      html += `<div class="ve-asset-item" onclick="addToTimeline('${sh.id}')">
+      const isActive = state.veActiveShotId === sh.id;
+      const isVideo = sh.status === 'videoReady';
+      html += `<div class="ve-asset-item ${isActive ? 'active-asset' : ''}" onclick="${added ? `selectFromAsset('${sh.id}')` : `addToTimeline('${sh.id}')`}">
         <div class="ve-asset-thumb" style="background:${sh.bg}">${sh.icon}</div>
         <div class="ve-asset-info">
           <div class="ve-asset-name">Shot ${sh.id}</div>
-          <div class="ve-asset-type">${sh.type} · ${sh.status === 'videoReady' ? 'Video' : 'Image'}</div>
+          <div class="ve-asset-type">
+            <span>${sh.type}</span>
+            <span>·</span>
+            <span style="color:${isVideo ? 'var(--success)' : 'var(--accent-h)'}">${isVideo ? '▶ Video' : '🖼 Image'}</span>
+            ${isVideo ? `<span>· ${sh.duration}s</span>` : ''}
+          </div>
         </div>
-        ${added ? '<div class="ve-asset-added">Added</div>' : ''}
+        ${added ? '<div class="ve-asset-added">✓ In timeline</div>' : ''}
       </div>`;
     });
     html += `</div>`;
   });
   document.getElementById('ve-asset-list').innerHTML = html;
+}
+
+function selectFromAsset(shotId) {
+  state.veActiveShotId = shotId;
+  updateVEPreview();
+  renderVETimeline();
+  renderVEAssets();
 }
 function renderVETimeline() {
   const track = document.getElementById('ve-timeline-track');
@@ -1667,9 +1699,17 @@ function renderVETimeline() {
     const shot = getShot(id);
     if (!shot) return '';
     const isActive = state.veActiveShotId === id;
+    const isVideo = shot.status === 'videoReady';
+    const dur = shot.duration || 2.5;
     return `<div class="ve-block ${isActive?'active':''}" id="ve-block-${id}" onclick="selectVEBlock('${id}')">
       <div class="ve-block-img" style="background:${shot.bg}">${shot.icon}</div>
-      <div class="ve-block-label"><span>Shot ${shot.id}</span><span>${shot.duration || '2.5'}s</span></div>
+      <div class="ve-block-info">
+        <div class="ve-block-name">Shot ${shot.id}</div>
+        <div class="ve-block-meta">
+          <span class="ve-block-type-badge ${isVideo?'video':'image'}">${isVideo?'Video':'Image'}</span>
+          <span>${dur}s</span>
+        </div>
+      </div>
       <div class="ve-block-del" onclick="event.stopPropagation();removeFromTimeline('${id}')">✕</div>
     </div>`;
   }).join('');
@@ -1699,7 +1739,24 @@ function updateVEPreview() {
   if (!shot) return;
   const preview = document.getElementById('ve-preview-inner');
   preview.style.background = shot.bg;
-  preview.innerHTML = `<span style="font-size:48px">${shot.icon}</span>`;
+  preview.innerHTML = `<span style="font-size:64px">${shot.icon}</span>`;
+  // update shot info below preview
+  let infoEl = document.getElementById('ve-preview-shot-info');
+  if (!infoEl) {
+    const container = document.querySelector('.ve-preview-area');
+    if (container) {
+      container.style.position = 'relative';
+      infoEl = document.createElement('div');
+      infoEl.id = 've-preview-shot-info';
+      infoEl.className = 've-preview-shot-info';
+      container.appendChild(infoEl);
+    }
+  }
+  if (infoEl) {
+    const isVideo = shot.status === 'videoReady';
+    infoEl.textContent = `Shot ${shot.id} · ${shot.type} · ${isVideo ? '▶ ' + shot.duration + 's' : '🖼 Image'}`;
+  }
+  renderVEAssets();
 }
 let vePlayIdx = 0;
 function toggleVideoPlay() {
