@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenArt Story — New Project</title>
+<title>OpenArt Story — Storyboard</title>
 <style>
 :root {
   --accent: #7c5cfc;
@@ -24,7 +24,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* ── NAV ── */
+/* NAV */
 .nav { height: 48px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
 .nav-left { display: flex; align-items: center; gap: 12px; }
 .logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
@@ -43,167 +43,107 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .nav-btn:hover { background: var(--surface2); color: var(--text); }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
 
-/* ── CONTENT ── */
-.content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+/* CONTENT */
+.content { flex: 1; overflow-y: auto; padding: 24px 28px 100px; }
 .content::-webkit-scrollbar { width: 5px; }
 .content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* ── EMPTY STATE ── */
-.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 0; }
+/* SCENE ROW */
+.scene-row { margin-bottom: 24px; }
+.scene-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.scene-num { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
+.scene-title-input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; padding: 2px 0; width: 180px; transition: all .15s; }
+.scene-title-input:focus { border-bottom-color: var(--accent); color: var(--text); }
+.scene-title-input::placeholder { color: var(--text3); }
+.scene-line { flex: 1; height: 1px; background: var(--border); }
+.scene-add-shot { font-size: 11px; color: var(--text3); cursor: pointer; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; white-space: nowrap; }
+.scene-add-shot:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
 
-.empty-scene-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 20px; }
+/* SCENE CARD */
+.scene-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color .2s; }
+.scene-card.has-content { border-color: var(--border); }
 
-/* Main compose area */
-.compose-card {
-  width: 100%; max-width: 640px;
-  background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 16px; overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,.4);
-  transition: border-color .2s;
-}
-.compose-card.active { border-color: rgba(124,92,252,.4); box-shadow: 0 8px 40px rgba(0,0,0,.4), 0 0 0 3px rgba(124,92,252,.08); }
-
-.compose-inner { padding: 20px 20px 14px; }
+/* COMPOSE AREA — inside scene card, empty state */
+.compose-area { padding: 20px 20px 16px; }
 .compose-textarea {
   width: 100%; background: transparent; border: none; color: var(--text);
-  font-size: 15px; line-height: 1.7; outline: none; resize: none;
-  font-family: inherit; min-height: 88px;
+  font-size: 14px; line-height: 1.7; outline: none; resize: none;
+  font-family: inherit; min-height: 72px;
 }
-.compose-textarea::placeholder { color: var(--text3); font-size: 15px; }
+.compose-textarea::placeholder { color: var(--text3); font-size: 14px; }
 
 .compose-params {
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-  padding: 10px 20px; border-top: 1px solid var(--border);
+  padding: 10px 20px 10px; border-top: 1px solid var(--border);
 }
-.param-chip {
-  display: flex; align-items: center; gap: 5px; padding: 5px 11px;
-  background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: 20px; font-size: 11px; color: var(--text2);
-  cursor: pointer; transition: all .15s; white-space: nowrap;
-}
+.param-chip { display: flex; align-items: center; gap: 5px; padding: 5px 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
 .param-chip:hover { border-color: var(--accent2); color: var(--text); }
 
-.compose-footer {
+.compose-actions {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 20px; border-top: 1px solid var(--border);
-  background: var(--surface2);
+  padding: 10px 20px 14px;
 }
-.compose-footer-left { font-size: 11px; color: var(--text3); }
-.compose-footer-left span { color: var(--text2); }
+.compose-actions-left { display: flex; align-items: center; gap: 8px; }
+.manual-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 7px; font-size: 12px; color: var(--text2); border: 1px solid var(--border2); background: transparent; cursor: pointer; transition: all .15s; }
+.manual-btn:hover { background: var(--surface2); color: var(--text); }
+.or-text { font-size: 11px; color: var(--text3); }
 
-.gen-btn {
-  padding: 9px 22px; border-radius: 9px; font-size: 13px; font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), #9d6fff); color: white;
-  border: none; cursor: pointer; display: flex; align-items: center; gap: 7px;
-  transition: all .2s; opacity: .35; pointer-events: none;
-}
+.gen-btn { padding: 9px 22px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; opacity: .35; pointer-events: none; }
 .gen-btn.ready { opacity: 1; pointer-events: auto; }
 .gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
 
-/* OR row */
-.or-row {
-  display: flex; align-items: center; gap: 16px; margin-top: 20px;
-  width: 100%; max-width: 640px;
-}
-.or-line { flex: 1; height: 1px; background: var(--border); }
-.or-text { font-size: 11px; color: var(--text3); white-space: nowrap; }
+/* SHOTS STRIP */
+.shots-strip { display: flex; gap: 8px; padding: 16px 16px; flex-wrap: nowrap; overflow-x: auto; border-top: 1px solid var(--border); }
+.shots-strip::-webkit-scrollbar { height: 3px; }
+.shots-strip::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
 
-/* Manual actions */
-.manual-actions { display: flex; gap: 8px; margin-top: 16px; }
-.manual-action {
-  display: flex; align-items: center; gap: 7px; padding: 8px 16px;
-  border-radius: 9px; font-size: 12px; color: var(--text2);
-  border: 1px solid var(--border2); background: var(--surface);
-  cursor: pointer; transition: all .15s;
-}
-.manual-action:hover { border-color: var(--border2); background: var(--surface2); color: var(--text); }
-.manual-action-icon { font-size: 14px; }
-
-/* ── STORYBOARD STATE (after content) ── */
-.storyboard { display: none; flex-direction: column; padding: 20px 24px 100px; gap: 0; }
-.storyboard.show { display: flex; }
-
-/* Scene row */
-.scene-row { margin-bottom: 24px; }
-.scene-row-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.scene-row-num { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
-.scene-row-title { font-size: 13px; font-weight: 500; color: var(--text2); }
-.scene-row-line { flex: 1; height: 1px; background: var(--border); }
-.scene-row-add { font-size: 11px; color: var(--text3); cursor: pointer; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
-.scene-row-add:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
-
-.shots-strip { display: flex; gap: 8px; align-items: flex-start; }
-
-/* Shot thumb */
-.shot-thumb {
-  width: 160px; flex-shrink: 0; border-radius: 10px; overflow: hidden;
-  border: 2px solid transparent; cursor: pointer; transition: all .15s;
-  background: var(--surface);
-}
+.shot-thumb { width: 160px; flex-shrink: 0; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: all .15s; background: var(--surface2); }
 .shot-thumb:hover { border-color: rgba(124,92,252,.4); }
-.shot-thumb-img {
-  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
-  font-size: 24px; position: relative; overflow: hidden;
-}
-.shot-thumb-overlay {
-  position: absolute; inset: 0; background: rgba(0,0,0,.55);
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  opacity: 0; transition: opacity .15s;
-}
-.shot-thumb:hover .shot-thumb-overlay { opacity: 1; }
+.shot-thumb-img { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; overflow: hidden; }
+.shot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; gap: 5px; opacity: 0; transition: opacity .15s; }
+.shot-thumb:hover .shot-overlay { opacity: 1; }
 .shot-ov-btn { padding: 4px 9px; background: rgba(255,255,255,.9); color: #1a1a2e; border-radius: 5px; font-size: 10px; font-weight: 600; }
-.shot-thumb-info { padding: 6px 8px; }
-.shot-thumb-num { font-size: 10px; font-weight: 700; color: var(--text3); margin-bottom: 2px; }
-.shot-thumb-desc { font-size: 10px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.shot-info { padding: 6px 8px; }
+.shot-num { font-size: 10px; font-weight: 700; color: var(--text3); margin-bottom: 2px; }
+.shot-desc { font-size: 10px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* Add shot tile */
-.shot-add-tile {
-  width: 160px; flex-shrink: 0; aspect-ratio: 16/9;
-  border-radius: 10px; border: 1.5px dashed var(--border2);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s; font-size: 11px;
-}
+.shot-add-tile { width: 160px; flex-shrink: 0; border-radius: 10px; border: 1.5px dashed var(--border2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s; font-size: 11px; aspect-ratio: 16/9; }
 .shot-add-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* Add scene btn */
-.add-scene-row { padding: 0 0 12px; }
+/* ADD SCENE */
 .add-scene-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
 .add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* Bottom bar */
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: var(--surface); border-top: 1px solid var(--border2); display: none; align-items: center; justify-content: space-between; padding: 0 20px; }
-.bottom-bar.show { display: flex; }
-.bottom-left { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); }
-.bottom-progress { display: flex; align-items: center; gap: 8px; }
+/* BOTTOM BAR */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: var(--surface); border-top: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.bottom-left { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 8px; }
 .progress-bar { width: 80px; height: 3px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); border-radius: 2px; transition: width .3s; }
-.bottom-right { display: flex; align-items: center; gap: 8px; }
-.bottom-btn { padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
-.bottom-btn.secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
-.bottom-btn.secondary:hover { background: var(--surface3); color: var(--text); }
-.bottom-btn.primary { background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; }
-.bottom-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); border-radius: 2px; width: 0%; transition: width .4s; }
+.bottom-right { display: flex; gap: 8px; }
+.bbtn { padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+.bbtn.sec { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+.bbtn.sec:hover { background: var(--surface3); color: var(--text); }
+.bbtn.pri { background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; }
+.bbtn.pri:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
 
-/* bg colors */
+/* bgs */
 .bg-night { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
 .bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
 .bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
 .bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
 
-/* Generating */
 @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
 .gen-pulse { animation: pulse 1s ease-in-out infinite; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-.fade-up { animation: fadeUp .25s ease forwards; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { animation: fadeUp .2s ease forwards; }
 
-/* Toast */
+/* TOAST */
 .toast { position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-size: 12px; color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
     <div class="logo"><div class="logo-dot">✦</div> OpenArt</div>
@@ -222,261 +162,240 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   </div>
 </nav>
 
-<!-- CONTENT -->
 <div class="content" id="content">
 
-  <!-- ── EMPTY STATE ── -->
-  <div class="empty-state" id="empty-state">
+  <!-- Scene 1 — starts with compose area -->
+  <div class="scene-row" id="scene-row-1">
+    <div class="scene-header">
+      <div class="scene-num">Scene 1</div>
+      <input class="scene-title-input" type="text" placeholder="Scene title..." />
+      <div class="scene-line"></div>
+      <div class="scene-add-shot" onclick="addManualShot(1)">+ Add Shot</div>
+    </div>
 
-    <div class="empty-scene-label">Scene 1</div>
+    <div class="scene-card" id="scene-card-1">
+      <!-- Compose area -->
+      <div class="compose-area" id="compose-1">
+        <textarea class="compose-textarea" id="ta-1" rows="3"
+          placeholder="Describe this scene — what's happening, where, what mood..."
+          oninput="onInput(this, 'gbtn-1')"></textarea>
 
-    <!-- Compose card -->
-    <div class="compose-card" id="compose-card">
-      <div class="compose-inner">
-        <textarea class="compose-textarea" id="main-ta" rows="4"
-          placeholder="Describe your first scene...&#10;What's happening? Where? What mood?"
-          oninput="onMainInput(this)"></textarea>
-      </div>
-
-      <div class="compose-params">
-        <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters & worlds</div>
-        <div class="param-chip" onclick="toast('Add reference images...')">📎 Reference images</div>
-        <div class="param-chip" onclick="toast('Choose style...')">🎨 Photographic</div>
-        <div class="param-chip" id="shot-count" onclick="cycleCount()">🎬 Auto · 3 shots</div>
-      </div>
-
-      <div class="compose-footer">
-        <div class="compose-footer-left">
-          AI will generate <span>shot scripts</span> first · then images
+        <div class="compose-params">
+          <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters & worlds</div>
+          <div class="param-chip" onclick="toast('Reference images...')">📎 Reference</div>
+          <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
+          <div class="param-chip" id="cc-1" onclick="cycleCount('cc-1')">🎬 Auto · 3 shots</div>
         </div>
-        <button class="gen-btn" id="main-gen-btn" onclick="startGenerate()">
-          ✦ Generate Scene
-        </button>
-      </div>
-    </div>
 
-    <!-- OR -->
-    <div class="or-row">
-      <div class="or-line"></div>
-      <div class="or-text">or start manually</div>
-      <div class="or-line"></div>
-    </div>
-
-    <!-- Manual actions -->
-    <div class="manual-actions">
-      <div class="manual-action" onclick="addManualShot()">
-        <span class="manual-action-icon">＋</span>
-        Add a shot
+        <div class="compose-actions">
+          <div class="compose-actions-left">
+            <div class="manual-btn" onclick="addManualShot(1)">＋ Add shot manually</div>
+            <div class="or-text">or</div>
+            <div class="manual-btn" onclick="toast('Import media...')">⬆ Import</div>
+          </div>
+          <button class="gen-btn" id="gbtn-1" onclick="generateScene(1)">✦ Generate Scene</button>
+        </div>
       </div>
-      <div class="manual-action" onclick="toast('Import media...')">
-        <span class="manual-action-icon">⬆</span>
-        Import media
-      </div>
-    </div>
 
+      <!-- Shots strip (hidden until generated) -->
+      <div class="shots-strip" id="strip-1" style="display:none"></div>
+    </div>
   </div>
 
-  <!-- ── STORYBOARD STATE ── -->
-  <div class="storyboard" id="storyboard">
-    <div id="scenes-container"></div>
-    <div class="add-scene-row">
-      <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
-    </div>
-  </div>
+  <div id="more-scenes"></div>
+  <div class="add-scene-btn" id="add-scene-btn" style="display:none" onclick="addScene()">+ Add Scene</div>
 
 </div>
 
 <!-- BOTTOM BAR -->
-<div class="bottom-bar" id="bottom-bar">
+<div class="bottom-bar" id="bottom-bar" style="display:none">
   <div class="bottom-left">
-    <div class="bottom-progress">
-      <span id="progress-text">0 / 0 shots complete</span>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    </div>
+    <span id="progress-text">0 shots complete</span>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
   </div>
   <div class="bottom-right">
-    <button class="bottom-btn secondary" onclick="addScene()">+ Add Scene</button>
-    <button class="bottom-btn primary" onclick="toast('Converting all to video...')">✦ Create Videos</button>
+    <button class="bbtn sec" onclick="addScene()">+ Add Scene</button>
+    <button class="bbtn pri" onclick="toast('Creating videos...')">✦ Create Videos</button>
   </div>
 </div>
 
 <div class="toast" id="toast-el"></div>
 
 <script>
-const SHOTS_DATA = [
-  { bg:'bg-night', icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets at night' },
-  { bg:'bg-night', icon:'🧝', desc:'Close-up: She pauses, looks up at glowing city signs, wistful expression' },
-  { bg:'bg-night', icon:'✨', desc:'Pull back: City skyline behind her, a small figure in the vast urban night' },
-];
-const SHOTS_DATA_2 = [
-  { bg:'bg-castle', icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from pages' },
-  { bg:'bg-castle', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition' },
-  { bg:'bg-castle', icon:'⚡', desc:'The library trembles as magic surges outward' },
-];
+const SHOTS = {
+  a: [
+    { bg:'bg-night', icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets at night' },
+    { bg:'bg-night', icon:'🧝', desc:'Close-up: She pauses, looks up at city signs, wistful expression' },
+    { bg:'bg-night', icon:'✨', desc:'Pull back: City skyline behind her, a small figure in the vast night' },
+  ],
+  b: [
+    { bg:'bg-castle', icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from the pages' },
+    { bg:'bg-castle', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition' },
+    { bg:'bg-castle', icon:'⚡', desc:'The library trembles as magic surges outward' },
+  ],
+};
+const countOpts = ['Auto · 2 shots','Auto · 3 shots','Auto · 4 shots'];
+let countIdxMap = {};
+let sceneCount = 1;
+let totalShots = 0, doneShots = 0;
+let setAB = 'a';
 
-const countCycles = ['Auto · 2 shots','Auto · 3 shots','Auto · 4 shots'];
-let countIdx = 1;
-let sceneCount = 0;
-let totalShots = 0;
-let doneShots = 0;
-
-function onMainInput(ta) {
-  const btn = document.getElementById('main-gen-btn');
-  const card = document.getElementById('compose-card');
-  const hasText = ta.value.trim().length > 0;
-  btn.classList.toggle('ready', hasText);
-  card.classList.toggle('active', hasText);
+function onInput(ta, btnId) {
+  document.getElementById(btnId).classList.toggle('ready', ta.value.trim().length > 0);
 }
 
-function cycleCount() {
-  countIdx = (countIdx + 1) % countCycles.length;
-  document.getElementById('shot-count').innerHTML = `🎬 ${countCycles[countIdx]}`;
+function cycleCount(id) {
+  countIdxMap[id] = ((countIdxMap[id] || 1) + 1) % countOpts.length;
+  document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdxMap[id]]}`;
 }
 
-function startGenerate() {
-  const ta = document.getElementById('main-ta');
+function generateScene(sid) {
+  const ta = document.getElementById('ta-'+sid);
   if (!ta.value.trim()) return;
-  const title = ta.value.trim().slice(0, 40);
-  document.getElementById('story-title').value = title;
 
-  // switch to storyboard
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('storyboard').classList.add('show');
-  document.getElementById('bottom-bar').classList.add('show');
+  // auto-title from input
+  if (!document.getElementById('story-title').value) {
+    document.getElementById('story-title').value = ta.value.trim().slice(0,40);
+  }
 
-  addSceneWithGenerate(1, 'Scene 1', SHOTS_DATA);
-}
+  // hide compose, show strip
+  document.getElementById('compose-'+sid).style.display = 'none';
+  const strip = document.getElementById('strip-'+sid);
+  strip.style.display = 'flex';
+  strip.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:10px 4px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shots...</div>`;
 
-function addSceneWithGenerate(num, label, shotsData) {
-  sceneCount++;
-  const container = document.getElementById('scenes-container');
+  // show bottom bar & add scene btn
+  document.getElementById('bottom-bar').style.display = 'flex';
+  document.getElementById('add-scene-btn').style.display = 'inline-flex';
 
-  const div = document.createElement('div');
-  div.className = 'scene-row fade-up';
-  div.id = `scene-row-${num}`;
-  div.innerHTML = `
-    <div class="scene-row-header">
-      <div class="scene-row-num">Scene ${num}</div>
-      <div class="scene-row-title" id="scene-title-${num}">${label}</div>
-      <div class="scene-row-line"></div>
-      <div class="scene-row-add" onclick="addShotToScene(${num})">+ Add Shot</div>
-    </div>
-    <div class="shots-strip" id="strip-${num}">
-      <div style="display:flex;align-items:center;gap:10px;padding:20px;color:var(--text3);font-size:12px">
-        <span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span>
-        Generating shots...
-      </div>
-    </div>`;
-
-  container.appendChild(div);
-
-  // simulate generating shots one by one
+  const shots = SHOTS[setAB];
+  setAB = setAB === 'a' ? 'b' : 'a';
   let count = 0;
-  const strip = document.getElementById(`strip-${num}`);
 
   const iv = setInterval(() => {
     count++;
-    if (count > shotsData.length) {
+    if (count > shots.length) {
       clearInterval(iv);
-      // add "add shot" tile
+      // add tile
       const tile = document.createElement('div');
       tile.className = 'shot-add-tile fade-up';
       tile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
-      tile.onclick = () => addShotToScene(num);
+      tile.onclick = () => addManualShot(sid);
       strip.appendChild(tile);
-      totalShots += shotsData.length;
-      doneShots += shotsData.length;
+      totalShots += shots.length; doneShots += shots.length;
       updateProgress();
-      toast(`✦ Scene ${num} ready · ${shotsData.length} shots generated`);
+      toast(`✦ ${shots.length} shots ready`);
       return;
     }
-
-    // clear loading on first shot
     if (count === 1) strip.innerHTML = '';
-
-    const s = shotsData[count - 1];
-    const thumb = document.createElement('div');
-    thumb.className = 'shot-thumb fade-up';
-    thumb.innerHTML = `
+    const s = shots[count-1];
+    const el = document.createElement('div');
+    el.className = 'shot-thumb fade-up';
+    el.innerHTML = `
       <div class="shot-thumb-img ${s.bg}">
         <span style="font-size:24px">${s.icon}</span>
-        <div class="shot-thumb-overlay">
+        <div class="shot-overlay">
           <div class="shot-ov-btn">Edit</div>
           <div class="shot-ov-btn">Regen</div>
         </div>
       </div>
-      <div class="shot-thumb-info">
-        <div class="shot-thumb-num">Shot ${num}.${count}</div>
-        <div class="shot-thumb-desc">${s.desc}</div>
+      <div class="shot-info">
+        <div class="shot-num">Shot ${sid}.${count}</div>
+        <div class="shot-desc">${s.desc}</div>
       </div>`;
-    thumb.onclick = () => toast(`Opening Shot ${num}.${count}...`);
-    strip.appendChild(thumb);
+    el.onclick = () => toast(`Opening Shot ${sid}.${count}...`);
+    strip.appendChild(el);
   }, 700);
 }
 
-function addShotToScene(sceneNum) {
-  const strip = document.getElementById(`strip-${sceneNum}`);
+function addManualShot(sid) {
+  let strip = document.getElementById('strip-'+sid);
+
+  // if compose still showing, hide it first
+  const compose = document.getElementById('compose-'+sid);
+  if (compose && compose.style.display !== 'none') {
+    compose.style.display = 'none';
+    strip.style.display = 'flex';
+    strip.innerHTML = '';
+    // add tile
+    const tile = document.createElement('div');
+    tile.className = 'shot-add-tile';
+    tile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
+    tile.onclick = () => addManualShot(sid);
+    strip.appendChild(tile);
+    document.getElementById('bottom-bar').style.display = 'flex';
+    document.getElementById('add-scene-btn').style.display = 'inline-flex';
+  }
+
   const existing = strip.querySelectorAll('.shot-thumb').length;
   const tile = strip.querySelector('.shot-add-tile');
-
-  const thumb = document.createElement('div');
-  thumb.className = 'shot-thumb fade-up';
-  thumb.innerHTML = `
-    <div class="shot-thumb-img" style="background:var(--surface2)">
+  const el = document.createElement('div');
+  el.className = 'shot-thumb fade-up';
+  el.innerHTML = `
+    <div class="shot-thumb-img" style="background:var(--surface3)">
       <div style="text-align:center;color:var(--text3)">
         <div style="font-size:16px;margin-bottom:3px">+</div>
         <div style="font-size:10px">Write prompt</div>
       </div>
     </div>
-    <div class="shot-thumb-info">
-      <div class="shot-thumb-num">Shot ${sceneNum}.${existing+1}</div>
-      <div class="shot-thumb-desc" style="color:var(--text3)">Empty · click to edit</div>
+    <div class="shot-info">
+      <div class="shot-num">Shot ${sid}.${existing+1}</div>
+      <div class="shot-desc" style="color:var(--text3)">Empty · click to edit</div>
     </div>`;
-  thumb.onclick = () => toast('Opening shot editor...');
-
-  if (tile) strip.insertBefore(thumb, tile);
-  else strip.appendChild(thumb);
-
-  totalShots++;
-  updateProgress();
+  el.onclick = () => toast('Opening shot editor...');
+  if (tile) strip.insertBefore(el, tile);
+  else strip.appendChild(el);
+  totalShots++; updateProgress();
   toast('Shot added');
 }
 
-function addManualShot() {
-  // switch to storyboard with empty scene
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('storyboard').classList.add('show');
-  document.getElementById('bottom-bar').classList.add('show');
-
+function addScene() {
   sceneCount++;
-  const container = document.getElementById('scenes-container');
+  const n = sceneCount;
+  const container = document.getElementById('more-scenes');
+  const addBtn = document.getElementById('add-scene-btn');
+
   const div = document.createElement('div');
   div.className = 'scene-row fade-up';
   div.innerHTML = `
-    <div class="scene-row-header">
-      <div class="scene-row-num">Scene 1</div>
-      <div class="scene-row-line"></div>
-      <div class="scene-row-add" onclick="addShotToScene(99)">+ Add Shot</div>
+    <div class="scene-header">
+      <div class="scene-num">Scene ${n}</div>
+      <input class="scene-title-input" type="text" placeholder="Scene title..." />
+      <div class="scene-line"></div>
+      <div class="scene-add-shot" onclick="addManualShot(${n})">+ Add Shot</div>
     </div>
-    <div class="shots-strip" id="strip-99">
-      <div class="shot-add-tile" onclick="addShotToScene(99)">
-        <span style="font-size:16px">+</span><span>Add Shot</span>
+    <div class="scene-card" id="scene-card-${n}">
+      <div class="compose-area" id="compose-${n}">
+        <textarea class="compose-textarea" id="ta-${n}" rows="3"
+          placeholder="Describe this scene..."
+          oninput="onInput(this,'gbtn-${n}')"></textarea>
+        <div class="compose-params">
+          <div class="param-chip" onclick="toast('Characters...')">👤 Characters & worlds</div>
+          <div class="param-chip" onclick="toast('Reference...')">📎 Reference</div>
+          <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
+          <div class="param-chip" id="cc-${n}" onclick="cycleCount('cc-${n}')">🎬 Auto · 3 shots</div>
+        </div>
+        <div class="compose-actions">
+          <div class="compose-actions-left">
+            <div class="manual-btn" onclick="addManualShot(${n})">＋ Add shot manually</div>
+            <div class="or-text">or</div>
+            <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
+          </div>
+          <button class="gen-btn" id="gbtn-${n}" onclick="generateScene(${n})">✦ Generate Scene</button>
+        </div>
       </div>
+      <div class="shots-strip" id="strip-${n}" style="display:none"></div>
     </div>`;
-  container.appendChild(div);
-  updateProgress();
-  toast('Manual shot mode · click + Add Shot to begin');
-}
 
-function addScene() {
-  const n = ++sceneCount;
-  addSceneWithGenerate(n, `Scene ${n}`, n % 2 === 0 ? SHOTS_DATA_2 : SHOTS_DATA);
+  container.insertBefore(div, addBtn);
+  div.querySelector('textarea').focus();
+  div.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 function updateProgress() {
-  document.getElementById('progress-text').textContent = `${doneShots} / ${totalShots} shots complete`;
-  const pct = totalShots > 0 ? (doneShots / totalShots) * 100 : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${doneShots} / ${totalShots} shots`;
+  const pct = totalShots > 0 ? (doneShots/totalShots)*100 : 0;
+  document.getElementById('progress-fill').style.width = pct+'%';
 }
 
 let toastTimer;
@@ -489,7 +408,7 @@ function toast(msg) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('main-ta').focus();
+  document.getElementById('ta-1').focus();
 });
 </script>
 </body>
