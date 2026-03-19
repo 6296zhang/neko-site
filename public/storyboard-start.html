@@ -22,28 +22,18 @@
   --text3: #44445a;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg); color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-  font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* ── NAV ── */
-.nav {
-  height: 48px; background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px; flex-shrink: 0;
-}
+/* NAV */
+.nav { height: 48px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
 .nav-left { display: flex; align-items: center; gap: 12px; }
 .logo { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
 .logo-dot { width: 22px; height: 22px; background: linear-gradient(135deg, var(--accent), var(--pink)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.story-name input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text); font-size: 13px; font-weight: 500; outline: none; width: 200px; padding: 2px 0; transition: border-color .15s; }
+.story-name input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text); font-size: 13px; font-weight: 500; outline: none; width: 200px; padding: 2px 0; }
 .story-name input:focus { border-bottom-color: var(--accent); }
 .divider { width: 1px; height: 20px; background: var(--border2); }
 .nav-tabs { display: flex; gap: 2px; }
-.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all .15s; }
-.nav-tab:hover { color: var(--text); background: var(--surface2); }
+.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; color: var(--text2); cursor: pointer; }
 .nav-tab.active { color: var(--text); background: var(--surface3); }
 .nav-right { display: flex; align-items: center; gap: 8px; }
 .credits { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text2); padding: 4px 8px; background: var(--surface2); border-radius: 6px; }
@@ -52,167 +42,144 @@ body {
 .btn:hover { background: var(--surface2); color: var(--text); }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
 
-/* ── SUBNAV ── */
-.subnav {
-  height: 40px; background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; padding: 0 16px; gap: 8px; flex-shrink: 0;
-}
+/* SUBNAV */
+.subnav { height: 40px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 8px; flex-shrink: 0; }
 .ip-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all .15s; }
 .ip-tag:hover { border-color: var(--accent2); color: var(--text); }
-.ip-avatar { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 9px; }
+.ip-av { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 9px; }
 .type-tag { display: flex; align-items: center; gap: 5px; padding: 4px 10px; background: rgba(124,92,252,.12); border: 1px solid rgba(124,92,252,.25); border-radius: 6px; font-size: 12px; color: var(--accent2); cursor: pointer; }
 
-/* ── CONTENT ── */
+/* CONTENT */
 .content { flex: 1; overflow-y: auto; padding: 24px 28px 100px; }
 .content::-webkit-scrollbar { width: 5px; }
 .content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* ── SCENE BLOCK ── */
+/* SCENE BLOCK */
 .scene-block { margin-bottom: 16px; }
 .scene-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.scene-number { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
-.scene-title-input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; padding: 2px 0; transition: all .15s; width: 180px; }
+.scene-num { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
+.scene-title-input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; padding: 2px 0; width: 180px; transition: all .15s; }
 .scene-title-input:focus { border-bottom-color: var(--accent); color: var(--text); }
 .scene-title-input::placeholder { color: var(--text3); }
 .scene-line { flex: 1; height: 1px; background: var(--border); }
 
-/* ── SCENE CARD ── */
+/* SCENE CARD */
 .scene-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color .2s; }
-.scene-card:hover { border-color: var(--border2); }
-.scene-card.focused { border-color: rgba(124,92,252,.35); }
+.scene-card.focused { border-color: rgba(124,92,252,.3); }
+.scene-card.confirmed { border-color: rgba(52,211,153,.25); }
 
-/* ── COMPOSE BOX ── */
-.compose-box {
-  padding: 16px 18px 12px;
-  border-bottom: 1px solid var(--border);
-}
-.compose-textarea {
-  width: 100%; background: transparent; border: none; color: var(--text);
-  font-size: 14px; line-height: 1.65; outline: none; resize: none;
-  font-family: inherit; min-height: 68px; placeholder-color: var(--text3);
-}
+/* ── STATE A: COMPOSE ── */
+.compose-box { padding: 16px 18px 12px; }
+.compose-textarea { width: 100%; background: transparent; border: none; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; min-height: 68px; }
 .compose-textarea::placeholder { color: var(--text3); }
-
-.compose-footer {
-  display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
-}
+.compose-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
 .compose-params { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-
-.param-chip {
-  display: flex; align-items: center; gap: 5px; padding: 4px 10px;
-  background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: 20px; font-size: 11px; color: var(--text2);
-  cursor: pointer; transition: all .15s; white-space: nowrap;
-}
+.param-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
 .param-chip:hover { border-color: var(--accent2); color: var(--text); }
 .param-chip.auto { border-color: rgba(124,92,252,.3); color: var(--accent2); background: rgba(124,92,252,.1); }
-.param-chip-icon { font-size: 12px; }
-.param-chip-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
-
-.compose-actions { display: flex; align-items: center; gap: 8px; }
-.gen-btn {
-  padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), #9d6fff); color: white;
-  border: none; cursor: pointer; display: flex; align-items: center; gap: 6px;
-  transition: all .2s; opacity: .45; pointer-events: none;
-}
+.param-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.gen-btn { padding: 8px 20px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; opacity: .4; pointer-events: none; }
 .gen-btn.ready { opacity: 1; pointer-events: auto; }
 .gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.4); }
-
-/* ── OR DIVIDER ── */
-.or-row {
-  display: flex; align-items: center; gap: 12px; padding: 10px 18px;
-  border-bottom: 1px solid var(--border);
-}
+.or-row { display: flex; align-items: center; gap: 10px; padding: 8px 18px; border-top: 1px solid var(--border); }
 .or-line { flex: 1; height: 1px; background: var(--border); }
-.or-text { font-size: 10px; color: var(--text3); white-space: nowrap; }
+.or-text { font-size: 10px; color: var(--text3); }
 .manual-btns { display: flex; gap: 6px; }
-.manual-btn {
-  display: flex; align-items: center; gap: 5px; padding: 4px 12px;
-  border-radius: 6px; font-size: 11px; color: var(--text2);
-  border: 1px solid var(--border2); background: var(--surface2);
-  cursor: pointer; transition: all .15s;
-}
-.manual-btn:hover { border-color: var(--border2); background: var(--surface3); color: var(--text); }
+.manual-btn { display: flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 6px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: var(--surface2); cursor: pointer; transition: all .15s; }
+.manual-btn:hover { background: var(--surface3); color: var(--text); }
 
-/* ── SHOTS ROW ── */
+/* ── STATE B: SHOT DRAFT LIST ── */
+.draft-section { display: none; }
+.draft-section.show { display: block; }
+
+.draft-header { padding: 14px 18px 10px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); }
+.draft-header-left { display: flex; align-items: center; gap: 8px; }
+.draft-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; }
+.draft-count { font-size: 11px; color: var(--text3); }
+.draft-edit-desc { font-size: 11px; color: var(--text3); cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border2); transition: all .15s; }
+.draft-edit-desc:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+
+.draft-list { padding: 0 18px 4px; display: flex; flex-direction: column; gap: 6px; }
+
+.draft-card {
+  display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 10px; cursor: pointer; transition: all .15s; position: relative;
+}
+.draft-card:hover { border-color: rgba(124,92,252,.25); background: var(--surface3); }
+.draft-card.editing { border-color: var(--accent); }
+
+.drag-handle { color: var(--text3); font-size: 12px; cursor: grab; padding-top: 2px; flex-shrink: 0; user-select: none; }
+.drag-handle:active { cursor: grabbing; }
+
+.draft-card-body { flex: 1; min-width: 0; }
+.draft-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.draft-shot-num { font-size: 10px; font-weight: 700; color: var(--text3); }
+.draft-type-pill { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 10px; }
+.pill-dialogue { background: rgba(124,92,252,.2); color: var(--accent2); }
+.pill-scene { background: rgba(52,211,153,.12); color: var(--green); }
+.pill-action { background: rgba(251,191,36,.12); color: var(--yellow); }
+
+.draft-desc-view { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.draft-desc-edit { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; color: var(--text); font-size: 12px; line-height: 1.55; padding: 5px 8px; outline: none; font-family: inherit; resize: none; margin-top: 4px; }
+.draft-card.editing .draft-desc-view { display: none; }
+.draft-card.editing .draft-desc-edit { display: block; }
+
+.draft-card-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.draft-action-btn { width: 24px; height: 24px; border-radius: 5px; background: transparent; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; transition: all .15s; }
+.draft-action-btn:hover { background: var(--surface3); border-color: var(--border2); color: var(--text2); }
+.draft-action-btn.del:hover { color: var(--pink); border-color: rgba(232,121,160,.3); }
+
+.draft-add-btn { display: flex; align-items: center; gap: 6px; padding: 8px 12px; margin: 6px 18px 0; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
+.draft-add-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+
+.draft-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.draft-footer-left { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+.draft-footer-cost { color: var(--yellow); }
+.gen-images-btn { padding: 10px 24px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; }
+.gen-images-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,92,252,.45); }
+
+/* ── STATE C: IMAGES GENERATED ── */
 .shots-row { display: flex; min-height: 0; }
-
-/* Empty hint */
-.shots-empty {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  padding: 28px; color: var(--text3); font-size: 12px; gap: 8px;
-}
-
-/* Shot card (generated) */
-.shot-card {
-  flex: 1; display: flex; flex-direction: column;
-  border-right: 1px solid var(--border); cursor: pointer;
-  transition: background .15s; position: relative; min-width: 0;
-}
+.shot-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); cursor: pointer; transition: background .15s; min-width: 0; }
 .shot-card:last-child { border-right: none; }
 .shot-card:hover { background: rgba(255,255,255,.02); }
-.shot-thumb {
-  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
-  font-size: 28px; position: relative; overflow: hidden;
-}
-.shot-thumb-overlay {
-  position: absolute; inset: 0; background: rgba(0,0,0,.5);
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  opacity: 0; transition: opacity .15s;
-}
-.shot-card:hover .shot-thumb-overlay { opacity: 1; }
+.shot-thumb { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; }
+.shot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity .15s; }
+.shot-card:hover .shot-overlay { opacity: 1; }
 .shot-ov-btn { padding: 4px 10px; background: rgba(255,255,255,.9); color: #1a1a2e; border-radius: 5px; font-size: 11px; font-weight: 500; }
 .shot-info { padding: 8px 10px; }
 .shot-num { font-size: 10px; font-weight: 600; color: var(--text3); margin-bottom: 3px; }
 .shot-desc { font-size: 11px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-/* add shot tile */
-.shot-add-tile {
-  flex: 0 0 90px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s;
-  border-left: 1px solid var(--border);
-}
+.shot-add-tile { flex: 0 0 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s; border-left: 1px solid var(--border); }
 .shot-add-tile:hover { color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* backgrounds */
-.bg-night { background: linear-gradient(160deg, #0a0a1a 0%, #1a1040 40%, #0d1a2a 100%); }
-.bg-forest { background: linear-gradient(160deg, #0a1f0a 0%, #0d2d0d 40%, #1a3a15 100%); }
-.bg-castle { background: linear-gradient(160deg, #1a0a20 0%, #2d1540 40%, #1a0a30 100%); }
+.bg-night { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
+.bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
+.bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
+.bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
 
-/* generating */
-@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
-.generating { animation: pulse 1.2s ease-in-out infinite; }
-
-/* ── ADD SCENE ── */
-.add-scene-btn {
-  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
-  border: 1.5px dashed var(--border2); border-radius: 8px;
-  font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; margin-top: 4px;
-}
+/* ADD SCENE */
+.add-scene-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; margin-top: 4px; }
 .add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-/* ── TOAST ── */
-.toast {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px);
-  background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px;
-  padding: 8px 16px; font-size: 12px; color: var(--text);
-  box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200;
-}
+/* TOAST */
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-size: 12px; color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200; }
 .toast.show { transform: translateX(-50%) translateY(0); }
+
+@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+.generating { animation: pulse 1s ease-in-out infinite; }
+@keyframes slideIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+.slide-in { animation: slideIn .2s ease forwards; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
     <div class="logo"><div class="logo-dot">✦</div> OpenArt</div>
     <div class="divider"></div>
-    <div class="story-name">
-      <input type="text" value="Lumina's Night City Story" placeholder="Untitled Story" />
-    </div>
+    <div class="story-name"><input type="text" value="Lumina's Night City Story" /></div>
     <div class="divider"></div>
     <div class="nav-tabs">
       <div class="nav-tab active">Storyboard</div>
@@ -226,166 +193,268 @@ body {
   </div>
 </nav>
 
-<!-- SUBNAV -->
 <div class="subnav">
-  <div class="ip-tag" onclick="toast('Switch IP...')">
-    <div class="ip-avatar">🧝</div>
-    Lumina
-  </div>
+  <div class="ip-tag" onclick="toast('Switch IP...')"><div class="ip-av">🧝</div> Lumina</div>
   <div class="type-tag" onclick="toast('Change type...')">💬 Talking Avatar</div>
 </div>
 
-<!-- CONTENT -->
 <div class="content" id="content">
 
-  <!-- Scene 1 -->
+  <!-- SCENE 1 -->
   <div class="scene-block" id="scene-1">
     <div class="scene-header">
-      <div class="scene-number">Scene 1</div>
+      <div class="scene-num">Scene 1</div>
       <input class="scene-title-input" type="text" placeholder="Name this scene..." />
       <div class="scene-line"></div>
     </div>
 
     <div class="scene-card" id="card-1">
 
-      <!-- Compose box -->
-      <div class="compose-box">
+      <!-- STATE A: Compose -->
+      <div class="compose-box" id="compose-1">
         <textarea class="compose-textarea" id="ta-1" rows="3"
           placeholder="Describe this scene... what happens, where, what mood"
-          oninput="onInput(this, 'btn-1')"></textarea>
-
+          oninput="onInput(this,'gbtn-1','card-1')"></textarea>
         <div class="compose-footer">
           <div class="compose-params">
-            <!-- Auto: Lumina -->
-            <div class="param-chip auto" onclick="toast('Character settings...')">
-              <div class="param-chip-dot"></div>
-              🧝 Lumina · auto
-            </div>
-            <!-- Reference images -->
-            <div class="param-chip" onclick="toast('Add reference images...')">
-              <span class="param-chip-icon">📎</span>
-              Reference
-            </div>
-            <!-- Style -->
-            <div class="param-chip" onclick="toast('Choose style...')">
-              <span class="param-chip-icon">🎨</span>
-              Cinematic
-            </div>
-            <!-- Shot count -->
-            <div class="param-chip" id="shot-count-1" onclick="cycleCount('shot-count-1')">
-              <span class="param-chip-icon">🎬</span>
-              × 3 shots
-            </div>
+            <div class="param-chip auto"><div class="param-dot"></div> 🧝 Lumina · auto</div>
+            <div class="param-chip" onclick="toast('Reference images...')">📎 Reference</div>
+            <div class="param-chip" onclick="toast('Style...')">🎨 Cinematic</div>
+            <div class="param-chip" id="cc-1" onclick="cycleCount('cc-1')">🎬 × 3 shots</div>
           </div>
-
-          <div class="compose-actions">
-            <button class="gen-btn" id="btn-1" onclick="generateScene('shots-row-1', 'ta-1', 'card-1')">
-              ✦ Generate
-            </button>
-          </div>
+          <button class="gen-btn" id="gbtn-1" onclick="genDraft('1')">✦ Generate shots</button>
         </div>
       </div>
-
-      <!-- OR row -->
-      <div class="or-row">
-        <div class="or-line"></div>
-        <div class="or-text">or start manually</div>
-        <div class="or-line"></div>
+      <div class="or-row" id="or-1">
+        <div class="or-line"></div><div class="or-text">or start manually</div><div class="or-line"></div>
         <div class="manual-btns">
-          <div class="manual-btn" onclick="addManualShot('shots-row-1')">＋ Add shot</div>
-          <div class="manual-btn" onclick="toast('Select media...')">⬆ Import</div>
+          <div class="manual-btn" onclick="toast('Adding shot...')">＋ Add shot</div>
+          <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
         </div>
       </div>
 
-      <!-- Shots row -->
-      <div class="shots-row" id="shots-row-1">
-        <div class="shots-empty">
-          <span style="opacity:.3;font-size:16px">🎬</span>
-          Shots will appear here
+      <!-- STATE B: Draft list -->
+      <div class="draft-section" id="draft-1">
+        <div class="draft-header">
+          <div class="draft-header-left">
+            <div class="draft-label">Shot Breakdown</div>
+            <div class="draft-count" id="draft-count-1"></div>
+          </div>
+          <div class="draft-edit-desc" onclick="backToCompose('1')">✏ Edit description</div>
+        </div>
+        <div class="draft-list" id="draft-list-1"></div>
+        <div class="draft-add-btn" onclick="addDraftShot('1')">+ Add shot</div>
+        <div class="draft-footer">
+          <div class="draft-footer-left">
+            <span id="draft-cost-1"></span>
+            <span class="draft-footer-cost"></span>
+          </div>
+          <button class="gen-images-btn" onclick="genImages('1')">✦ Generate Images →</button>
         </div>
       </div>
+
+      <!-- STATE C: Images -->
+      <div class="shots-row" id="shots-1" style="display:none"></div>
 
     </div>
   </div>
 
-  <!-- Add Scene -->
   <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
-
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast-el"></div>
 
 <script>
-const shotSets = [
-  [
-    { bg:'bg-night', icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
-    { bg:'bg-night', icon:'🧝', desc:'Close-up: Lumina pauses mid-step, looks up at glowing signs, expression wistful' },
-    { bg:'bg-night', icon:'✨', desc:'Pull back: City skyline looms behind her, a small figure in the vast urban night' },
+const DRAFT_DATA = {
+  '1': [
+    { type:'scene',    icon:'🌃', desc:'Wide shot: Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights', bg:'bg-night' },
+    { type:'dialogue', icon:'🧝', desc:'Close-up: Lumina pauses mid-step, looks up at the glowing signs with a wistful expression', bg:'bg-night' },
+    { type:'scene',    icon:'✨', desc:'Pull back reveal: City skyline looms behind her small figure, vast urban night', bg:'bg-night' },
   ],
-  [
-    { bg:'bg-castle', icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from the pages' },
-    { bg:'bg-castle', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition and wonder' },
-    { bg:'bg-castle', icon:'⚡', desc:'The library trembles as magic surges outward from the open book' },
+  '2': [
+    { type:'scene',    icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from the pages', bg:'bg-castle' },
+    { type:'dialogue', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition and wonder', bg:'bg-castle' },
+    { type:'action',   icon:'⚡', desc:'The library trembles as magic surges outward from the open book', bg:'bg-castle' },
   ],
-  [
-    { bg:'bg-forest', icon:'🌲', desc:'Lumina steps into a sunlit forest clearing, mist curling around her feet' },
-    { bg:'bg-forest', icon:'🦋', desc:'A glowing creature lands on her outstretched hand, she smiles softly' },
-    { bg:'bg-forest', icon:'🌟', desc:'She looks to the horizon, determination settling across her face' },
-  ],
-];
-
-let shotSetIdx = 0;
-const countCycle = ['× 2 shots', '× 3 shots', '× 4 shots'];
-const countMap = { '× 2 shots': 2, '× 3 shots': 3, '× 4 shots': 4 };
+};
+const typeLabels = { scene:'Scene', dialogue:'Dialogue', action:'Action' };
+const typePills  = { scene:'pill-scene', dialogue:'pill-dialogue', action:'pill-action' };
+const countCycle = ['× 2 shots','× 3 shots','× 4 shots'];
 let sceneCount = 1;
 
-function onInput(ta, btnId) {
+function onInput(ta, btnId, cardId) {
   const btn = document.getElementById(btnId);
-  const hasText = ta.value.trim().length > 0;
-  btn.classList.toggle('ready', hasText);
-  // card focus
-  ta.closest('.scene-card').classList.toggle('focused', document.activeElement === ta);
+  btn.classList.toggle('ready', ta.value.trim().length > 0);
+  document.getElementById(cardId).classList.toggle('focused', ta.value.trim().length > 0);
 }
 
-function cycleCount(chipId) {
-  const chip = document.getElementById(chipId);
-  const cur = chip.querySelector('.param-chip-icon').nextSibling.textContent.trim();
-  const idx = countCycle.indexOf(cur);
-  const next = countCycle[(idx + 1) % countCycle.length];
-  chip.innerHTML = `<span class="param-chip-icon">🎬</span> ${next}`;
+function cycleCount(id) {
+  const el = document.getElementById(id);
+  const txt = el.textContent.trim();
+  const i = countCycle.indexOf(txt);
+  el.textContent = countCycle[(i+1) % countCycle.length];
 }
 
-function generateScene(rowId, taId, cardId) {
-  const ta = document.getElementById(taId);
-  const row = document.getElementById(rowId);
-  const card = document.getElementById(cardId);
+function genDraft(sid) {
+  const ta = document.getElementById('ta-'+sid);
   if (!ta.value.trim()) return;
 
-  // generating state
-  row.innerHTML = `
-    <div class="shots-empty">
-      <span class="generating" style="font-size:18px;color:var(--accent2)">✦</span>
-      Generating shots&nbsp;·&nbsp;<span style="color:var(--text3)">~30s</span>
-    </div>`;
+  // hide compose
+  document.getElementById('compose-'+sid).style.opacity = '.5';
+  document.getElementById('compose-'+sid).style.pointerEvents = 'none';
+  document.getElementById('or-'+sid).style.display = 'none';
 
-  const shots = shotSets[shotSetIdx % shotSets.length];
-  shotSetIdx++;
+  const draftEl = document.getElementById('draft-'+sid);
+  draftEl.classList.add('show');
+  const listEl = document.getElementById('draft-list-'+sid);
+  listEl.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px"><span class="generating" style="color:var(--accent2);font-size:16px">✦</span><div style="margin-top:8px">Generating shot breakdown...</div></div>`;
+
+  const shots = DRAFT_DATA[sid] || DRAFT_DATA['1'];
   let count = 0;
-
   const iv = setInterval(() => {
     count++;
-    if (count >= shots.length) { clearInterval(iv); renderShots(row, shots, true); toast('✦ ' + shots.length + ' shots generated!'); }
-    else renderShots(row, shots.slice(0, count), false);
-  }, 900);
+    if (count > shots.length) { clearInterval(iv); return; }
+    renderDraftList(sid, shots.slice(0, count));
+    if (count === shots.length) {
+      updateDraftMeta(sid, shots.length);
+      toast('✦ Shot breakdown ready · Review and edit');
+    }
+  }, 600);
+}
+
+function renderDraftList(sid, shots) {
+  const list = document.getElementById('draft-list-'+sid);
+  list.innerHTML = shots.map((s, i) => `
+    <div class="draft-card slide-in" id="dc-${sid}-${i}" onclick="toggleEdit('${sid}',${i})">
+      <div class="drag-handle" onclick="event.stopPropagation()">⠿</div>
+      <div class="draft-card-body">
+        <div class="draft-card-top">
+          <div class="draft-shot-num">Shot 0${i+1}</div>
+          <div class="draft-type-pill ${typePills[s.type]}">${typeLabels[s.type]}</div>
+        </div>
+        <div class="draft-desc-view">${s.desc}</div>
+        <textarea class="draft-desc-edit" rows="2" onclick="event.stopPropagation()"
+          onblur="saveEdit('${sid}',${i},this)">${s.desc}</textarea>
+      </div>
+      <div class="draft-card-actions" onclick="event.stopPropagation()">
+        <div class="draft-action-btn" title="Edit" onclick="toggleEdit('${sid}',${i})">✏</div>
+        <div class="draft-action-btn del" title="Delete" onclick="deleteDraft('${sid}',${i})">✕</div>
+      </div>
+    </div>`).join('');
+}
+
+function updateDraftMeta(sid, count) {
+  document.getElementById('draft-count-'+sid).textContent = count + ' shots';
+  const costEl = document.getElementById('draft-cost-'+sid);
+  if (costEl) costEl.innerHTML = `${count} shots · <span style="color:var(--yellow)">✦ ${count * 0} free preview</span>`;
+}
+
+function toggleEdit(sid, idx) {
+  const card = document.getElementById(`dc-${sid}-${idx}`);
+  const isEditing = card.classList.contains('editing');
+  // close all others
+  document.querySelectorAll(`[id^="dc-${sid}-"]`).forEach(c => c.classList.remove('editing'));
+  if (!isEditing) {
+    card.classList.add('editing');
+    card.querySelector('.draft-desc-edit').focus();
+  }
+}
+
+function saveEdit(sid, idx, ta) {
+  const card = document.getElementById(`dc-${sid}-${idx}`);
+  card.querySelector('.draft-desc-view').textContent = ta.value;
+  card.classList.remove('editing');
+}
+
+function deleteDraft(sid, idx) {
+  const card = document.getElementById(`dc-${sid}-${idx}`);
+  card.style.opacity = '0';
+  card.style.transform = 'translateX(10px)';
+  card.style.transition = 'all .2s';
+  setTimeout(() => {
+    card.remove();
+    // renumber
+    const list = document.getElementById('draft-list-'+sid);
+    list.querySelectorAll('.draft-card').forEach((c, i) => {
+      c.querySelector('.draft-shot-num').textContent = `Shot 0${i+1}`;
+    });
+    const count = list.querySelectorAll('.draft-card').length;
+    updateDraftMeta(sid, count);
+  }, 200);
+  toast('Shot removed');
+}
+
+function addDraftShot(sid) {
+  const list = document.getElementById('draft-list-'+sid);
+  const count = list.querySelectorAll('.draft-card').length;
+  const idx = count;
+  const div = document.createElement('div');
+  div.className = 'draft-card slide-in editing';
+  div.id = `dc-${sid}-${idx}`;
+  div.innerHTML = `
+    <div class="drag-handle">⠿</div>
+    <div class="draft-card-body">
+      <div class="draft-card-top">
+        <div class="draft-shot-num">Shot 0${idx+1}</div>
+        <div class="draft-type-pill pill-scene">Scene</div>
+      </div>
+      <div class="draft-desc-view"></div>
+      <textarea class="draft-desc-edit" rows="2" placeholder="Describe this shot..."
+        onblur="saveEdit('${sid}',${idx},this)"></textarea>
+    </div>
+    <div class="draft-card-actions" onclick="event.stopPropagation()">
+      <div class="draft-action-btn del" onclick="deleteDraft('${sid}',${idx})">✕</div>
+    </div>`;
+  list.appendChild(div);
+  div.querySelector('textarea').focus();
+  updateDraftMeta(sid, idx+1);
+}
+
+function backToCompose(sid) {
+  document.getElementById('compose-'+sid).style.opacity = '1';
+  document.getElementById('compose-'+sid).style.pointerEvents = 'auto';
+  document.getElementById('or-'+sid).style.display = 'flex';
+  document.getElementById('draft-'+sid).classList.remove('show');
+}
+
+function genImages(sid) {
+  const list = document.getElementById('draft-list-'+sid);
+  const cards = list.querySelectorAll('.draft-card');
+  const shots = [];
+  cards.forEach(c => {
+    shots.push({
+      desc: c.querySelector('.draft-desc-view').textContent || c.querySelector('.draft-desc-edit').value,
+      bg: DRAFT_DATA[sid]?.[shots.length]?.bg || 'bg-night',
+      icon: DRAFT_DATA[sid]?.[shots.length]?.icon || '✨',
+    });
+  });
+
+  // hide draft
+  document.getElementById('draft-'+sid).classList.remove('show');
+  document.getElementById('compose-'+sid).style.display = 'none';
+  document.getElementById('or-'+sid).style.display = 'none';
+
+  const shotRow = document.getElementById('shots-'+sid);
+  shotRow.style.display = 'flex';
+  shotRow.innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;gap:8px;color:var(--text3)"><span class="generating" style="color:var(--accent2);font-size:18px">✦</span><span style="font-size:12px">Generating images...</span></div>`;
+
+  document.getElementById('card-'+sid).classList.add('confirmed');
+
+  let count = 0;
+  const iv = setInterval(() => {
+    count++;
+    if (count > shots.length) { clearInterval(iv); return; }
+    renderShots(shotRow, shots.slice(0, count), count === shots.length);
+    if (count === shots.length) toast('✦ ' + shots.length + ' images generated!');
+  }, 800);
 }
 
 function renderShots(row, shots, final) {
   let html = shots.map((s, i) => `
-    <div class="shot-card" onclick="toast('Opening shot editor...')">
+    <div class="shot-card">
       <div class="shot-thumb ${s.bg}">
         <span style="font-size:26px">${s.icon}</span>
-        <div class="shot-thumb-overlay">
+        <div class="shot-overlay">
           <div class="shot-ov-btn">Edit</div>
           <div class="shot-ov-btn">Regen</div>
         </div>
@@ -395,95 +464,72 @@ function renderShots(row, shots, final) {
         <div class="shot-desc">${s.desc}</div>
       </div>
     </div>`).join('');
-
   if (final) {
-    html += `
-      <div class="shot-add-tile" onclick="toast('Adding shot...')">
-        <span style="font-size:18px">+</span>
-        <span style="font-size:10px">Add</span>
-      </div>`;
+    html += `<div class="shot-add-tile" onclick="toast('Add shot...')"><span style="font-size:16px">+</span><span style="font-size:10px">Add</span></div>`;
   }
-
   row.innerHTML = html;
 }
 
-function addManualShot(rowId) {
-  const row = document.getElementById(rowId);
-  // remove empty hint if present
-  const empty = row.querySelector('.shots-empty');
-  if (empty) empty.remove();
-
-  const count = row.querySelectorAll('.shot-card').length;
-  const div = document.createElement('div');
-  div.className = 'shot-card';
-  div.innerHTML = `
-    <div class="shot-thumb" style="background:var(--surface2)">
-      <div style="text-align:center;color:var(--text3)">
-        <div style="font-size:16px;margin-bottom:4px">+</div>
-        <div style="font-size:10px">Write prompt</div>
-      </div>
-    </div>
-    <div class="shot-info">
-      <div class="shot-num">Shot 0${count + 1}</div>
-      <div class="shot-desc" style="color:var(--text3)">Empty · click to edit</div>
-    </div>`;
-  div.onclick = () => toast('Opening shot editor...');
-  row.appendChild(div);
-  toast('Shot added');
-}
-
+let sceneN = 1;
 function addScene() {
-  sceneCount++;
-  const n = sceneCount;
+  sceneN++;
+  const n = sceneN;
   const content = document.getElementById('content');
   const addBtn = content.querySelector('.add-scene-btn');
 
+  DRAFT_DATA[String(n)] = DRAFT_DATA['2'];
+
   const div = document.createElement('div');
   div.className = 'scene-block';
-  div.id = `scene-${n}`;
   div.innerHTML = `
     <div class="scene-header">
-      <div class="scene-number">Scene ${n}</div>
+      <div class="scene-num">Scene ${n}</div>
       <input class="scene-title-input" type="text" placeholder="Name this scene..." />
       <div class="scene-line"></div>
     </div>
     <div class="scene-card" id="card-${n}">
-      <div class="compose-box">
+      <div class="compose-box" id="compose-${n}">
         <textarea class="compose-textarea" id="ta-${n}" rows="3"
           placeholder="Describe this scene..."
-          oninput="onInput(this,'btn-${n}')"></textarea>
+          oninput="onInput(this,'gbtn-${n}','card-${n}')"></textarea>
         <div class="compose-footer">
           <div class="compose-params">
-            <div class="param-chip auto" onclick="toast('Character...')">
-              <div class="param-chip-dot"></div>
-              🧝 Lumina · auto
-            </div>
-            <div class="param-chip" onclick="toast('Reference...')"><span class="param-chip-icon">📎</span> Reference</div>
-            <div class="param-chip" onclick="toast('Style...')"><span class="param-chip-icon">🎨</span> Cinematic</div>
-            <div class="param-chip" id="shot-count-${n}" onclick="cycleCount('shot-count-${n}')"><span class="param-chip-icon">🎬</span> × 3 shots</div>
+            <div class="param-chip auto"><div class="param-dot"></div> 🧝 Lumina · auto</div>
+            <div class="param-chip">📎 Reference</div>
+            <div class="param-chip">🎨 Cinematic</div>
+            <div class="param-chip" id="cc-${n}" onclick="cycleCount('cc-${n}')">🎬 × 3 shots</div>
           </div>
-          <div class="compose-actions">
-            <button class="gen-btn" id="btn-${n}" onclick="generateScene('shots-row-${n}','ta-${n}','card-${n}')">✦ Generate</button>
-          </div>
+          <button class="gen-btn" id="gbtn-${n}" onclick="genDraft('${n}')">✦ Generate shots</button>
         </div>
       </div>
-      <div class="or-row">
-        <div class="or-line"></div>
-        <div class="or-text">or start manually</div>
-        <div class="or-line"></div>
+      <div class="or-row" id="or-${n}">
+        <div class="or-line"></div><div class="or-text">or start manually</div><div class="or-line"></div>
         <div class="manual-btns">
-          <div class="manual-btn" onclick="addManualShot('shots-row-${n}')">＋ Add shot</div>
+          <div class="manual-btn" onclick="toast('Adding shot...')">＋ Add shot</div>
           <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
         </div>
       </div>
-      <div class="shots-row" id="shots-row-${n}">
-        <div class="shots-empty"><span style="opacity:.3;font-size:16px">🎬</span> Shots will appear here</div>
+      <div class="draft-section" id="draft-${n}">
+        <div class="draft-header">
+          <div class="draft-header-left">
+            <div class="draft-label">Shot Breakdown</div>
+            <div class="draft-count" id="draft-count-${n}"></div>
+          </div>
+          <div class="draft-edit-desc" onclick="backToCompose('${n}')">✏ Edit description</div>
+        </div>
+        <div class="draft-list" id="draft-list-${n}"></div>
+        <div class="draft-add-btn" onclick="addDraftShot('${n}')">+ Add shot</div>
+        <div class="draft-footer">
+          <div class="draft-footer-left"><span id="draft-cost-${n}"></span></div>
+          <button class="gen-images-btn" onclick="genImages('${n}')">✦ Generate Images →</button>
+        </div>
       </div>
+      <div class="shots-row" id="shots-${n}" style="display:none"></div>
     </div>`;
 
   content.insertBefore(div, addBtn);
   div.querySelector('textarea').focus();
-  div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  div.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 let toastTimer;
@@ -495,7 +541,6 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// auto focus first textarea
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('ta-1').focus();
 });
