@@ -82,11 +82,11 @@ input,textarea,select{font-family:inherit;outline:none;}
 .scene-collapse{width:20px;height:20px;border-radius:5px;background:var(--s2);border:1px solid var(--bd);color:var(--t3);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;flex-shrink:0;transition:all .15s;margin-top:1px;}
 .scene-collapse:hover{color:var(--t2);}
 .scene-header-main{flex:1;min-width:0;}
-.scene-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
-.scene-desc{font-size:14px;color:var(--t1);line-height:1.5;cursor:pointer;border-radius:6px;padding:2px 4px;margin:-2px -4px;}
+.scene-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
+.scene-desc{font-size:15px;font-weight:500;color:var(--t1);line-height:1.5;cursor:pointer;border-radius:6px;padding:2px 4px;margin:-2px -4px;}
 .scene-desc:hover{background:var(--s2);}
-.scene-desc-input{width:100%;background:var(--s2);border:1px solid var(--accent);border-radius:8px;color:var(--t1);font-size:14px;padding:6px 10px;display:none;}
-.scene-meta{font-size:12px;color:var(--t3);margin-top:4px;}
+.scene-desc-input{width:100%;background:var(--s2);border:1px solid var(--accent);border-radius:8px;color:var(--t1);font-size:15px;font-weight:500;padding:6px 10px;display:none;}
+.scene-meta{font-size:11px;color:var(--t3);margin-top:6px;letter-spacing:.01em;}
 .scene-actions{display:flex;gap:2px;flex-shrink:0;margin-top:1px;}
 .sa-btn{width:28px;height:28px;border-radius:8px;background:transparent;color:var(--t3);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1px solid transparent;transition:all .15s;}
 .sa-btn:hover{background:var(--s2);border-color:var(--bd);color:var(--t2);}
@@ -246,8 +246,8 @@ input,textarea,select{font-family:inherit;outline:none;}
 .se-right{display:flex;align-items:center;gap:8px;}
 .se-nav-btn{width:32px;height:32px;border-radius:8px;background:var(--s2);border:1px solid var(--bd);color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .15s;}
 .se-nav-btn:hover{background:var(--s3);color:var(--t1);}
-.se-save-status{font-size:12px;color:var(--success);}
-.se-save-status.dirty{color:var(--warning);}
+.se-save-status{font-size:12px;color:var(--success);font-weight:500;}
+.se-save-status.dirty{color:var(--warning);font-weight:600;background:rgba(242,184,75,.1);padding:3px 8px;border-radius:6px;border:1px solid rgba(242,184,75,.25);}
 .se-layout{flex:1;display:flex;overflow:hidden;}
 /* left panel */
 .se-left{width:280px;min-width:280px;background:var(--s1);border-right:1px solid var(--bd);overflow-y:auto;padding:20px;}
@@ -527,7 +527,7 @@ input,textarea,select{font-family:inherit;outline:none;}
   <div class="se-layout">
     <!-- Left: Narrative -->
     <div class="se-left">
-      <div class="se-panel-title">Shot Details</div>
+      <div class="se-panel-title">Define this shot</div>
       <div class="se-field">
         <div class="se-field-label">Description</div>
         <textarea class="se-field-textarea" rows="4" id="se-desc" oninput="markDirty()"></textarea>
@@ -846,24 +846,29 @@ function getAllShots() {
 }
 
 // ── NAVIGATION ──
-function goToStoryList() { showView('story-list'); }
+function goToStoryList() { location.hash = '#/story-list'; showView('story-list'); }
 function goToStoryboard() {
+  location.hash = '#/storyboard';
   showView('storyboard');
   renderStoryboard();
 }
 function enterStory(storyId) {
   state.activeStory = storyId;
+  location.hash = '#/storyboard';
   showView('storyboard');
   renderStoryboard();
 }
 function createNewStory() {
-  toast('New story created');
-  state.activeStory = 'mittens';
-  state.stories['mittens'].scenes = [];
+  const newId = 'story_' + Date.now();
+  state.stories[newId] = { title: 'Untitled Story', scenes: [] };
+  state.activeStory = newId;
+  location.hash = '#/storyboard';
   showView('storyboard');
   renderStoryboard();
+  toast('New story created');
 }
 function switchToVideoEditor() {
+  location.hash = '#/video-editor';
   showView('video-editor');
   renderVideoEditor();
 }
@@ -871,6 +876,7 @@ function openShotEditor(shotId) {
   state.activeShotId = shotId;
   state.shotEditorDirty = false;
   renderShotEditor();
+  location.hash = '#/shot-editor/' + shotId;
   showView('shot-editor');
 }
 
@@ -888,11 +894,12 @@ function renderStoryboard() {
   document.getElementById('sb-story-title').textContent = story.title;
   const content = document.getElementById('sb-content');
 
-  // Auto-complete generatingImage shots with random delay
-  getAllShots().filter(s => s.status === 'generatingImage').forEach(s => {
+  // Auto-complete generatingImage shots — only schedule if not already scheduled
+  getAllShots().filter(s => s.status === 'generatingImage' && !s._timer).forEach(s => {
     const delay = 1500 + Math.random() * 2000;
-    setTimeout(() => {
+    s._timer = setTimeout(() => {
       s.status = 'imageReady';
+      s._timer = null;
       renderStoryboard();
       updateConvertBtn();
     }, delay);
@@ -1004,7 +1011,7 @@ function renderShotCard(shot, arClass, cardW, batchMode, sceneId) {
 
   let inner = '';
   if (shot.status === 'generatingImage') {
-    inner = `<div class="shot-card-img shimmer" style="width:100%;height:100%;position:relative;background:linear-gradient(160deg,${shot.bg.includes('#') ? shot.bg : '#0a0a1a, #111130'})">
+    inner = `<div class="shot-card-img shimmer" style="width:100%;height:100%;position:relative;background:${shot.bg}">
       <div class="shimmer-text">Generating image...</div>
     </div>`;
   } else if (shot.status === 'failed') {
@@ -1022,13 +1029,17 @@ function renderShotCard(shot, arClass, cardW, batchMode, sceneId) {
   }
 
   let actionBar = '';
-  if (shot.status !== 'failed' && shot.status !== 'generatingImage') {
+  if (!batchMode && shot.status !== 'failed' && shot.status !== 'generatingImage') {
     actionBar = `<div class="shot-action-bar">
       <div class="shot-act-btn" onclick="event.stopPropagation();openShotEditor('${shot.id}')">Edit shot</div>
       <div class="shot-act-btn" onclick="event.stopPropagation();showVariations(event,'${shot.id}')">Variations</div>
       ${shot.status === 'imageReady' ? `<div class="shot-act-btn" onclick="event.stopPropagation();toVideo('${shot.id}')">To video</div>` : ''}
       <div class="shot-act-btn" onclick="event.stopPropagation();shotMore(event,'${shot.id}')">More</div>
     </div>`;
+  }
+  // In batch mode, videoReady shots show unavailable indicator on hover
+  if (batchMode && shot.status === 'videoReady') {
+    actionBar = `<div class="shot-action-bar" style="justify-content:center"><span style="font-size:11px;color:var(--t3)">Already a video</span></div>`;
   }
 
   const numBadge = shot.status !== 'generatingImage' ?
@@ -1156,15 +1167,21 @@ function enterBatchMode() {
   document.getElementById('batch-bar').classList.add('active');
   document.getElementById('batch-settings').classList.add('active');
   document.getElementById('sb-toolbar').style.display = 'none';
+  document.getElementById('world-entry').style.opacity = '.4';
+  document.getElementById('world-entry').style.pointerEvents = 'none';
   renderStoryboard();
   updateBatchBtn();
+  toast('Select shots to convert to video');
 }
+
 function exitBatchMode() {
   state.isBatchMode = false;
   state.batchSelected.clear();
   document.getElementById('batch-bar').classList.remove('active');
   document.getElementById('batch-settings').classList.remove('active');
   document.getElementById('sb-toolbar').style.display = 'flex';
+  const we = document.getElementById('world-entry');
+  if (we) { we.style.opacity = ''; we.style.pointerEvents = ''; }
   renderStoryboard();
 }
 function toggleShotSelect(shotId) {
@@ -1736,21 +1753,36 @@ function closeConfirm() {
 // ── HASH ROUTING ──
 function handleHash() {
   const hash = location.hash || '#/storyboard';
-  if (hash === '#/story-list') { showView('story-list'); }
-  else if (hash === '#/shot-editor') { openShotEditor('1.2'); }
-  else if (hash === '#/video-editor') { switchToVideoEditor(); }
-  else { enterStory('mittens'); }
+  if (hash === '#/story-list') {
+    showView('story-list');
+  } else if (hash === '#/video-editor') {
+    showView('video-editor');
+    renderVideoEditor();
+  } else if (hash.startsWith('#/shot-editor/')) {
+    const shotId = hash.replace('#/shot-editor/', '');
+    if (shotId && getShot(shotId)) { state.activeShotId = shotId; renderShotEditor(); showView('shot-editor'); }
+    else { enterStory('mittens'); }
+  } else {
+    // default: storyboard
+    if (state.activeStory === 'mittens' || state.stories[state.activeStory]) {
+      showView('storyboard');
+      renderStoryboard();
+    } else {
+      state.activeStory = 'mittens';
+      showView('storyboard');
+      renderStoryboard();
+    }
+  }
 }
 
 // ── INIT ──
 window.addEventListener('hashchange', handleHash);
 document.addEventListener('DOMContentLoaded', () => {
-  handleHash();
-  // Storyboard: render after entering
+  state.activeStory = 'mittens';
+  location.hash = '#/storyboard';
+  showView('storyboard');
+  renderStoryboard();
 });
-
-// Override enterStory to also render
-const _enterStory = enterStory;
 </script>
 </body>
 </html>
