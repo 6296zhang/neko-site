@@ -330,32 +330,27 @@ body {
     </div>
 
     <div class="scene-card" id="scene-1-card">
-      <!-- Description row — write desc, then generate -->
-      <div class="scene-desc-row">
-        <div class="scene-desc-label">Description</div>
-        <textarea class="scene-desc-input" rows="2"
-          id="scene-desc"
-          placeholder="Describe what happens in this scene, then click ✦ Generate shots..."
-          oninput="updateGenBtn()"></textarea>
-        <div class="scene-desc-ai-btn">
-          <div class="ai-chip" id="gen-chip" onclick="openAIModal()" style="opacity:.45;pointer-events:none">✦ Generate shots</div>
-        </div>
-      </div>
-
-      <!-- Shots area — only manual + import -->
+      <!-- Shots area — three clean entry points -->
       <div class="shots-row" id="shots-row-1">
         <div class="shot-placeholder">
-          <div class="placeholder-icon" style="opacity:.2">🎬</div>
-          <div class="placeholder-text">Shots will appear here<br>after generation</div>
-          <div class="creation-actions" style="margin-top:4px">
+          <div class="placeholder-icon">✦</div>
+          <div class="placeholder-text">How do you want to<br>start this scene?</div>
+          <div class="creation-actions">
 
-            <div class="btn-divider" style="max-width:240px">
+            <div class="create-btn primary" onclick="openAIModal()">
+              <div class="create-btn-icon">✦</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Generate from description</div>
+                <div class="create-btn-sub">AI creates shots for you · ~30s</div>
+              </div>
+            </div>
+
+            <div class="btn-divider">
               <div class="btn-divider-line"></div>
-              <div class="btn-divider-text">or start manually</div>
+              <div class="btn-divider-text">or</div>
               <div class="btn-divider-line"></div>
             </div>
 
-            <!-- Manual shot -->
             <div class="create-btn secondary" onclick="addManualShot()">
               <div class="create-btn-icon">＋</div>
               <div class="create-btn-content">
@@ -364,7 +359,6 @@ body {
               </div>
             </div>
 
-            <!-- Import -->
             <div class="create-btn secondary" onclick="toast('Select media to import...')">
               <div class="create-btn-icon">⬆</div>
               <div class="create-btn-content">
@@ -581,21 +575,21 @@ function addScene() {
       <div class="scene-line"></div>
     </div>
     <div class="scene-card">
-      <div class="scene-desc-row">
-        <div class="scene-desc-label">Description</div>
-        <textarea class="scene-desc-input" rows="2" placeholder="Describe what happens in this scene, then click ✦ Generate shots..." oninput="updateDynGenBtn(this)"></textarea>
-        <div class="scene-desc-ai-btn">
-          <div class="ai-chip" style="opacity:.45;pointer-events:none" onclick="openAIModal()">✦ Generate shots</div>
-        </div>
-      </div>
       <div class="shots-row">
         <div class="shot-placeholder">
-          <div class="placeholder-icon" style="opacity:.2">🎬</div>
-          <div class="placeholder-text">Shots will appear here<br>after generation</div>
-          <div class="creation-actions" style="margin-top:4px">
-            <div class="btn-divider" style="max-width:240px">
+          <div class="placeholder-icon">✦</div>
+          <div class="placeholder-text">How do you want to<br>start this scene?</div>
+          <div class="creation-actions">
+            <div class="create-btn primary" onclick="openAIModal()">
+              <div class="create-btn-icon">✦</div>
+              <div class="create-btn-content">
+                <div class="create-btn-title">Generate from description</div>
+                <div class="create-btn-sub">AI creates shots for you · ~30s</div>
+              </div>
+            </div>
+            <div class="btn-divider">
               <div class="btn-divider-line"></div>
-              <div class="btn-divider-text">or start manually</div>
+              <div class="btn-divider-text">or</div>
               <div class="btn-divider-line"></div>
             </div>
             <div class="create-btn secondary" onclick="toast('Adding manual shot...')">
