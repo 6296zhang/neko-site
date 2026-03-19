@@ -41,142 +41,145 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .credits span { color: var(--yellow); font-size: 10px; }
 .nav-btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); transition: all .15s; }
 .nav-btn:hover { background: var(--surface2); color: var(--text); }
+.convert-btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; display: none; align-items: center; gap: 6px; transition: all .15s; }
+.convert-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
+.convert-btn.show { display: flex; }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--pink)); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
 
 /* CONTENT */
-.content { flex: 1; overflow-y: auto; padding: 24px 28px 100px; }
+.content { flex: 1; overflow-y: auto; padding: 20px 24px 60px; }
 .content::-webkit-scrollbar { width: 5px; }
 .content::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* SCENE ROW */
-.scene-row { margin-bottom: 24px; }
-.scene-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.scene-num { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
-.scene-title-input { background: transparent; border: none; border-bottom: 1px solid transparent; color: var(--text2); font-size: 13px; font-weight: 500; outline: none; padding: 2px 0; width: 180px; transition: all .15s; }
-.scene-title-input:focus { border-bottom-color: var(--accent); color: var(--text); }
-.scene-title-input::placeholder { color: var(--text3); }
-.scene-line { flex: 1; height: 1px; background: var(--border); }
-.scene-add-shot { font-size: 11px; color: var(--text3); cursor: pointer; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; white-space: nowrap; }
-.scene-add-shot:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+/* SCENE BLOCK */
+.scene-block { margin-bottom: 20px; }
 
-/* SCENE CARD */
-.scene-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color .2s; }
-.scene-card.has-content { border-color: var(--border); }
+/* Scene header row */
+.scene-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 0 2px; user-select: none; }
+.scene-drag { color: var(--text3); font-size: 12px; cursor: grab; }
+.scene-collapse { width: 18px; height: 18px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border2); color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; transition: all .15s; flex-shrink: 0; }
+.scene-collapse:hover { color: var(--text2); }
+.scene-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
+.scene-desc-text { font-size: 12px; color: var(--text2); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scene-meta { font-size: 10px; color: var(--text3); white-space: nowrap; }
+.scene-header-add { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; white-space: nowrap; }
+.scene-header-add:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
 
-/* COMPOSE AREA — inside scene card, empty state */
-.compose-area { padding: 20px 20px 16px; }
-.compose-textarea {
-  width: 100%; background: transparent; border: none; color: var(--text);
-  font-size: 14px; line-height: 1.7; outline: none; resize: none;
-  font-family: inherit; min-height: 72px;
+/* Shot grid */
+.shot-grid { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; }
+.shot-grid::-webkit-scrollbar { height: 3px; }
+.shot-grid::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+/* Shot tile — image state */
+.shot-tile {
+  position: relative; flex-shrink: 0; width: 200px; border-radius: 10px;
+  overflow: hidden; cursor: pointer; transition: all .15s;
+  border: 2px solid transparent;
 }
-.compose-textarea::placeholder { color: var(--text3); font-size: 14px; }
-
-.compose-params {
-  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-  padding: 10px 20px 10px; border-top: 1px solid var(--border);
+.shot-tile:hover { border-color: rgba(124,92,252,.5); }
+.shot-tile-img {
+  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
+  font-size: 30px; position: relative; overflow: hidden;
 }
-.param-chip { display: flex; align-items: center; gap: 5px; padding: 5px 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
+.shot-tile-num {
+  position: absolute; top: 6px; left: 6px;
+  background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
+  padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white;
+}
+.shot-tile-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  opacity: 0; transition: opacity .15s;
+}
+.shot-tile:hover .shot-tile-overlay { opacity: 1; }
+.shot-ov-btn { padding: 4px 10px; background: rgba(255,255,255,.92); color: #1a1a2e; border-radius: 5px; font-size: 11px; font-weight: 600; }
+
+/* Shot tile — empty/compose state */
+.shot-tile.compose-tile {
+  background: var(--surface); border: 1px solid var(--border);
+  width: auto; min-width: 320px; max-width: 480px; flex: 1;
+}
+.compose-inner { padding: 16px 16px 12px; }
+.compose-ta { width: 100%; background: transparent; border: none; color: var(--text); font-size: 14px; line-height: 1.65; outline: none; resize: none; font-family: inherit; min-height: 64px; }
+.compose-ta::placeholder { color: var(--text3); font-size: 14px; }
+.compose-params { display: flex; gap: 5px; flex-wrap: wrap; padding: 8px 16px; border-top: 1px solid var(--border); }
+.param-chip { display: flex; align-items: center; gap: 4px; padding: 4px 9px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap; }
 .param-chip:hover { border-color: var(--accent2); color: var(--text); }
-
-.compose-actions {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 20px 14px;
-}
-.compose-actions-left { display: flex; align-items: center; gap: 8px; }
-.manual-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 7px; font-size: 12px; color: var(--text2); border: 1px solid var(--border2); background: transparent; cursor: pointer; transition: all .15s; }
+.compose-footer { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; }
+.compose-footer-left { display: flex; gap: 6px; align-items: center; }
+.manual-btn { display: flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 7px; font-size: 11px; color: var(--text2); border: 1px solid var(--border2); background: transparent; cursor: pointer; transition: all .15s; }
 .manual-btn:hover { background: var(--surface2); color: var(--text); }
-.or-text { font-size: 11px; color: var(--text3); }
-
-.gen-btn { padding: 9px 22px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; opacity: .35; pointer-events: none; }
+.or-t { font-size: 10px; color: var(--text3); }
+.gen-btn { padding: 7px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; opacity: .35; pointer-events: none; transition: all .2s; display: flex; align-items: center; gap: 6px; }
 .gen-btn.ready { opacity: 1; pointer-events: auto; }
-.gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
+.gen-btn.ready:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(124,92,252,.45); }
 
-/* SCRIPT LIST — State B */
-.script-area { border-top: 1px solid var(--border); }
-.script-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 8px; }
-.script-header-left { display: flex; align-items: center; gap: 8px; }
-.script-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; }
-.script-count { font-size: 11px; color: var(--text3); }
-.script-edit-desc { font-size: 11px; color: var(--text3); cursor: pointer; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
-.script-edit-desc:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
-
-.script-list { padding: 0 16px 8px; display: flex; flex-direction: column; gap: 5px; }
-.script-card { display: flex; align-items: flex-start; gap: 8px; padding: 9px 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 9px; cursor: pointer; transition: all .15s; }
-.script-card:hover { border-color: rgba(124,92,252,.25); }
-.script-card.editing { border-color: var(--accent); }
-.drag-handle { color: var(--text3); font-size: 12px; cursor: grab; padding-top: 2px; flex-shrink: 0; user-select: none; }
-.script-body { flex: 1; min-width: 0; }
-.script-top { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
-.script-num { font-size: 10px; font-weight: 700; color: var(--text3); }
-.script-type { font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 10px; }
+/* Script review state */
+.script-tile {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; width: auto; min-width: 360px; flex: 1;
+}
+.script-tile-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 8px; border-bottom: 1px solid var(--border); }
+.script-tile-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; gap: 8px; }
+.script-tile-count { font-size: 11px; color: var(--text3); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.script-back { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); transition: all .15s; }
+.script-back:hover { color: var(--accent2); border-color: rgba(124,92,252,.3); }
+.script-list { padding: 8px 12px; display: flex; flex-direction: column; gap: 5px; max-height: 240px; overflow-y: auto; }
+.script-list::-webkit-scrollbar { width: 3px; }
+.script-list::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+.sc-card { display: flex; align-items: flex-start; gap: 7px; padding: 8px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; cursor: pointer; transition: all .15s; }
+.sc-card:hover { border-color: rgba(124,92,252,.25); }
+.sc-card.editing { border-color: var(--accent); }
+.drag-h { color: var(--text3); font-size: 11px; cursor: grab; padding-top: 2px; flex-shrink: 0; }
+.sc-body { flex: 1; min-width: 0; }
+.sc-top { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.sc-num { font-size: 10px; font-weight: 700; color: var(--text3); }
+.sc-type { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; }
 .t-scene { background: rgba(52,211,153,.12); color: var(--green); }
-.t-dialogue { background: rgba(124,92,252,.2); color: var(--accent2); }
+.t-dialogue { background: rgba(124,92,252,.18); color: var(--accent2); }
 .t-action { background: rgba(251,191,36,.12); color: var(--yellow); }
-.script-desc-view { font-size: 12px; color: var(--text2); line-height: 1.5; }
-.script-desc-edit { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; color: var(--text); font-size: 12px; line-height: 1.5; padding: 5px 8px; outline: none; font-family: inherit; resize: none; margin-top: 4px; }
-.script-card.editing .script-desc-view { display: none; }
-.script-card.editing .script-desc-edit { display: block; }
-.script-actions { display: flex; gap: 3px; flex-shrink: 0; }
-.script-action { width: 22px; height: 22px; border-radius: 5px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s; }
-.script-action:hover { background: var(--surface3); border-color: var(--border2); color: var(--text2); }
-.script-action.del:hover { color: var(--pink); border-color: rgba(232,121,160,.3); }
+.sc-desc-v { font-size: 12px; color: var(--text2); line-height: 1.45; }
+.sc-desc-e { display: none; width: 100%; background: var(--surface); border: 1px solid var(--accent); border-radius: 5px; color: var(--text); font-size: 12px; line-height: 1.45; padding: 4px 7px; outline: none; font-family: inherit; resize: none; margin-top: 3px; }
+.sc-card.editing .sc-desc-v { display: none; }
+.sc-card.editing .sc-desc-e { display: block; }
+.sc-acts { display: flex; gap: 2px; flex-shrink: 0; }
+.sc-act { width: 20px; height: 20px; border-radius: 4px; border: 1px solid transparent; color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; transition: all .15s; }
+.sc-act:hover { background: var(--surface3); color: var(--text2); }
+.sc-act.del:hover { color: var(--pink); }
+.script-add-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; margin: 4px 12px 0; border: 1.5px dashed var(--border2); border-radius: 7px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
+.script-add-btn:hover { border-color: var(--accent); color: var(--accent2); }
+.script-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-top: 1px solid var(--border); margin-top: 8px; }
+.script-footer-info { font-size: 11px; color: var(--text3); }
+.gen-img-btn { padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; }
+.gen-img-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(124,92,252,.45); }
 
-.script-add { display: flex; align-items: center; gap: 6px; padding: 7px 12px; margin: 4px 16px 0; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 11px; color: var(--text3); cursor: pointer; transition: all .15s; }
-.script-add:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
+/* Add shot tile */
+.add-shot-tile {
+  flex-shrink: 0; width: 120px; border-radius: 10px;
+  border: 1.5px dashed var(--border2); aspect-ratio: 16/9;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer; color: var(--text3); font-size: 11px; transition: all .15s;
+}
+.add-shot-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
 
-.script-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--border); }
-.script-footer-left { font-size: 11px; color: var(--text3); }
-.gen-images-btn { padding: 9px 22px; border-radius: 9px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; }
-.gen-images-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,.45); }
-
-/* SHOTS STRIP */
-.shots-strip { display: flex; gap: 8px; padding: 16px 16px; flex-wrap: nowrap; overflow-x: auto; border-top: 1px solid var(--border); }
-.shots-strip::-webkit-scrollbar { height: 3px; }
-.shots-strip::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
-
-.shot-thumb { width: 160px; flex-shrink: 0; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: all .15s; background: var(--surface2); }
-.shot-thumb:hover { border-color: rgba(124,92,252,.4); }
-.shot-thumb-img { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; overflow: hidden; }
-.shot-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; gap: 5px; opacity: 0; transition: opacity .15s; }
-.shot-thumb:hover .shot-overlay { opacity: 1; }
-.shot-ov-btn { padding: 4px 9px; background: rgba(255,255,255,.9); color: #1a1a2e; border-radius: 5px; font-size: 10px; font-weight: 600; }
-.shot-info { padding: 6px 8px; }
-.shot-num { font-size: 10px; font-weight: 700; color: var(--text3); margin-bottom: 2px; }
-.shot-desc { font-size: 10px; color: var(--text2); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-.shot-add-tile { width: 160px; flex-shrink: 0; border-radius: 10px; border: 1.5px dashed var(--border2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--text3); transition: all .15s; font-size: 11px; aspect-ratio: 16/9; }
-.shot-add-tile:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
-
-/* ADD SCENE */
-.add-scene-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
+/* Add scene row */
+.add-scene-row { display: flex; align-items: center; justify-content: center; padding: 8px 0; }
+.add-scene-btn { display: flex; align-items: center; gap: 6px; padding: 8px 20px; border: 1.5px dashed var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all .15s; }
 .add-scene-btn:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,92,252,.04); }
-
-/* BOTTOM BAR */
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 52px; background: var(--surface); border-top: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-.bottom-left { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 8px; }
-.progress-bar { width: 80px; height: 3px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); border-radius: 2px; width: 0%; transition: width .4s; }
-.bottom-right { display: flex; gap: 8px; }
-.bbtn { padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
-.bbtn.sec { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
-.bbtn.sec:hover { background: var(--surface3); color: var(--text); }
-.bbtn.pri { background: linear-gradient(135deg, var(--accent), #9d6fff); color: white; }
-.bbtn.pri:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,92,252,.4); }
 
 /* bgs */
 .bg-night { background: linear-gradient(160deg, #0a0a1a, #1a1040, #0d1a2a); }
 .bg-castle { background: linear-gradient(160deg, #1a0a20, #2d1540, #1a0a30); }
 .bg-forest { background: linear-gradient(160deg, #0a1f0a, #0d2d0d, #1a3a15); }
 .bg-golden { background: linear-gradient(160deg, #2a1800, #3d2800, #1a1000); }
+.bg-ocean { background: linear-gradient(160deg, #051525, #0a2540, #0d3050); }
 
 @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
 .gen-pulse { animation: pulse 1s ease-in-out infinite; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
 .fade-up { animation: fadeUp .2s ease forwards; }
 
-/* TOAST */
-.toast { position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-size: 12px; color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface3); border: 1px solid var(--border2); border-radius: 10px; padding: 8px 16px; font-size: 12px; color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .25s; z-index: 200; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
@@ -196,379 +199,349 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   <div class="nav-right">
     <div class="credits"><span>✦</span> 268,860</div>
     <button class="nav-btn">Share</button>
+    <button class="convert-btn" id="convert-btn" onclick="toast('Converting all shots to video...')">▶ Convert images to video</button>
     <div class="avatar">🧝</div>
   </div>
 </nav>
 
 <div class="content" id="content">
-
-  <!-- Scene 1 — starts with compose area -->
-  <div class="scene-row" id="scene-row-1">
-    <div class="scene-header">
-      <div class="scene-num">Scene 1</div>
-      <input class="scene-title-input" type="text" placeholder="Scene title..." />
-      <div class="scene-line"></div>
-      <div class="scene-add-shot" onclick="addManualShot(1)">+ Add Shot</div>
-    </div>
-
-    <div class="scene-card" id="scene-card-1">
-      <!-- Compose area -->
-      <div class="compose-area" id="compose-1">
-        <textarea class="compose-textarea" id="ta-1" rows="3"
-          placeholder="Describe this scene — what's happening, where, what mood..."
-          oninput="onInput(this, 'gbtn-1')"></textarea>
-
-        <div class="compose-params">
-          <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters & worlds</div>
-          <div class="param-chip" onclick="toast('Reference images...')">📎 Reference</div>
-          <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
-          <div class="param-chip" id="cc-1" onclick="cycleCount('cc-1')">🎬 Auto · 3 shots</div>
-        </div>
-
-        <div class="compose-actions">
-          <div class="compose-actions-left">
-            <div class="manual-btn" onclick="addManualShot(1)">＋ Add shot manually</div>
-            <div class="or-text">or</div>
-            <div class="manual-btn" onclick="toast('Import media...')">⬆ Import</div>
-          </div>
-          <button class="gen-btn" id="gbtn-1" onclick="generateScene(1)">✦ Generate Scene</button>
-        </div>
-      </div>
-
-      <!-- Script area — State B -->
-      <div class="script-area" id="script-1" style="display:none"></div>
-
-      <!-- Shots strip — State C -->
-      <div class="shots-strip" id="strip-1" style="display:none"></div>
-    </div>
-  </div>
-
-  <div id="more-scenes"></div>
-  <div class="add-scene-btn" id="add-scene-btn" style="display:none" onclick="addScene()">+ Add Scene</div>
-
-</div>
-
-<!-- BOTTOM BAR -->
-<div class="bottom-bar" id="bottom-bar" style="display:none">
-  <div class="bottom-left">
-    <span id="progress-text">0 shots complete</span>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-  </div>
-  <div class="bottom-right">
-    <button class="bbtn sec" onclick="addScene()">+ Add Scene</button>
-    <button class="bbtn pri" onclick="toast('Creating videos...')">✦ Create Videos</button>
+  <div id="scenes"></div>
+  <div class="add-scene-row" id="add-scene-row" style="display:none">
+    <div class="add-scene-btn" onclick="addScene()">+ Add Scene</div>
   </div>
 </div>
 
 <div class="toast" id="toast-el"></div>
 
 <script>
-const SHOTS = {
-  a: [
-    { bg:'bg-night', icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets at night' },
-    { bg:'bg-night', icon:'🧝', desc:'Close-up: She pauses, looks up at city signs, wistful expression' },
-    { bg:'bg-night', icon:'✨', desc:'Pull back: City skyline behind her, a small figure in the vast night' },
+const SCRIPTS = {
+  0: [
+    { type:'scene',    desc:'Wide shot — Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
+    { type:'dialogue', desc:'Close-up — She pauses, looks up at glowing signs. Whispers: "Every night I wait for something impossible."' },
+    { type:'scene',    desc:'Pull back — City skyline looms behind her small figure in the vast urban night' },
   ],
-  b: [
-    { bg:'bg-castle', icon:'📖', desc:'Lumina opens an ancient glowing book, golden text rises from the pages' },
-    { bg:'bg-castle', icon:'🧝', desc:'Her face bathed in golden light, eyes wide with recognition' },
-    { bg:'bg-castle', icon:'⚡', desc:'The library trembles as magic surges outward' },
+  1: [
+    { type:'scene',    desc:'Lumina pushes open heavy library doors, dust motes swirling in shafts of golden light' },
+    { type:'action',   desc:'She runs her fingers along ancient book spines, stops at one that glows faintly' },
+    { type:'dialogue', desc:'Pages flutter open on their own. She reads aloud: "This prophecy... it\'s about me."' },
+  ],
+  2: [
+    { type:'action',   desc:'Lumina stands at a cliff edge, wind whipping her hair, the valley sprawling below' },
+    { type:'dialogue', desc:'"I didn\'t come this far to stop now." Her eyes glow faintly violet.' },
+    { type:'scene',    desc:'Epic wide — golden light breaks through clouds as she steps forward' },
   ],
 };
-const countOpts = ['Auto · 2 shots','Auto · 3 shots','Auto · 4 shots'];
-let countIdxMap = {};
-let sceneCount = 1;
-let totalShots = 0, doneShots = 0;
-let setAB = 'a';
+const SHOTS = {
+  0: [
+    { bg:'bg-night',  icon:'🌃', desc:'Wide: Lumina walks alone through neon-lit streets at night' },
+    { bg:'bg-night',  icon:'🧝', desc:'Close-up: wistful expression, looks up at city signs' },
+    { bg:'bg-night',  icon:'✨', desc:'Pull back: small figure against vast city skyline' },
+  ],
+  1: [
+    { bg:'bg-castle', icon:'📖', desc:'Library doors open, golden dust motes in light shafts' },
+    { bg:'bg-castle', icon:'🧝', desc:'Her fingers trace glowing book spine, eyes curious' },
+    { bg:'bg-castle', icon:'⚡', desc:'Pages flutter: "This prophecy... it\'s about me."' },
+  ],
+  2: [
+    { bg:'bg-golden', icon:'🏔', desc:'Cliff edge: Lumina stands against vast valley below' },
+    { bg:'bg-golden', icon:'🧝', desc:'Eyes glow violet: "I didn\'t come this far to stop now."' },
+    { bg:'bg-golden', icon:'☀️', desc:'Epic wide: golden light breaks as she steps forward' },
+  ],
+};
+
+let sceneCount = 0;
+let scenesWithImages = 0;
+
+function init() {
+  addSceneBlock(true); // first scene starts in compose mode
+}
+
+function addSceneBlock(isFirst) {
+  const sid = sceneCount++;
+  const container = document.getElementById('scenes');
+  const div = document.createElement('div');
+  div.className = 'scene-block' + (isFirst ? '' : ' fade-up');
+  div.id = `sb-${sid}`;
+
+  div.innerHTML = `
+    <div class="scene-header">
+      <span class="scene-drag">⠿</span>
+      <div class="scene-collapse" onclick="toggleCollapse(${sid})">▾</div>
+      <span class="scene-label">Scene ${sid+1}</span>
+      <span class="scene-desc-text" id="sdesc-${sid}" style="display:none"></span>
+      <span class="scene-meta" id="smeta-${sid}" style="display:none"></span>
+      <div style="flex:1"></div>
+      <div class="scene-header-add" onclick="addManualShot(${sid})">+ Add Shot</div>
+    </div>
+    <div class="shot-grid" id="grid-${sid}">
+      <!-- compose tile -->
+      <div class="shot-tile compose-tile" id="compose-${sid}">
+        <div class="compose-inner">
+          <textarea class="compose-ta" id="ta-${sid}" rows="3"
+            placeholder="Describe this scene — what happens, where, what mood..."
+            oninput="onInput(this,'gbtn-${sid}')"></textarea>
+        </div>
+        <div class="compose-params">
+          <div class="param-chip" onclick="toast('Characters & worlds...')">👤 Characters</div>
+          <div class="param-chip" onclick="toast('Reference...')">📎 Reference</div>
+          <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
+          <div class="param-chip" id="cc-${sid}" onclick="cycleCount('cc-${sid}')">🎬 Auto · 3 shots</div>
+        </div>
+        <div class="compose-footer">
+          <div class="compose-footer-left">
+            <div class="manual-btn" onclick="addManualShot(${sid})">＋ Manual</div>
+            <span class="or-t">or</span>
+            <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
+          </div>
+          <button class="gen-btn" id="gbtn-${sid}" onclick="genScripts(${sid})">✦ Generate</button>
+        </div>
+      </div>
+    </div>`;
+
+  container.appendChild(div);
+  if (isFirst) {
+    setTimeout(() => document.getElementById(`ta-${sid}`).focus(), 100);
+  }
+}
+
+const countOpts = ['Auto · 2','Auto · 3','Auto · 4'];
+let countIdx = {};
+function cycleCount(id) {
+  countIdx[id] = ((countIdx[id]||1)+1) % countOpts.length;
+  document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdx[id]]} shots`;
+}
 
 function onInput(ta, btnId) {
   document.getElementById(btnId).classList.toggle('ready', ta.value.trim().length > 0);
 }
 
-function cycleCount(id) {
-  countIdxMap[id] = ((countIdxMap[id] || 1) + 1) % countOpts.length;
-  document.getElementById(id).innerHTML = `🎬 ${countOpts[countIdxMap[id]]}`;
-}
-
-const SCRIPTS = {
-  a: [
-    { type:'scene',    desc:'Wide shot: Lumina walks alone through neon-lit streets, rain-slicked pavement reflecting city lights' },
-    { type:'dialogue', desc:'Close-up: Lumina pauses mid-step, looks up at glowing signs — she whispers "every night I wait for something impossible"' },
-    { type:'scene',    desc:'Pull back reveal: City skyline looms behind her small figure in the vast urban night' },
-  ],
-  b: [
-    { type:'scene',    desc:'Lumina pushes open heavy library doors, dust motes swirling in golden light' },
-    { type:'action',   desc:'She runs her fingers along ancient spines, stops at a glowing book — pulls it from the shelf' },
-    { type:'dialogue', desc:'Pages flutter open on their own. Lumina reads aloud: "This prophecy... it\'s about me."' },
-  ],
-};
-
-function generateScene(sid) {
-  const ta = document.getElementById('ta-'+sid);
+function genScripts(sid) {
+  const ta = document.getElementById(`ta-${sid}`);
   if (!ta.value.trim()) return;
+  if (!document.getElementById('story-title').value)
+    document.getElementById('story-title').value = ta.value.trim().slice(0,44);
 
-  if (!document.getElementById('story-title').value) {
-    document.getElementById('story-title').value = ta.value.trim().slice(0,40);
-  }
+  // show loading in compose tile
+  const compose = document.getElementById(`compose-${sid}`);
+  compose.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:24px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shot scripts...</div>`;
 
-  // hide compose
-  document.getElementById('compose-'+sid).style.display = 'none';
-
-  // show script area with loading
-  const scriptEl = document.getElementById('script-'+sid);
-  scriptEl.style.display = 'block';
-  scriptEl.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:20px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating shot scripts...</div>`;
-
-  document.getElementById('bottom-bar').style.display = 'flex';
-  document.getElementById('add-scene-btn').style.display = 'inline-flex';
-
-  const scripts = SCRIPTS[setAB];
-
-  setTimeout(() => {
-    renderScriptList(sid, scripts);
-    toast('✦ Shot scripts ready · Review and edit before generating images');
-  }, 1200);
+  const scripts = SCRIPTS[sid % 3];
+  setTimeout(() => showScripts(sid, scripts, ta.value.trim()), 1000);
 }
 
-function renderScriptList(sid, scripts) {
-  const scriptEl = document.getElementById('script-'+sid);
-  let cardsHTML = scripts.map((s, i) => `
-    <div class="script-card" id="sc-${sid}-${i}" onclick="toggleScriptEdit('${sid}',${i})">
-      <div class="drag-handle">⠿</div>
-      <div class="script-body">
-        <div class="script-top">
-          <div class="script-num">Shot ${sid}.${i+1}</div>
-          <div class="script-type t-${s.type}">${s.type.charAt(0).toUpperCase()+s.type.slice(1)}</div>
+function showScripts(sid, scripts, desc) {
+  const grid = document.getElementById(`grid-${sid}`);
+  const compose = document.getElementById(`compose-${sid}`);
+
+  // replace compose tile with script tile
+  const scriptTile = document.createElement('div');
+  scriptTile.className = 'script-tile fade-up';
+  scriptTile.id = `script-tile-${sid}`;
+
+  const cardsHTML = scripts.map((s,i) => `
+    <div class="sc-card" id="scc-${sid}-${i}" onclick="toggleSCEdit(${sid},${i})">
+      <div class="drag-h">⠿</div>
+      <div class="sc-body">
+        <div class="sc-top">
+          <span class="sc-num">Shot ${sid+1}.${i+1}</span>
+          <span class="sc-type t-${s.type}">${s.type}</span>
         </div>
-        <div class="script-desc-view">${s.desc}</div>
-        <textarea class="script-desc-edit" rows="2"
+        <div class="sc-desc-v">${s.desc}</div>
+        <textarea class="sc-desc-e" rows="2"
           onclick="event.stopPropagation()"
-          onblur="saveScriptEdit('${sid}',${i},this)">${s.desc}</textarea>
+          onblur="saveSCEdit(${sid},${i},this)">${s.desc}</textarea>
       </div>
-      <div class="script-actions" onclick="event.stopPropagation()">
-        <div class="script-action" onclick="toggleScriptEdit('${sid}',${i})">✏</div>
-        <div class="script-action del" onclick="deleteScript('${sid}',${i})">✕</div>
+      <div class="sc-acts" onclick="event.stopPropagation()">
+        <div class="sc-act" onclick="toggleSCEdit(${sid},${i})">✏</div>
+        <div class="sc-act del" onclick="deleteSC(${sid},${i})">✕</div>
       </div>
     </div>`).join('');
 
-  scriptEl.innerHTML = `
-    <div class="script-header">
-      <div class="script-header-left">
-        <div class="script-label">Shot Scripts</div>
-        <div class="script-count" id="sc-count-${sid}">${scripts.length} shots</div>
-      </div>
-      <div class="script-edit-desc" onclick="backToCompose('${sid}')">✏ Edit description</div>
+  scriptTile.innerHTML = `
+    <div class="script-tile-header">
+      <div class="script-tile-label">Shot Scripts <span class="script-tile-count" id="scc-count-${sid}">${scripts.length} shots</span></div>
+      <div class="script-back" onclick="backToCompose(${sid},'${desc}')">← Edit description</div>
     </div>
-    <div class="script-list" id="sc-list-${sid}">${cardsHTML}</div>
-    <div class="script-add" onclick="addScriptShot('${sid}')">+ Add shot</div>
+    <div class="script-list" id="scl-${sid}">${cardsHTML}</div>
+    <div class="script-add-btn" onclick="addSCShot(${sid})">+ Add shot</div>
     <div class="script-footer">
-      <div class="script-footer-left">${scripts.length} shots · images generated after confirmation</div>
-      <button class="gen-images-btn" onclick="generateImages('${sid}')">✦ Generate Images →</button>
+      <div class="script-footer-info">${scripts.length} shots · free preview</div>
+      <button class="gen-img-btn" onclick="genImages(${sid})">✦ Generate Images →</button>
     </div>`;
+
+  grid.replaceChild(scriptTile, compose);
+  toast('✦ Shot scripts ready · Review and edit');
 }
 
-function toggleScriptEdit(sid, idx) {
-  const card = document.getElementById(`sc-${sid}-${idx}`);
+function toggleSCEdit(sid, idx) {
+  const card = document.getElementById(`scc-${sid}-${idx}`);
   const editing = card.classList.contains('editing');
-  document.querySelectorAll(`[id^="sc-${sid}-"]`).forEach(c => c.classList.remove('editing'));
-  if (!editing) { card.classList.add('editing'); card.querySelector('.script-desc-edit').focus(); }
+  document.querySelectorAll(`[id^="scc-${sid}-"]`).forEach(c => c.classList.remove('editing'));
+  if (!editing) { card.classList.add('editing'); card.querySelector('.sc-desc-e').focus(); }
 }
-
-function saveScriptEdit(sid, idx, ta) {
-  const card = document.getElementById(`sc-${sid}-${idx}`);
-  card.querySelector('.script-desc-view').textContent = ta.value;
+function saveSCEdit(sid, idx, ta) {
+  const card = document.getElementById(`scc-${sid}-${idx}`);
+  card.querySelector('.sc-desc-v').textContent = ta.value;
   card.classList.remove('editing');
 }
-
-function deleteScript(sid, idx) {
-  const card = document.getElementById(`sc-${sid}-${idx}`);
-  card.style.opacity = '0'; card.style.transform = 'translateX(8px)'; card.style.transition = 'all .2s';
+function deleteSC(sid, idx) {
+  const c = document.getElementById(`scc-${sid}-${idx}`);
+  c.style.opacity='0'; c.style.transition='all .2s';
   setTimeout(() => {
-    card.remove();
-    const list = document.getElementById(`sc-list-${sid}`);
-    list.querySelectorAll('.script-card').forEach((c,i) => {
-      c.querySelector('.script-num').textContent = `Shot ${sid}.${i+1}`;
-    });
-    const count = list.querySelectorAll('.script-card').length;
-    document.getElementById(`sc-count-${sid}`).textContent = `${count} shots`;
+    c.remove();
+    const list = document.getElementById(`scl-${sid}`);
+    const count = list.querySelectorAll('.sc-card').length;
+    document.getElementById(`scc-count-${sid}`).textContent = `${count} shots`;
+    toast('Shot removed');
   }, 200);
-  toast('Shot removed');
 }
-
-function addScriptShot(sid) {
-  const list = document.getElementById(`sc-list-${sid}`);
-  const count = list.querySelectorAll('.script-card').length;
+function addSCShot(sid) {
+  const list = document.getElementById(`scl-${sid}`);
+  const count = list.querySelectorAll('.sc-card').length;
   const div = document.createElement('div');
-  div.className = 'script-card fade-up editing';
-  div.id = `sc-${sid}-${count}`;
+  div.className = 'sc-card editing fade-up';
+  div.id = `scc-${sid}-${count}`;
   div.innerHTML = `
-    <div class="drag-handle">⠿</div>
-    <div class="script-body">
-      <div class="script-top">
-        <div class="script-num">Shot ${sid}.${count+1}</div>
-        <div class="script-type t-scene">Scene</div>
-      </div>
-      <div class="script-desc-view"></div>
-      <textarea class="script-desc-edit" rows="2" placeholder="Describe this shot..."
-        onblur="saveScriptEdit('${sid}',${count},this)"></textarea>
+    <div class="drag-h">⠿</div>
+    <div class="sc-body">
+      <div class="sc-top"><span class="sc-num">Shot ${sid+1}.${count+1}</span><span class="sc-type t-scene">scene</span></div>
+      <div class="sc-desc-v"></div>
+      <textarea class="sc-desc-e" rows="2" placeholder="Describe this shot..."
+        onblur="saveSCEdit(${sid},${count},this)"></textarea>
     </div>
-    <div class="script-actions" onclick="event.stopPropagation()">
-      <div class="script-action del" onclick="deleteScript('${sid}',${count})">✕</div>
+    <div class="sc-acts" onclick="event.stopPropagation()">
+      <div class="sc-act del" onclick="deleteSC(${sid},${count})">✕</div>
     </div>`;
   list.appendChild(div);
   div.querySelector('textarea').focus();
-  document.getElementById(`sc-count-${sid}`).textContent = `${count+1} shots`;
+  document.getElementById(`scc-count-${sid}`).textContent = `${count+1} shots`;
+}
+function backToCompose(sid, desc) {
+  const grid = document.getElementById(`grid-${sid}`);
+  const scriptTile = document.getElementById(`script-tile-${sid}`);
+  const composeTile = document.createElement('div');
+  composeTile.className = 'shot-tile compose-tile';
+  composeTile.id = `compose-${sid}`;
+  composeTile.innerHTML = `
+    <div class="compose-inner">
+      <textarea class="compose-ta" id="ta-${sid}" rows="3"
+        placeholder="Describe this scene..."
+        oninput="onInput(this,'gbtn-${sid}')">${desc}</textarea>
+    </div>
+    <div class="compose-params">
+      <div class="param-chip">👤 Characters</div>
+      <div class="param-chip">📎 Reference</div>
+      <div class="param-chip">🎨 Photographic</div>
+      <div class="param-chip" id="cc-${sid}" onclick="cycleCount('cc-${sid}')">🎬 Auto · 3 shots</div>
+    </div>
+    <div class="compose-footer">
+      <div class="compose-footer-left">
+        <div class="manual-btn" onclick="addManualShot(${sid})">＋ Manual</div>
+        <span class="or-t">or</span>
+        <div class="manual-btn">⬆ Import</div>
+      </div>
+      <button class="gen-btn ready" id="gbtn-${sid}" onclick="genScripts(${sid})">✦ Generate</button>
+    </div>`;
+  grid.replaceChild(composeTile, scriptTile);
 }
 
-function backToCompose(sid) {
-  document.getElementById('compose-'+sid).style.display = 'block';
-  document.getElementById('script-'+sid).style.display = 'none';
-}
+function genImages(sid) {
+  const list = document.getElementById(`scl-${sid}`);
+  const cards = list.querySelectorAll('.sc-card');
+  const scriptTile = document.getElementById(`script-tile-${sid}`);
+  const grid = document.getElementById(`grid-${sid}`);
 
-function generateImages(sid) {
-  const list = document.getElementById(`sc-list-${sid}`);
-  const cards = list.querySelectorAll('.script-card');
-  const shots = SHOTS[setAB === 'a' ? 'b' : 'a'];
-  setAB = setAB === 'a' ? 'b' : 'a';
+  // loading
+  scriptTile.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:24px 16px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating images...</div>`;
 
-  // hide script
-  document.getElementById('script-'+sid).style.display = 'none';
-
-  const strip = document.getElementById('strip-'+sid);
-  strip.style.display = 'flex';
-  strip.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:10px 4px;color:var(--text3);font-size:12px"><span class="gen-pulse" style="color:var(--accent2);font-size:18px">✦</span> Generating images...</div>`;
-
-  const shotData = Array.from(cards).map((c, i) => ({
-    desc: c.querySelector('.script-desc-view').textContent || c.querySelector('.script-desc-edit').value,
-    bg: shots[i]?.bg || 'bg-night',
-    icon: shots[i]?.icon || '✨',
-  }));
+  const shotData = SHOTS[sid % 3];
+  const descs = Array.from(cards).map(c => c.querySelector('.sc-desc-v').textContent || '');
 
   let count = 0;
   const iv = setInterval(() => {
     count++;
     if (count > shotData.length) {
       clearInterval(iv);
-      const tile = document.createElement('div');
-      tile.className = 'shot-add-tile fade-up';
-      tile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
-      tile.onclick = () => addManualShot(sid);
-      strip.appendChild(tile);
-      totalShots += shotData.length; doneShots += shotData.length;
-      updateProgress();
-      toast(`✦ ${shotData.length} images generated`);
+      // remove script tile
+      scriptTile.remove();
+      // add "+ add shot" tile
+      const addTile = document.createElement('div');
+      addTile.className = 'add-shot-tile fade-up';
+      addTile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
+      addTile.onclick = () => toast('Opening shot editor...');
+      grid.appendChild(addTile);
+      // update scene header
+      document.getElementById(`sdesc-${sid}`).textContent = descs[0]?.slice(0,50) + '...';
+      document.getElementById(`sdesc-${sid}`).style.display = '';
+      document.getElementById(`smeta-${sid}`).textContent = `${shotData.length} shots`;
+      document.getElementById(`smeta-${sid}`).style.display = '';
+      scenesWithImages++;
+      document.getElementById('convert-btn').classList.add('show');
+      document.getElementById('add-scene-row').style.display = 'flex';
+      toast(`✦ Scene ${sid+1} complete · ${shotData.length} images generated`);
       return;
     }
-    if (count === 1) strip.innerHTML = '';
     const s = shotData[count-1];
-    const el = document.createElement('div');
-    el.className = 'shot-thumb fade-up';
-    el.innerHTML = `
-      <div class="shot-thumb-img ${s.bg}">
-        <span style="font-size:24px">${s.icon}</span>
-        <div class="shot-overlay">
+    const desc = descs[count-1] || s.desc;
+    const tile = document.createElement('div');
+    tile.className = 'shot-tile fade-up';
+    tile.innerHTML = `
+      <div class="shot-tile-img ${s.bg}">
+        <span style="font-size:30px">${s.icon}</span>
+        <div class="shot-tile-num">${sid+1}.${count}</div>
+        <div class="shot-tile-overlay">
           <div class="shot-ov-btn">Edit</div>
           <div class="shot-ov-btn">Regen</div>
         </div>
-      </div>
-      <div class="shot-info">
-        <div class="shot-num">Shot ${sid}.${count}</div>
-        <div class="shot-desc">${s.desc}</div>
       </div>`;
-    el.onclick = () => toast(`Opening Shot ${sid}.${count}...`);
-    strip.appendChild(el);
-  }, 700);
+    tile.onclick = () => toast(`Shot ${sid+1}.${count} — opening editor...`);
+    grid.insertBefore(tile, scriptTile);
+  }, 650);
 }
 
 function addManualShot(sid) {
-  let strip = document.getElementById('strip-'+sid);
+  // if compose tile still there, replace it
+  const compose = document.getElementById(`compose-${sid}`);
+  const grid = document.getElementById(`grid-${sid}`);
+  if (compose) compose.remove();
 
-  // if compose still showing, hide it first
-  const compose = document.getElementById('compose-'+sid);
-  if (compose && compose.style.display !== 'none') {
-    compose.style.display = 'none';
-    strip.style.display = 'flex';
-    strip.innerHTML = '';
-    // add tile
-    const tile = document.createElement('div');
-    tile.className = 'shot-add-tile';
-    tile.innerHTML = `<span style="font-size:16px">+</span><span>Add Shot</span>`;
-    tile.onclick = () => addManualShot(sid);
-    strip.appendChild(tile);
-    document.getElementById('bottom-bar').style.display = 'flex';
-    document.getElementById('add-scene-btn').style.display = 'inline-flex';
-  }
-
-  const existing = strip.querySelectorAll('.shot-thumb').length;
-  const tile = strip.querySelector('.shot-add-tile');
-  const el = document.createElement('div');
-  el.className = 'shot-thumb fade-up';
-  el.innerHTML = `
-    <div class="shot-thumb-img" style="background:var(--surface3)">
+  const count = grid.querySelectorAll('.shot-tile:not(.compose-tile)').length;
+  const tile = document.createElement('div');
+  tile.className = 'shot-tile fade-up';
+  tile.style.background = 'var(--surface2)';
+  tile.innerHTML = `
+    <div class="shot-tile-img" style="background:var(--surface2)">
       <div style="text-align:center;color:var(--text3)">
-        <div style="font-size:16px;margin-bottom:3px">+</div>
+        <div style="font-size:18px;margin-bottom:3px">+</div>
         <div style="font-size:10px">Write prompt</div>
       </div>
-    </div>
-    <div class="shot-info">
-      <div class="shot-num">Shot ${sid}.${existing+1}</div>
-      <div class="shot-desc" style="color:var(--text3)">Empty · click to edit</div>
+      <div class="shot-tile-num">${sid+1}.${count+1}</div>
     </div>`;
-  el.onclick = () => toast('Opening shot editor...');
-  if (tile) strip.insertBefore(el, tile);
-  else strip.appendChild(el);
-  totalShots++; updateProgress();
-  toast('Shot added');
+  tile.onclick = () => toast('Opening shot editor...');
+
+  const addTile = grid.querySelector('.add-shot-tile');
+  if (addTile) grid.insertBefore(tile, addTile);
+  else grid.appendChild(tile);
+
+  document.getElementById('add-scene-row').style.display = 'flex';
+  toast('Shot added · click to edit');
 }
 
 function addScene() {
-  sceneCount++;
-  const n = sceneCount;
-  const container = document.getElementById('more-scenes');
-  const addBtn = document.getElementById('add-scene-btn');
-
-  const div = document.createElement('div');
-  div.className = 'scene-row fade-up';
-  div.innerHTML = `
-    <div class="scene-header">
-      <div class="scene-num">Scene ${n}</div>
-      <input class="scene-title-input" type="text" placeholder="Scene title..." />
-      <div class="scene-line"></div>
-      <div class="scene-add-shot" onclick="addManualShot(${n})">+ Add Shot</div>
-    </div>
-    <div class="scene-card" id="scene-card-${n}">
-      <div class="compose-area" id="compose-${n}">
-        <textarea class="compose-textarea" id="ta-${n}" rows="3"
-          placeholder="Describe this scene..."
-          oninput="onInput(this,'gbtn-${n}')"></textarea>
-        <div class="compose-params">
-          <div class="param-chip" onclick="toast('Characters...')">👤 Characters & worlds</div>
-          <div class="param-chip" onclick="toast('Reference...')">📎 Reference</div>
-          <div class="param-chip" onclick="toast('Style...')">🎨 Photographic</div>
-          <div class="param-chip" id="cc-${n}" onclick="cycleCount('cc-${n}')">🎬 Auto · 3 shots</div>
-        </div>
-        <div class="compose-actions">
-          <div class="compose-actions-left">
-            <div class="manual-btn" onclick="addManualShot(${n})">＋ Add shot manually</div>
-            <div class="or-text">or</div>
-            <div class="manual-btn" onclick="toast('Import...')">⬆ Import</div>
-          </div>
-          <button class="gen-btn" id="gbtn-${n}" onclick="generateScene(${n})">✦ Generate Scene</button>
-        </div>
-      </div>
-      <div class="script-area" id="script-${n}" style="display:none"></div>
-      <div class="shots-strip" id="strip-${n}" style="display:none"></div>
-    </div>`;
-
-  container.insertBefore(div, addBtn);
-  div.querySelector('textarea').focus();
-  div.scrollIntoView({ behavior:'smooth', block:'start' });
+  addSceneBlock(false);
+  const newSid = sceneCount - 1;
+  setTimeout(() => {
+    document.getElementById(`sb-${newSid}`).scrollIntoView({ behavior:'smooth', block:'start' });
+    document.getElementById(`ta-${newSid}`).focus();
+  }, 100);
 }
 
-function updateProgress() {
-  document.getElementById('progress-text').textContent = `${doneShots} / ${totalShots} shots`;
-  const pct = totalShots > 0 ? (doneShots/totalShots)*100 : 0;
-  document.getElementById('progress-fill').style.width = pct+'%';
+function toggleCollapse(sid) {
+  const grid = document.getElementById(`grid-${sid}`);
+  const btn = document.querySelector(`#sb-${sid} .scene-collapse`);
+  const collapsed = grid.style.display === 'none';
+  grid.style.display = collapsed ? 'flex' : 'none';
+  btn.textContent = collapsed ? '▾' : '▸';
 }
 
 let toastTimer;
@@ -580,9 +553,7 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('ta-1').focus();
-});
+init();
 </script>
 </body>
 </html>
