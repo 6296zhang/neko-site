@@ -27,6 +27,11 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none;}
 input,textarea,select{font-family:inherit;outline:none;}
 /* scrollbar */
 ::-webkit-scrollbar{width:4px;height:4px;}
+/* shot images */
+.shot-real-img{width:100%;height:100%;object-fit:cover;display:block;}
+.shot-real-img-wrap{width:100%;height:100%;position:relative;overflow:hidden;}
+.shot-real-img-wrap .shot-icon-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;background:rgba(0,0,0,.15);opacity:0;transition:opacity .2s;}
+.shot-real-img-wrap:hover .shot-icon-overlay{opacity:1;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;}
 
@@ -425,14 +430,18 @@ input,textarea,select{font-family:inherit;outline:none;}
     </div>
     <div class="sl-grid">
       <div class="story-card" onclick="enterStory('mittens')">
-        <div class="story-card-thumb" style="background:linear-gradient(160deg,#1a0a2e,#0d1a3a)">🐱</div>
+        <div class="story-card-thumb" style="background:linear-gradient(160deg,#1a0a2e,#0d1a3a);overflow:hidden;padding:0">
+          <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=480&q=80" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">
+        </div>
         <div class="story-card-info">
           <div class="story-card-title">Mittens and the Missing Mouse</div>
           <div class="story-card-meta">7 shots · Updated 2h ago</div>
         </div>
       </div>
       <div class="story-card" onclick="enterStory('vlog')">
-        <div class="story-card-thumb" style="background:linear-gradient(160deg,#1a0f05,#2a1a08)">☕</div>
+        <div class="story-card-thumb" style="background:linear-gradient(160deg,#1a1005,#2a1a08);overflow:hidden;padding:0">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=480&q=80" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">
+        </div>
         <div class="story-card-info">
           <div class="story-card-title">Morning Routine Vlog</div>
           <div class="story-card-meta">3 shots · Updated yesterday</div>
@@ -771,9 +780,9 @@ const state = {
   vePlayTimer: null,
   confirmCallback: null,
   seVersions: [
-    {id:'v1',bg:'linear-gradient(160deg,#0f0f2e,#1a1050)',icon:'🐱',isFinal:false},
-    {id:'v2',bg:'linear-gradient(160deg,#0a0a2e,#2a1060)',icon:'🐱',isFinal:true},
-    {id:'v3',bg:'linear-gradient(160deg,#1a1040,#0f0f3a)',icon:'🐱',isFinal:false},
+    {id:'v1',bg:'linear-gradient(160deg,#0f0f2e,#1a1050)',icon:'🐱',img:'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=200&q=70',isFinal:false},
+    {id:'v2',bg:'linear-gradient(160deg,#0a0a2e,#2a1060)',icon:'🐱',img:'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=200&q=70',isFinal:true},
+    {id:'v3',bg:'linear-gradient(160deg,#1a1040,#0f0f3a)',icon:'🐱',img:'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=200&q=70',isFinal:false},
   ],
   seSelectedVersion: 'v2',
   stories: {
@@ -785,10 +794,10 @@ const state = {
           desc:'Mittens searches for the mouse in a messy bedroom.',
           collapsed: false,
           shots: [
-            {id:'1.1',type:'Scene',status:'imageReady',bg:'linear-gradient(160deg,#1a0a2e,#0d1a3a)',icon:'🐱',desc:'Wide shot of the messy bedroom as Mittens wakes up and looks around.'},
-            {id:'1.2',type:'Action',status:'imageReady',bg:'linear-gradient(160deg,#0f0f2e,#1a1050)',icon:'🐱',desc:'Medium shot of Mittens jumping off the bed and following the sound.'},
-            {id:'1.3',type:'Action',status:'videoReady',duration:2.3,bg:'linear-gradient(160deg,#0a1230,#1a0a40)',icon:'🐾',desc:'Close-up of tiny paw steps near the dresser as Mittens investigates.'},
-            {id:'1.4',type:'Action',status:'failed',bg:'linear-gradient(160deg,#1a0a20,#0d0d20)',icon:'🐭',desc:'Close-up of the mouse peeking out from behind a box.'},
+            {id:'1.1',type:'Scene',status:'imageReady',bg:'linear-gradient(160deg,#1a0a2e,#0d1a3a)',icon:'🐱',img:'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80',desc:'Wide shot of the messy bedroom as Mittens wakes up and looks around.'},
+            {id:'1.2',type:'Action',status:'imageReady',bg:'linear-gradient(160deg,#0f0f2e,#1a1050)',icon:'🐱',img:'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&q=80',desc:'Medium shot of Mittens jumping off the bed and following the sound.'},
+            {id:'1.3',type:'Action',status:'videoReady',duration:2.3,bg:'linear-gradient(160deg,#0a1230,#1a0a40)',icon:'🐾',img:'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80',desc:'Close-up of tiny paw steps near the dresser as Mittens investigates.'},
+            {id:'1.4',type:'Action',status:'failed',bg:'linear-gradient(160deg,#1a0a20,#0d0d20)',icon:'🐭',img:null,desc:'Close-up of the mouse peeking out from behind a box.'},
           ]
         },
         {
@@ -796,8 +805,8 @@ const state = {
           desc:'Mittens rushes out of the room and chases the mouse down the hallway.',
           collapsed: false,
           shots: [
-            {id:'2.1',type:'Action',status:'imageReady',bg:'linear-gradient(160deg,#051525,#0a2040)',icon:'🐱',desc:'Tracking shot of Mittens sprinting down the hallway.'},
-            {id:'2.2',type:'Action',status:'generatingImage',bg:'linear-gradient(160deg,#051a2a,#0a1a35)',icon:'🐭',desc:'Low-angle shot of the mouse slipping through the half-open front door.'},
+            {id:'2.1',type:'Action',status:'imageReady',bg:'linear-gradient(160deg,#051525,#0a2040)',icon:'🐱',img:'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=400&q=80',desc:'Tracking shot of Mittens sprinting down the hallway.'},
+            {id:'2.2',type:'Action',status:'generatingImage',bg:'linear-gradient(160deg,#051a2a,#0a1a35)',icon:'🐭',img:null,desc:'Low-angle shot of the mouse slipping through the half-open front door.'},
           ]
         },
         {
@@ -805,7 +814,7 @@ const state = {
           desc:'Mittens corners the mouse outside the park gate.',
           collapsed: false,
           shots: [
-            {id:'3.1',type:'Scene',status:'imageReady',bg:'linear-gradient(160deg,#0a1f0a,#1a2a10)',icon:'🐱',desc:'Wide shot of Mittens blocking the park gate while the mouse freezes.'},
+            {id:'3.1',type:'Scene',status:'imageReady',bg:'linear-gradient(160deg,#0a1f0a,#1a2a10)',icon:'🐱',img:'https://images.unsplash.com/photo-1519052537078-e6302a4968d4?w=400&q=80',desc:'Wide shot of Mittens blocking the park gate while the mouse freezes.'},
           ]
         },
       ]
@@ -818,9 +827,9 @@ const state = {
           desc:'A girl wakes up in a cozy bedroom and starts her morning routine.',
           collapsed: false,
           shots: [
-            {id:'v1.1',type:'Scene',status:'imageReady',bg:'linear-gradient(160deg,#1a1005,#2a200a)',icon:'☀️',desc:'Wide shot of sunlight entering the bedroom as she wakes up.'},
-            {id:'v1.2',type:'Action',status:'generatingImage',bg:'linear-gradient(160deg,#1a0f05,#251808)',icon:'🌅',desc:'Medium shot of her stretching and getting out of bed.'},
-            {id:'v1.3',type:'Action',status:'videoReady',duration:2.1,bg:'linear-gradient(160deg,#150a05,#201005)',icon:'☕',desc:'Close-up of her pouring coffee in the kitchen.'},
+            {id:'v1.1',type:'Scene',status:'imageReady',bg:'linear-gradient(160deg,#1a1005,#2a200a)',icon:'☀️',img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80',desc:'Wide shot of sunlight entering the bedroom as she wakes up.'},
+            {id:'v1.2',type:'Action',status:'generatingImage',bg:'linear-gradient(160deg,#1a0f05,#251808)',icon:'🌅',img:null,desc:'Medium shot of her stretching and getting out of bed.'},
+            {id:'v1.3',type:'Action',status:'videoReady',duration:2.1,bg:'linear-gradient(160deg,#150a05,#201005)',icon:'☕',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80',desc:'Close-up of her pouring coffee in the kitchen.'},
           ]
         }
       ]
@@ -1035,8 +1044,10 @@ function renderShotCard(shot, arClass, cardW, batchMode, sceneId) {
         <div class="shot-failed-text">This shot failed to generate</div>
         <button class="shot-retry-btn" onclick="event.stopPropagation();retryShot('${shot.id}')">Retry</button>
       </div>`;
-  } else {
-    inner = `<div class="shot-card-img" style="background:${shot.bg}"><span style="font-size:56px">${shot.icon}</span></div>`;
+  } else if (shot.img) {
+    inner = `<div class="shot-card-img" style="background:${shot.bg};padding:0">
+      <img src="${shot.img}" class="shot-real-img" loading="lazy" onerror="this.style.display='none'">
+    </div>`;
     if (shot.status === 'videoReady') {
       inner += `<div class="shot-video-badge"><div class="shot-play-icon">▶</div>${shot.duration}s</div>`;
     }
@@ -1548,8 +1559,13 @@ function renderShotEditor() {
   document.getElementById('se-shot-title').textContent = 'Shot ' + state.activeShotId;
   document.getElementById('se-scene-sub').textContent = scene ? scene.label : 'Scene';
   document.getElementById('se-desc').value = shot.desc;
-  document.getElementById('se-preview-inner').style.background = shot.bg;
-  document.getElementById('se-preview-inner').innerHTML = `<span style="font-size:64px">${shot.icon}</span>`;
+  const previewInner = document.getElementById('se-preview-inner');
+  previewInner.style.background = shot.bg;
+  if (shot.img) {
+    previewInner.innerHTML = `<img src="${shot.img}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.display='none'">`;
+  } else {
+    previewInner.innerHTML = `<span style="font-size:64px">${shot.icon}</span>`;
+  }
   updateSaveStatus();
   renderVersionStrip();
 }
@@ -1569,7 +1585,9 @@ function renderVersionStrip() {
   const strip = document.getElementById('se-version-strip');
   strip.innerHTML = state.seVersions.map(v => `
     <div class="se-ver-card ${state.seSelectedVersion === v.id ? 'selected' : ''}" onclick="selectVersion('${v.id}')">
-      <div class="se-ver-img" style="background:${v.bg}"><span>${v.icon}</span></div>
+      <div class="se-ver-img" style="background:${v.bg};padding:0;overflow:hidden;">
+        ${v.img ? `<img src="${v.img}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.style.display='none'">` : `<span>${v.icon}</span>`}
+      </div>
       ${v.isFinal ? '<div class="se-ver-final">Final</div>' : ''}
       <div class="se-ver-hover">
         <div class="se-ver-hbtn" onclick="event.stopPropagation();setFinalVersion('${v.id}')">Set as final</div>
@@ -1581,8 +1599,13 @@ function selectVersion(id) {
   state.seSelectedVersion = id;
   const v = state.seVersions.find(v => v.id === id);
   if (v) {
-    document.getElementById('se-preview-inner').style.background = v.bg;
-    document.getElementById('se-preview-inner').innerHTML = `<span style="font-size:64px">${v.icon}</span>`;
+    const inner = document.getElementById('se-preview-inner');
+    inner.style.background = v.bg;
+    if (v.img) {
+      inner.innerHTML = `<img src="${v.img}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.display='none'">`;
+    } else {
+      inner.innerHTML = `<span style="font-size:64px">${v.icon}</span>`;
+    }
   }
   renderVersionStrip();
 }
@@ -1667,15 +1690,18 @@ function renderVEAssets() {
       const isFailed = sh.status === 'failed';
       if (isFailed) {
         html += `<div class="ve-asset-item" style="opacity:.4;cursor:not-allowed;" title="Shot failed — fix in Shot Editor" onclick="event.preventDefault()">
-          <div class="ve-asset-thumb" style="background:${sh.bg};filter:grayscale(.7)">${sh.icon}</div>
+          <div class="ve-asset-thumb" style="background:${sh.bg};filter:grayscale(.7);overflow:hidden">${sh.icon}</div>
           <div class="ve-asset-info">
             <div class="ve-asset-name" style="color:var(--t3)">Shot ${sh.id}</div>
             <div class="ve-asset-type" style="color:var(--error)">⚠ Failed · Fix in Shot Editor</div>
           </div>
         </div>`;
       } else {
+        const thumbContent = sh.img
+          ? `<img src="${sh.img}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">`
+          : sh.icon;
         html += `<div class="ve-asset-item ${isActive ? 'active-asset' : ''}" onclick="${added ? `selectFromAsset('${sh.id}')` : `addToTimeline('${sh.id}')`}">
-          <div class="ve-asset-thumb" style="background:${sh.bg}">${sh.icon}</div>
+          <div class="ve-asset-thumb" style="background:${sh.bg};overflow:hidden;padding:0">${thumbContent}</div>
           <div class="ve-asset-info">
             <div class="ve-asset-name">Shot ${sh.id}</div>
             <div class="ve-asset-type">
@@ -1712,8 +1738,11 @@ function renderVETimeline() {
     const isActive = state.veActiveShotId === id;
     const isVideo = shot.status === 'videoReady';
     const dur = shot.duration || 2.5;
+    const blockImg = shot.img
+      ? `<img src="${shot.img}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.display='none'">`
+      : shot.icon;
     return `<div class="ve-block ${isActive?'active':''}" id="ve-block-${id}" onclick="selectVEBlock('${id}')">
-      <div class="ve-block-img" style="background:${shot.bg}">${shot.icon}</div>
+      <div class="ve-block-img" style="background:${shot.bg};overflow:hidden;padding:0">${blockImg}</div>
       <div class="ve-block-info">
         <div class="ve-block-name">Shot ${shot.id}</div>
         <div class="ve-block-meta">
@@ -1750,7 +1779,11 @@ function updateVEPreview() {
   if (!shot) return;
   const preview = document.getElementById('ve-preview-inner');
   preview.style.background = shot.bg;
-  preview.innerHTML = `<span style="font-size:64px">${shot.icon}</span>`;
+  if (shot.img) {
+    preview.innerHTML = `<img src="${shot.img}" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.display='none'">`;
+  } else {
+    preview.innerHTML = `<span style="font-size:64px">${shot.icon}</span>`;
+  }
   // update shot info below preview
   let infoEl = document.getElementById('ve-preview-shot-info');
   if (!infoEl) {
